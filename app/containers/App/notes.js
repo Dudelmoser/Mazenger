@@ -1,5 +1,6 @@
 // Modules:
-// socket.io, facebook-chat-api, material-ui, react-easy-emoji, react-custom-scrollbars, redux-persist, socket.io-client, react-tap-event-plugin
+// socket.io, socket.io-client, redux-persist-immutable, facebook-chat-api,
+// material-ui, react-tap-event-plugin, react-easy-emoji, react-custom-scrollbars
 //
 // Dependencies:
 // FriendsList: users (getFriendsList)

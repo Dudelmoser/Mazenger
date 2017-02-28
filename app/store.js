@@ -7,6 +7,7 @@ import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import createReducer from './reducers';
+import {autoRehydrate, persistStore} from "redux-persist-immutable";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -21,6 +22,7 @@ export default function configureStore(initialState = {}, history) {
 
   const enhancers = [
     applyMiddleware(...middlewares),
+    autoRehydrate() // add redux-persist as enhancer
   ];
 
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose
@@ -38,6 +40,9 @@ export default function configureStore(initialState = {}, history) {
     composeEnhancers(...enhancers)
   );
 
+  // begin periodically persisting the store
+  persistStore(store);
+
   // Make store visible for debugging
   window.store = store;
 
@@ -49,7 +54,7 @@ export default function configureStore(initialState = {}, history) {
   /* istanbul ignore next */
   if (module.hot) {
     module.hot.accept('./reducers', () => {
-      import('./reducers').then((reducerModule) => {
+      System.import('./reducers').then((reducerModule) => {
         const createReducers = reducerModule.default;
         const nextReducers = createReducers(store.asyncReducers);
 
