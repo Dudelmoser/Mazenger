@@ -1,42 +1,53 @@
-import { createSelector } from "reselect";
-import {selectUsers, selectCurrentThread} from "../App/selectors";
-import {THREAD_HISTORY, TYPING} from "../App/state";
-import {fromJS, List} from "immutable";
+import {createSelector} from "reselect";
+import {fromJS} from "immutable";
+import {selectRoot} from "../App/selectors";
+import {HISTORIES, TYPERS} from "./constants";
+import {selectMyThreadID} from "../LoginModal/selectors";
+import {selectUsers} from "../ThreadList/selectors";
 
-const selectCurrentThreadHistory = () => createSelector(
-  selectCurrentThread(),
-  (thread) => thread ? thread.get(THREAD_HISTORY, new List()) : new List()
+const selectHistories = () => createSelector(
+  selectRoot(),
+  (root) => root.get(HISTORIES) || fromJS({})
 );
 
-const selectImageURLs = () => createSelector(
-  selectCurrentThreadHistory(),
-  selectUsers(),
-  (thread, users) => {
-    let imageURLs = [];
-    if (thread) {
-      for (let message of thread) {
-        const userID = message.get("senderID", "").replace("fbid:", "");
-        const imageURL = users.get(userID, fromJS({})).get("thumbSrc");
-        imageURLs.push(imageURL);
-      }
-    }
-    return imageURLs;
-  }
+const selectHistory = (threadID) => createSelector(
+  selectHistories(),
+  (histories) => histories.get(threadID) || fromJS([])
 );
 
-const selectUsersTyping = () => createSelector(
-  selectCurrentThread(),
+const selectCurrentHistory = () => createSelector(
+  selectHistories(),
+  selectMyThreadID(),
+  (histories, threadID) => histories.get(threadID) || fromJS([])
+);
+
+const selectTypers = () => createSelector(
+  selectRoot(),
+  (root) => root.get(TYPERS) || fromJS({})
+);
+
+const selectCurrentTypers = () => createSelector(
+  selectTypers(),
   selectUsers(),
-  (thread, users) => {
-    let result = []
-    let userIDs = thread ? thread.get(TYPING, fromJS({})) : fromJS({});
-    userIDs.forEach((timestamp, userID) => result.push(users.get(userID, fromJS({})).get("name")));
+  selectMyThreadID(),
+  (typers, users, threadID) => {
+    const myTypers = typers.get(threadID) || fromJS({});
+    let result = [];
+    myTypers.forEach((timestamp, userID) =>
+      result.push(users.get(userID, fromJS({})).get("name")));
     return result;
   }
 );
 
+const selectMessageCount = () => createSelector(
+  selectCurrentHistory(),
+  (history) => history.count() || 0
+);
+
 export {
-  selectCurrentThreadHistory,
-  selectImageURLs,
-  selectUsersTyping,
+  selectHistories,
+  selectHistory,
+  selectCurrentHistory,
+  selectCurrentTypers,
+  selectMessageCount,
 };

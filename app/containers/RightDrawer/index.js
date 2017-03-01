@@ -18,8 +18,8 @@ import CommunicationImportExport from "material-ui/svg-icons/communication/impor
 import ActionPowerSettingsNew from "material-ui/svg-icons/action/power-settings-new";
 
 // containers
-import EmojiList from "../EmojiList";
-import MemeGenerator from "../MemeGenerator";
+import EmojisTab from "../EmojisTab";
+import MemesTab from "../MemesTab";
 
 // actions
 import {logout} from "../App/actions/requests";
@@ -60,7 +60,7 @@ class RightDrawer extends React.Component { // eslint-disable-line react/prefer-
             <Scrollbars
               autoHide={true}
               style={{height: drawerHeight}}>
-              <EmojiList/>
+              <EmojisTab/>
             </Scrollbars>
           </Tab>
 
@@ -70,7 +70,7 @@ class RightDrawer extends React.Component { // eslint-disable-line react/prefer-
             <Scrollbars
               autoHide={true}
               style={{height: drawerHeight}}>
-              <MemeGenerator/>
+              <MemesTab/>
             </Scrollbars>
           </Tab>
 

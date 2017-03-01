@@ -5,9 +5,9 @@ import messages from "./messages";
 import {TextField} from "material-ui";
 import {changeMessage} from "./actions";
 import {sendMessage} from "../App/actions/requests";
-import {selectCurrentThreadID} from "../App/selectors";
-import {selectCurrentMessage} from "./selectors";
+import {selectCurrentInput} from "./selectors";
 import {createStructuredSelector} from "reselect";
+import {selectMyThreadID} from "../LoginModal/selectors";
 
 export class MessageInput extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -35,8 +35,8 @@ MessageInput.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  threadID: selectCurrentThreadID(),
-  message: selectCurrentMessage(),
+  threadID: selectMyThreadID(),
+  message: selectCurrentInput(),
 });
 
 // to get access to stateProps filled by selectors

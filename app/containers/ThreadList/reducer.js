@@ -1,31 +1,36 @@
 import {fromJS} from "immutable";
+import {THREAD_LIST_RECEIVED, THREAD_INFO_RECEIVED, UPDATE_RECEIVED} from "../App/actions/responses";
+import {LOGOUT} from "../App/actions/requests";
 
-import {THREAD_LIST_RECEIVED, THREAD_INFO_RECEIVED, USER_INFO_RECEIVED, THREAD_HISTORY_RECEIVED} from "../App/actions/responses";
-import {THREADS, THREAD_INFO, USERS, CURRENT_THREAD, THREAD_HISTORY, TYPING} from "../App/state";
+const initState = fromJS({});
 
-export default function (state, action) {
+export default function (state = initState, action, curUserID, curThreadID) {
   switch (action.type) {
 
     case THREAD_LIST_RECEIVED:
-      const threadList = action.args[2];
-      return state
-        .setIn([THREADS, threadList], fromJS(action.data));
+      if (!action.data)
+        return state;
+      return fromJS({}).withMutations(map =>
+        action.data.forEach((element) => {
+          map.set(element.threadID, fromJS(element))
+        })
+      );
 
     case THREAD_INFO_RECEIVED:
-      return state
-        .setIn([THREADS, action.id, THREAD_INFO], fromJS(action.data));
+      return state.set(action.id, fromJS(action.data));     // better merge!
 
-    case USER_INFO_RECEIVED:
-      const userID = Object.keys(action.data)[0];
-      const userInfo = Object.values(action.data)[0];
-      return state
-        .setIn([USERS, userID], fromJS(userInfo));
+    case UPDATE_RECEIVED:
+        const data = action.data;
+        switch (data.type) {
 
-    case THREAD_HISTORY_RECEIVED:
-      const threadID = action.args[0];
-      return state
-        .setIn([THREADS, CURRENT_THREAD], threadID)
-        .setIn([THREADS, threadID, THREAD_HISTORY], fromJS(action.data))
-        .setIn([THREADS, threadID, TYPING], fromJS({}));
+          case "message":
+            return state
+              .setIn([data.threadID, "snippet"], data.body);
+          default:
+            return state;
+      }
+
+    case LOGOUT:
+      return initState;
   }
 }

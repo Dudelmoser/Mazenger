@@ -2,7 +2,7 @@ import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from "material-ui/TextField";
-import {selectLoggedIn, selectEmail, selectPassword} from "./selectors";
+import {selectIsLoggedIn, selectEmail, selectPassword} from "./selectors";
 import {createStructuredSelector} from "reselect";
 import {connect} from "react-redux";
 import {login} from "../App/actions/requests";
@@ -69,7 +69,7 @@ LoginModal.propTypes = {
 const mapStateToProps = createStructuredSelector({
   email: selectEmail(),
   password: selectPassword(),
-  loggedIn: selectLoggedIn()
+  loggedIn: selectIsLoggedIn()
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {

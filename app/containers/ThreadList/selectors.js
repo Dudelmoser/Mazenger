@@ -1,34 +1,37 @@
 import {createSelector} from "reselect";
-import {selectThreads} from "../App/selectors";
-import {INBOX, ARCHIVE} from "../App/state";
+import {fromJS} from "immutable";
+import {selectRoot} from "../App/selectors";
+import {THREADS, USERS} from "./constants";
 
-const selectThreadInbox = () => createSelector(
-  selectThreads(),
-  (threads) => threads.get(INBOX)
+const selectThreads = () => createSelector(
+  selectRoot(),
+  (root) => root.get(THREADS) || fromJS({})
 );
 
-const selectThreadArchive = () => createSelector(
+const selectThread = (threadID) => createSelector(
   selectThreads(),
-  (threads) => threads.get(ARCHIVE)
+  (threads) => threads.get(threadID) || fromJS({})
 );
 
 const selectThreadIDs = () => createSelector(
   selectThreads(),
-  (threads) => threads.keySeq().toArray().filter(element => {
+  (threads) => threads.keySeq().toArray() || []
+);
 
-    // removes inbox, archived and current thread
-    if (!parseInt(element))
-      return false;
+const selectUsers = () => createSelector(
+  selectRoot(),
+  (root) => root.get(USERS) || fromJS({})
+);
 
-    // removes self-thread caused by an unknown bug
-    if (threads.get(element) && !threads.get(element).get("info"))
-      return false;
-    return true;
-  })
+const selectUser = (userID) => createSelector(
+  selectUsers(),
+  (users) => users.get(userID) || fromJS({})
 );
 
 export {
-  selectThreadInbox,
-  selectThreadArchive,
+  selectThreads,
+  selectThread,
   selectThreadIDs,
+  selectUsers,
+  selectUser,
 };

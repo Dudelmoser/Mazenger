@@ -10,7 +10,7 @@ import friendsListSaga from "../FriendsList/sagas";
 import {selectAppState} from "../LoginModal/selectors";
 import {DISCONNECTED} from "./actions/actions";
 import request from "../../utils/request";
-import {memesLoaded} from "../MemeGenerator/actions";
+import {memesLoaded} from "../MemesTab/actions";
 
 function connect() {
   const socket = io('http://localhost:80');

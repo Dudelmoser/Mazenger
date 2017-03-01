@@ -1,21 +1,22 @@
 import {createSelector} from "reselect";
-import {selectThreadHistory, selectCurrentUserID} from "../App/selectors";
 import {fromJS} from "immutable";
+import {selectHistory} from "../ThreadHistory/selectors";
+import {selectMyUserID} from "../LoginModal/selectors";
 
 const selectMessage = (index, threadID) => createSelector(
-  selectThreadHistory(threadID),
-  (history) => history ? history.get(index) : fromJS({})
+  selectHistory(threadID),
+  (history) => history.get(index) || fromJS({})
 );
 
 const selectSenderID = (index, threadID) => createSelector(
   selectMessage(index, threadID),
-  (message) => message ? message.get("senderID").replace("fbid:", "") : ""
+  (message) => message.get("senderID", "fbid:").replace("fbid:", "") || ""
 );
 
 // bugged under certain circumstances
 const selectIsOwn = (index, threadID) => createSelector(
   selectSenderID(index, threadID),
-  selectCurrentUserID(),
+  selectMyUserID(),
   (sender, user) => {
     return (sender && user) ? sender == user : false
   }
@@ -23,7 +24,7 @@ const selectIsOwn = (index, threadID) => createSelector(
 
 const selectTimeStamp = (index, threadID) => createSelector(
   selectMessage(index, threadID),
-  (message) => message ? message.get("timestamp") : 0
+  (message) => message.get("timestamp") || 0
 );
 
 const selectIsSequel = (index, threadID) => createSelector(

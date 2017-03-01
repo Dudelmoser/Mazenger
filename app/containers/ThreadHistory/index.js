@@ -1,8 +1,8 @@
 import React from "react";
 import {connect} from "react-redux";
-import {selectImageURLs, selectUsersTyping} from "./selectors";
-import {selectCurrentThreadID} from "../App/selectors";
 import MessageFrame from "../MessageFrame";
+import {selectMyThreadID} from "../LoginModal/selectors";
+import {selectCurrentTypers, selectCurrentHistory} from "./selectors";
 
 export class ThreadHistory extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -43,11 +43,10 @@ export class ThreadHistory extends React.PureComponent { // eslint-disable-line 
   render() {
     return (
       <div style={this.wrapperStyle}>
-        {this.props.imageURLs.map((imageURL, index) =>
+        {this.props.history.map((message, index) =>
           <MessageFrame
             key={index}
             index={index}
-            imageURL={imageURL}
             threadID={this.props.threadID}
           />
         )}
@@ -61,14 +60,13 @@ ThreadHistory.propTypes = {
   onUpdate: React.PropTypes.func,
   threadID: React.PropTypes.oneOfType(
     [React.PropTypes.string, React.PropTypes.number]),
-  imageURLs: React.PropTypes.array,
   typing: React.PropTypes.array,
 }
 
 const mapStateToProps = (state) => ({
-  threadID: selectCurrentThreadID()(state),
-  imageURLs: selectImageURLs()(state),
-  typing: selectUsersTyping()(state),
+  threadID: selectMyThreadID()(state),
+  typing: selectCurrentTypers()(state),
+  history: selectCurrentHistory()(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -2,10 +2,11 @@ import {takeLatest} from "redux-saga";
 import {take, put, select} from "redux-saga/effects";
 import {getThreadList, getThreadInfo, getUserInfo, getThreadHistory} from "../App/actions/requests"
 import {LOGIN_PASSED, THREAD_LIST_RECEIVED} from "../App/actions/responses";
-import {selectUser, selectCurrentThreadID} from "../App/selectors";
+import {selectUser} from "./selectors";
+import {selectMyThreadID} from "../LoginModal/selectors";
 
 function* getThreadDetails(action) {
-  const threadID = yield select(selectCurrentThreadID());
+  const threadID = yield select(selectMyThreadID());
   const firstThread = action.data[0];
   if (!threadID && firstThread) {
     yield put(getThreadHistory(firstThread.threadID));

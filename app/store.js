@@ -20,9 +20,10 @@ export default function configureStore(initialState = {}, history) {
     routerMiddleware(history),
   ];
 
+  // add redux-persist as enhancer
   const enhancers = [
     applyMiddleware(...middlewares),
-    autoRehydrate() // add redux-persist as enhancer
+    autoRehydrate()
   ];
 
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose

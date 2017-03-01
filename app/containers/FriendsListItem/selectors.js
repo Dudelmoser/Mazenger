@@ -1,34 +1,35 @@
 import {createSelector} from "reselect";
+import {fromJS} from "immutable";
 import {selectFriends} from "../FriendsList/selectors";
 
 const selectFriend = (index) => createSelector(
   selectFriends(),
-  (friends) => friends.get(index)
+  (friends) => friends.get(index) || fromJS({})
 );
 
 const selectImageURL = (index) => createSelector(
   selectFriend(index),
-  (friend) => friend ? friend.get("profilePicture") : ""
+  (friend) => friend.get("profilePicture") || ""
 );
 
 const selectFullName = (index) => createSelector(
   selectFriend(index),
-  (friend) => friend ? friend.get("fullName") : ""
+  (friend) => friend.get("fullName") || ""
 );
 
 const selectHasBirthday = (index) => createSelector(
   selectFriend(index),
-  (friend) => friend ? friend.get("isBirthday") : ""
+  (friend) => friend.get("isBirthday") || false
 );
 
 const selectProfileURL = (index) => createSelector(
   selectFriend(index),
-  (friend) => friend ? friend.get("profileUrl") : ""
+  (friend) => friend.get("profileUrl") || ""
 );
 
 const selectUserID = (index) => createSelector(
   selectFriend(index),
-  (friend) => friend ? friend.get("userID") : ""
+  (friend) => friend.get("userID") || ""
 );
 
 export {

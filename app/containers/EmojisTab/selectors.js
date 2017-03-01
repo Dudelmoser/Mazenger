@@ -1,20 +1,27 @@
 import {createSelector} from "reselect";
-import {selectRoot} from "../App/selectors";
-import {EMOJIS, FAVORITES, OPEN_GROUPS} from "../App/state";
 import {fromJS} from "immutable";
+import {selectRoot} from "../App/selectors";
+import {selectMyUserID} from "../LoginModal/selectors";
+import {EMOJIS, FAVORITES, OPEN_GROUPS} from "./constants";
 
-function getKeysSortedByValue(obj) {
-  var keys = Object.keys(obj);
-  return keys.sort((a,b) => obj[b] - obj[a]);
-}
+// function getKeysSortedByValue(obj) {
+//   var keys = Object.keys(obj);
+//   return keys.sort((a,b) => obj[b] - obj[a]);
+// }
 
 const selectEmojis = () => createSelector(
   selectRoot(),
   (root) => root.get(EMOJIS) || fromJS({})
 );
 
-const selectFavoriteEmojis = () => createSelector(
+const selectMyEmojis = () => createSelector(
   selectEmojis(),
+  selectMyUserID(),
+  (emojis, userID) => emojis.get(userID) || fromJS({})
+)
+
+const selectFavoriteEmojis = () => createSelector(
+  selectMyEmojis(),
   (emojis) => emojis.get(FAVORITES) || fromJS({})
 );
 
@@ -22,8 +29,8 @@ const selectFavEmojis = () => createSelector(
   selectFavoriteEmojis(),
   (faves) => {
     const sorted = faves.sort((a, b) => {
-      if (a < b) { return -1; }
-      if (a > b) { return 1; }
+      if (a > b) { return -1; }
+      if (a < b) { return 1; }
       if (a === b) { return 0; }
     }).keySeq();
     if (sorted.count() > 20)
@@ -33,12 +40,13 @@ const selectFavEmojis = () => createSelector(
 );
 
 const selectOpenEmojiGroups = () => createSelector(
-  selectEmojis(),
+  selectMyEmojis(),
   (emojis) => emojis.get(OPEN_GROUPS) || fromJS({})
 );
 
 export {
   selectEmojis,
+  selectMyEmojis,
   selectFavEmojis,
   selectOpenEmojiGroups,
 }

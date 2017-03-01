@@ -1,40 +1,47 @@
 import {createSelector} from "reselect";
 import {selectRoot} from "../App/selectors";
-import {MEMES, TOP100_MEMES, LOCAL_MEMES, FAVORITE_MEMES, CURRENT_MEME, TOP_CAPTION, BOTTOM_CAPTION} from "../App/state";
 import {fromJS} from "immutable";
+import {selectMyUserID} from "../LoginModal/selectors";
+import {MEMES, TOP_CAPTION, BOTTOM_CAPTION, CURRENT_MEME, TOP100_MEMES, LOCAL_MEMES, FAVORITE_MEMES} from "./constants";
 
 const selectMemes = () => createSelector(
   selectRoot(),
   (root) => root.get(MEMES) || fromJS({})
 );
 
-const selectTopCaption = () => createSelector(
+const selectMyMemes = () => createSelector(
   selectMemes(),
+  selectMyUserID(),
+  (memes, userID) => memes.get(userID) || fromJS({})
+);
+
+const selectTopCaption = () => createSelector(
+  selectMyMemes(),
   (memes) => memes.get(TOP_CAPTION) || ""
 );
 
 const selectBottomCaption = () => createSelector(
-  selectMemes(),
+  selectMyMemes(),
   (memes) => memes.get(BOTTOM_CAPTION) || ""
 );
 
 const selectCurrentMeme = () => createSelector(
-  selectMemes(),
+  selectMyMemes(),
   (memes) => memes.get(CURRENT_MEME) || ""
 );
 
 const selectTop100Memes = () => createSelector(
-  selectMemes(),
+  selectMyMemes(),
   (memes) => memes.get(TOP100_MEMES) || fromJS([])
 );
 
 const selectLocalMemes = () => createSelector(
-  selectMemes(),
+  selectMyMemes(),
   (memes) => memes.get(LOCAL_MEMES) || fromJS([])
 );
 
 const selectFavoriteMemes = () => createSelector(
-  selectMemes(),
+  selectMyMemes(),
   (memes) => memes.get(FAVORITE_MEMES) || fromJS([])
 );
 
@@ -47,6 +54,7 @@ const selectAllMemes = () => createSelector(
 
 export {
   selectMemes,
+  selectMyMemes,
   selectTopCaption,
   selectBottomCaption,
   selectCurrentMeme,

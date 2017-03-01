@@ -1,12 +1,21 @@
 import {createSelector} from "reselect";
-import {OUTBOX} from "../App/state";
-import {selectCurrentThread} from "../App/selectors";
+import {fromJS} from "immutable";
+import {selectRoot} from "../App/selectors";
+import {selectMyThreadID} from "../LoginModal/selectors";
+import {INPUTS} from "./constants";
 
-const selectCurrentMessage = () => createSelector(
-  selectCurrentThread(),
-  (thread) => thread ? thread.get(OUTBOX) : ""
+const selectInputs = () => createSelector(
+  selectRoot(),
+  (root) => root.get(INPUTS) || fromJS({})
+);
+
+const selectCurrentInput = () => createSelector(
+  selectInputs(),
+  selectMyThreadID(),
+  (inputs, threadID) => inputs.get(threadID) || ""
 );
 
 export {
-  selectCurrentMessage
+  selectInputs,
+  selectCurrentInput,
 }

@@ -1,17 +1,33 @@
+import {fromJS} from "immutable";
 import {MESSAGE_SENT} from "../App/actions/responses";
 import {CHANGE_MESSAGE} from "./actions";
-import {THREADS, OUTBOX, CURRENT_THREAD} from "../App/state";
+import {INSERT_EMOJI} from "../EmojisTab/actions";
 
-export default function (state, action) {
-  const threadID = state.getIn([THREADS, CURRENT_THREAD]);
+const initState = fromJS({});
+
+export default function (state = initState, action, curUserID, curThreadID) {
   switch (action.type) {
 
     case MESSAGE_SENT:
       return state
-        .setIn([THREADS, action.threadID, OUTBOX], "");
+        .set(action.threadID, "");
 
     case CHANGE_MESSAGE:
       return state
-        .setIn([THREADS, threadID, OUTBOX], action.message);
+        .set(curThreadID, action.message);
+
+    case INSERT_EMOJI:
+      if (!action.emoji)
+        return state;
+
+      let input = document.getElementById("input");
+      let selectStart = input.selectionStart;
+      let selectEnd = input.selectionEnd;
+
+      return state
+        .update(curThreadID,
+          message => message
+            ? message.substring(0,selectStart) + action.emoji + message.substring(selectEnd)
+            : action.emoji);
   }
 }

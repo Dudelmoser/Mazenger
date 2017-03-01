@@ -26,12 +26,6 @@ export class MessageFrame extends React.PureComponent { // eslint-disable-line r
     alignSelf: this.props.isOwn ? "flex-end" : "",
   };
 
-  imgStyle = {
-    position: "absolute",
-    borderRadius: "50%",
-    display: this.props.isOwn || this.props.isSequel ? "none" : "inline-block",
-  };
-
   getReaders() {
     const count = this.props.message.get("readers", fromJS([])).count();
     if (!count)
@@ -51,9 +45,6 @@ export class MessageFrame extends React.PureComponent { // eslint-disable-line r
         <div
           style={this.divStyle}
           onClick={this.props.onTouch.bind(this, this.props.index, this.props.threadID)}>
-          <img
-            style={this.imgStyle}
-            src={this.props.isOwn ? "" : this.props.imageURL}/>
           <Message
             onClick={this.props.onClickImage}
             message={this.props.message}/>
@@ -71,7 +62,6 @@ MessageFrame.propTypes = {
   index: React.PropTypes.number.isRequired,
   threadID: React.PropTypes.oneOfType(
     [React.PropTypes.number, React.PropTypes.string]).isRequired,
-  imageURL: React.PropTypes.string.isRequired,
   message: React.PropTypes.object,
   isOwn: React.PropTypes.bool,
   isSequel: React.PropTypes.bool,
