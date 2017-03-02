@@ -22,8 +22,8 @@ export default function configureStore(initialState = {}, history) {
 
   // add redux-persist as enhancer
   const enhancers = [
+    autoRehydrate(),
     applyMiddleware(...middlewares),
-    autoRehydrate()
   ];
 
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose

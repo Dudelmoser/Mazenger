@@ -2,6 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import {injectIntl, intlShape} from "react-intl";
 import {createStructuredSelector} from "reselect";
+import Tooltip from "react-tooltip";
 
 // components
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
@@ -31,8 +32,10 @@ class Messenger extends React.Component { // eslint-disable-line react/prefer-st
 
     return (
         <MuiThemeProvider muiTheme={darkTheme}>
-
           <ContainerDiv>
+
+            <Tooltip id="ttleft" place="left" effect="solid" class="tooltip"/>
+            <Tooltip id="ttright" place="right" effect="solid" class="tooltip"/>
 
             <LoginModal/>
             <LeftDrawer/>

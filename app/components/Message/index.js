@@ -18,7 +18,6 @@ function Message(props) { // eslint-disable-line react/prefer-stateless-function
   // resulting in a thread history width of 1172px.
   // 1 line can contain max. 3 images (including avatar, margins, paddings etc.)
   //
-  // marginLeft: 32px (avatar) + 8px (spacing) = 40px
   // maxWidth: 280px * 3 (images) + 8px * 3 (spacing) + 8px * 2 (padding) = 880px
   // maxWidth: 280px * 2 (images) + 8px * 2 (spacing) + 8px * 2 (padding) = 592px
 
@@ -33,7 +32,6 @@ function Message(props) { // eslint-disable-line react/prefer-stateless-function
     paddingRight: "8px",
     display: "inline-block",
     maxWidth: "592px",
-    marginLeft: "40px"
   };
 
   function renderAttachment() {
@@ -116,10 +114,15 @@ function Message(props) { // eslint-disable-line react/prefer-stateless-function
     }
 
     return (
-      <div style={divStyle}>
-        {body}
-        {divider}
-        {attachment}
+      <div>
+        <div
+          data-for={props.isOwn ? "ttleft" : "ttright"}
+          data-tip={props.tooltip}
+          style={divStyle}>
+          {body}
+          {divider}
+          {attachment}
+        </div>
       </div>
     );
   }
@@ -131,7 +134,9 @@ function Message(props) { // eslint-disable-line react/prefer-stateless-function
 
 Message.propTypes = {
   message: React.PropTypes.object.isRequired,
-  onClick: React.PropTypes.func
+  onClick: React.PropTypes.func,
+  tooltip: React.PropTypes.string,
+  isOwn: React.PropTypes.bool,
 };
 
 export default Message;

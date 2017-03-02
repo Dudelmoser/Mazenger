@@ -1,12 +1,13 @@
 import React from "react";
 import {connect} from "react-redux";
 import {injectIntl, intlShape} from 'react-intl';
-import {selectMessage, selectTimeStamp, selectIsOwn, selectIsSequel, selectTimePassed} from "./selectors";
+import {selectMessage, selectTimeStamp, selectIsOwn, selectIsSequel, selectTimePassed, selectSenderName} from "./selectors";
 import {messageSelected} from "./actions";
 import {fromJS} from "immutable";
 import Message from "../../components/Message";
 import Timestamp from "../../components/Timestamp";
 import {resolvePhotoUrl} from "../App/actions/requests";
+import Tooltip from "react-tooltip";
 
 export class MessageFrame extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -46,12 +47,26 @@ export class MessageFrame extends React.PureComponent { // eslint-disable-line r
           style={this.divStyle}
           onClick={this.props.onTouch.bind(this, this.props.index, this.props.threadID)}>
           <Message
-            onClick={this.props.onClickImage}
-            message={this.props.message}/>
+            message={this.props.message}
+            tooltip={this.props.senderName}
+            isOwn={this.props.isOwn}
+            onClick={this.props.onClickImage}/>
           {this.getReaders()}
         </div>
       </div>
     );
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      Tooltip.rebuild();
+    }, 100)
+  }
+
+  componentDidUpdate() {
+    setTimeout(() => {
+      Tooltip.rebuild();
+    }, 100)
   }
 }
 
@@ -74,6 +89,7 @@ MessageFrame.propTypes = {
 
 const mapStateToProps = (state, props) => ({
   message: selectMessage(props.index, props.threadID)(state),
+  senderName: selectSenderName(props.index, props.threadID)(state),
   isOwn: selectIsOwn(props.index, props.threadID)(state),
   isSequel: selectIsSequel(props.index, props.threadID)(state),
   timestamp: selectTimeStamp(props.index, props.threadID)(state),

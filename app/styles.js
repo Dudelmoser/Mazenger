@@ -1,5 +1,8 @@
 import { injectGlobal } from 'styled-components';
 
+const ttText = "rgba(255, 255, 255, 0.5)";
+const ttBg = "rgba(255, 255, 255, 0.047)";
+
 /* eslint no-unused-expressions: 0 */
 injectGlobal`
   html,
@@ -7,14 +10,9 @@ injectGlobal`
     height: 100%;
     width: 100%;
     overflow: hidden;
-  }
-
-  body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  }
-
-  body.fontLoaded {
-    font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
   
   button, html [type="button"],[type="reset"], [type="submit"] {
@@ -45,6 +43,34 @@ injectGlobal`
   .lifted {
     position: relative !important;
     top: -3px;
+  }
+  
+  .tooltip {
+    color: ${ttText} !important;
+    height: 32px !important;
+    font-size: 1rem !important;
+    padding: 4px 16px !important;
+    background-color: ${ttBg} !important;
+    &.place-left {
+      &:after {
+        border-left-color: ${ttBg} !important;
+      }
+    }        
+    &.place-top {
+      &:after {
+        border-top-color: ${ttBg} !important;
+      }
+    }   
+    &.place-right {
+      &:after {
+        border-right-color: ${ttBg} !important;
+      }
+    } 
+    &.place-bottom {
+      &:after {
+        border-bottom-color: ${ttBg} !important;
+      }
+    }
   }
 `;
 

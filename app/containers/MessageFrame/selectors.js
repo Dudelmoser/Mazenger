@@ -47,6 +47,11 @@ const selectTimePassed = (index, threadID) => createSelector(
   }
 );
 
+const selectSenderName = (index, threadID) => createSelector(
+  selectMessage(index, threadID),
+  (message) => message.get("participantNames", fromJS([])).get(0) || ""
+);
+
 export {
   selectMessage,
   selectSenderID,
@@ -54,4 +59,5 @@ export {
   selectIsOwn,
   selectIsSequel,
   selectTimePassed,
+  selectSenderName,
 }
