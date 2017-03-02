@@ -23,7 +23,24 @@ import {CHATBOT} from "../ChatbotTab/constants";
 import {DICTIONARY} from "../DictionaryTab/constants";
 import {SETTINGS} from "../SettingsTab/constants";
 
-const initState = fromJS({});
+const initState = fromJS({
+  session: {},
+
+  // session
+  friends: [],
+  threads: {},
+  histories: {},
+  users: {},
+  typers: {},
+  inputs: {},
+
+  // persistent
+  emojis: {},
+  memes: {},
+  chatbot: {},
+  dictionary: {},
+  settings: {},
+});
 
 export default function (state = initState, action) {
   const userID = state.getIn(["session", "userID"]);

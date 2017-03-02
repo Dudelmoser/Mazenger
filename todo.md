@@ -34,6 +34,7 @@
 * login failed feedback
 * show users typing
 * request more messages when reaching the end of the thread history
+* send message to multiple users
 * ~~make drawers scrollable~~
 * ~~logout and clear cache option~~
 * ~~keep thread scrolled to bottom~~

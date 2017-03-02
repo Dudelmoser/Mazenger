@@ -17,7 +17,6 @@ import MessageInput from "../MessageInput";
 import LoginModal from "../LoginModal";
 
 // constants
-import messages from './messages';
 import {darkTheme} from "./themes";
 
 class Messenger extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -28,8 +27,6 @@ class Messenger extends React.Component { // eslint-disable-line react/prefer-st
   }
 
   render() {
-    const {formatMessage} = this.props.intl;
-
     return (
         <MuiThemeProvider muiTheme={darkTheme}>
           <ContainerDiv>

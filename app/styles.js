@@ -12,7 +12,7 @@ injectGlobal`
     overflow: hidden;
     font-weight: 300;
     font-size: 14px;
-    font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: Roboto, 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
   
   button, html [type="button"],[type="reset"], [type="submit"] {

@@ -10,6 +10,10 @@ import {changeEmail, changePassword} from "./actions";
 
 export class LoginModal extends React.Component {
 
+  bodyStyle = {
+    fontSize: "1rem",
+  }
+
   overlayStyle = {
     backgroundColor: "rgba(16,18,19,0.95)"
   }
@@ -34,6 +38,7 @@ export class LoginModal extends React.Component {
           actions={actions}
           modal={true}
           open={!this.props.loggedIn}
+          bodyStyle={this.bodyStyle}
           overlayStyle={this.overlayStyle}
           actionsContainerStyle={this.actionContainerStyle}>
           <div>

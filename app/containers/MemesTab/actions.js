@@ -5,9 +5,10 @@ export const SET_BOTTOM_CAPTION = "setBottomCaption";
 export const PICK_MEME = "pickMeme";
 export const MEMES_LOADED = "memesLoaded";
 
-export function renderMeme() {
+export function addMeme(url) {
   return {
-    type: RENDER_MEME
+    type: ADD_MEME,
+    url
   }
 }
 
@@ -36,11 +37,5 @@ export function memesLoaded(memes) {
   return {
     type: MEMES_LOADED,
     memes
-  }
-}
-
-export function addMeme() {
-  return {
-    type: ADD_MEME
   }
 }
