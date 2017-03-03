@@ -90,7 +90,7 @@ export function updateReceived(res) {
 export function messageSent(res) {
   return {
     type: MESSAGE_SENT,
-    threadID: res.args[1]
+    threadID: res
   }
 }
 

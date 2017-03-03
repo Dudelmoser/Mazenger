@@ -52,7 +52,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     },
     handleKeyUp: (event) => {
       if (event.keyCode == 13) {
-        dispatch(sendMessage(event.target.value, threadID))
+        dispatch(sendMessage(threadID, event.target.value))
       }
     }
   }

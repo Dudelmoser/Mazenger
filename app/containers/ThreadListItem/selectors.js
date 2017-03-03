@@ -8,7 +8,7 @@ const selectThreadTitle = (threadID) => createSelector(
 
 const selectThreadSnippet = (threadID) => createSelector(
   selectThread(threadID),
-  (thread) => thread.get("snippet") || [] // react-emoji error workaround
+  (thread) => thread.get("snippet") || " " // react-emoji error workaround
 );
 
 const selectThreadImageURL = (threadID) => createSelector(

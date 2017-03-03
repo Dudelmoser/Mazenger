@@ -1,6 +1,7 @@
 import {ROOT} from "./constants";
+import {fromJS} from "immutable";
 
-const selectRoot = () => state => state.get(ROOT)
+const selectRoot = () => state => state ? state.get(ROOT) : fromJS({})
 
 const makeSelectLocationState = () => {
   let prevRoutingState;

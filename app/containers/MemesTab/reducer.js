@@ -40,7 +40,7 @@ export default function(state = initState, action, curUserID, curThreadID) {
       return state
         .setIn([curUserID, TOP100_MEMES], memes)
         .setIn([curUserID, CURRENT_MEME], memes[0].url)
-        .setIn([curUserID, RENDERED_MEME], Meme(memes[0].url, CANVAS_ID, top, bot));
+        // .setIn([curUserID, RENDERED_MEME], Meme(memes[0].url, CANVAS_ID, top, bot));
 
     case IMAGE_UPLOADED:
       return state

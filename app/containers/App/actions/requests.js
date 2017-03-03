@@ -83,14 +83,16 @@ export function resolvePhotoUrl(photoID) {
   }
 }
 
-export function sendMessage(message, threadID, attachment) {
-  return {
+export function sendMessage(threadID, message, attachment) {
+  let action = {
     type: SEND_MESSAGE,
     args: [{
-      body: message,
-      attachment
+      body: message
     }, threadID]
   }
+  if (attachment)
+    action.args[0].attachment = attachment;
+  return action;
 }
 
 export function deleteMessage(messageID) {

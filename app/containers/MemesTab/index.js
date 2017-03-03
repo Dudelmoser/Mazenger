@@ -108,15 +108,19 @@ const mapStateToProps = createStructuredSelector({
   threadID: selectMyThreadID(),
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  addMeme: (url) => dispatch(uploadImage(url)),
-  pickMeme: (evt, idx, val) => dispatch(pickMeme(val)),
-  setTopCaption: (evt) => dispatch(setTopCaption(evt.target.value)),
-  setBottomCaption: (evt) => dispatch(setBottomCaption(evt.target.value)),
-  sendMeme: () => {
-    const dataURL = document.getElementById("memeCanvas").toDataURL();
-    dispatch(sendMessage("", ownProps.threadID, dataURL));
-  }
-});
+const mergeProps = (stateProps, {dispatch}) => {
+  return {
+    ...stateProps,  // unwraps the stateProps
+    addMeme: (url) => dispatch(uploadImage(url)),
+    pickMeme: (evt, idx, val) => dispatch(pickMeme(val)),
+    setTopCaption: (evt) => dispatch(setTopCaption(evt.target.value)),
+    setBottomCaption: (evt) => dispatch(setBottomCaption(evt.target.value)),
 
-export default connect(mapStateToProps, mapDispatchToProps)(muiThemeable()(injectIntl(MemeGenerator)));
+    sendMeme: () => {
+      const dataURL = document.getElementById("memeCanvas").toDataURL();
+      dispatch(sendMessage(stateProps.threadID, "", dataURL))
+    }
+  }
+};
+
+export default connect(mapStateToProps, null, mergeProps)(muiThemeable()(injectIntl(MemeGenerator)));
