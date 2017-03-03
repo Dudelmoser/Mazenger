@@ -30,6 +30,7 @@
 ## Features
 
 ### High priority
+* show sender tooltip on recently received messages
 * login with return
 * login failed feedback
 * show users typing

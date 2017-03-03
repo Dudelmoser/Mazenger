@@ -1,7 +1,7 @@
 /**
  * DEVELOPMENT WEBPACK CONFIGURATION
  */
-
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const fs = require('fs');
 const webpack = require('webpack');
@@ -23,6 +23,7 @@ const plugins = [
     exclude: /a\.js|node_modules/, // exclude node_modules
     failOnError: false, // show a warning when there is a circular dependency
   }),
+  new CopyWebpackPlugin([{ from: 'static' }]),
 ];
 
 module.exports = require('./webpack.base.babel')({

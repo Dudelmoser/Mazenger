@@ -11,6 +11,7 @@ export const GET_FRIENDS_LIST = "fb.getFriendsList";
 export const RESOLVE_PHOTO_URL = "fb.resolvePhotoUrl";
 export const SEND_MESSAGE = "fb.sendMessage";
 export const DELETE_MESSAGE = "fb.deleteMessage";
+export const UPLOAD_IMAGE = "uploadImage";
 
 export function login(args) {
   return {
@@ -82,10 +83,13 @@ export function resolvePhotoUrl(photoID) {
   }
 }
 
-export function sendMessage(message, threadID) {
+export function sendMessage(message, threadID, attachment) {
   return {
     type: SEND_MESSAGE,
-    args: [message, threadID]
+    args: [{
+      body: message,
+      attachment
+    }, threadID]
   }
 }
 
@@ -93,5 +97,12 @@ export function deleteMessage(messageID) {
   return {
     type: DELETE_MESSAGE,
     args: [messageID]
+  }
+}
+
+export function uploadImage(dataURL) {
+  return {
+    type: UPLOAD_IMAGE,
+    args: dataURL
   }
 }

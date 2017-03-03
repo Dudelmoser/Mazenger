@@ -3,7 +3,7 @@ import React from "react";
 import {RaisedButton, FlatButton, TextField, SelectField, MenuItem} from "material-ui";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import {createStructuredSelector} from "reselect";
-import {addMeme, pickMeme, setTopCaption, setBottomCaption, renderMeme} from "./actions";
+import {pickMeme, setTopCaption, setBottomCaption} from "./actions";
 import {connect} from "react-redux";
 import {injectIntl, intlShape} from "react-intl";
 import {darkPalette} from "../App/themes";
@@ -11,27 +11,26 @@ import {selectTop100Memes, selectCurrentMeme, selectBottomCaption, selectTopCapt
   selectFavoriteMemes
 } from "./selectors";
 import messages from "./messages";
+import {sendMessage, uploadImage} from "../App/actions/requests";
+import {selectMyThreadID} from "../LoginModal/selectors";
 
 
 export class MemeGenerator extends React.Component {
 
-  // loadImage(event) {
-  //   console.log(this.images);
-  //   let that = this;
-  //   let reader = new FileReader();
-  //   reader.onload = function (evt) {
-  //     const url = URL.createObjectURL()
-  //     that.props.pickMeme(evt.target.result);
-  //   }
-  //   reader.readAsDataURL(event.target.files[0]);
-  // }
-
   loadImage(event) {
     let that = this;
-    const URL = window.URL;
-    const url = URL.createObjectURL(event.target.files[0]);
-    that.props.addMeme(url);
+    let reader = new FileReader();
+    reader.onload = function (evt) {
+      that.props.addMeme(evt.target.result);
+    }
+    reader.readAsDataURL(event.target.files[0]);
   }
+
+  // loadImageUrl(event) {
+  //   const URL = window.URL;
+  //   const url = URL.createObjectURL(event.target.files[0]);
+  //   this.props.addMeme(url);
+  // }
 
   render() {
     const {formatMessage} = this.props.intl;
@@ -81,12 +80,15 @@ export class MemeGenerator extends React.Component {
           />
         </RaisedButton>
       </div>
-      <div>
       <canvas
         id="memeCanvas"
         style={{border: "1px solid " + darkPalette.borderColor, width: "100%"}}>
       </canvas>
-      </div>
+
+      <RaisedButton
+        label="Send meme"
+        primary={true}
+        onClick={this.props.sendMeme}/>
     </div>
     );
   }
@@ -103,13 +105,18 @@ const mapStateToProps = createStructuredSelector({
   current: selectCurrentMeme(),
   topCaption: selectTopCaption(),
   bottomCaption: selectBottomCaption(),
+  threadID: selectMyThreadID(),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  addMeme: (url) => dispatch(addMeme(url)),
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  addMeme: (url) => dispatch(uploadImage(url)),
   pickMeme: (evt, idx, val) => dispatch(pickMeme(val)),
   setTopCaption: (evt) => dispatch(setTopCaption(evt.target.value)),
   setBottomCaption: (evt) => dispatch(setBottomCaption(evt.target.value)),
+  sendMeme: () => {
+    const dataURL = document.getElementById("memeCanvas").toDataURL();
+    dispatch(sendMessage("", ownProps.threadID, dataURL));
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(muiThemeable()(injectIntl(MemeGenerator)));

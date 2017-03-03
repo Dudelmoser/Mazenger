@@ -1,16 +1,18 @@
 /* eslint consistent-return:0 */
 
-const app = require('express')();
+const express = require("express");
+const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const logger = require('./logger');
 const login = require('facebook-chat-api');
+const fs = require('fs');
 
 const argv = require('minimist')(process.argv.slice(2));
-const setup = require('./middlewares/frontendMiddleware');
+const setup = require('./frontendMiddleware');
 const isDev = process.env.NODE_ENV !== 'production';
 const ngrok = (isDev && process.env.ENABLE_TUNNEL) || argv.tunnel ? require('ngrok') : false;
-const resolve = require('path').resolve;
+const path = require('path');
 
 const evtMap = {
   addUserToGroup: "userAddedToGroup",
@@ -36,7 +38,6 @@ const evtMap = {
   searchForThread: "threadFound",
   sendTypingIndicator: "typingIndicatorSent",
   setTitle: "titleSet",
-  sendMessage: "messageSent",
   listen: "updateReceived",
 };
 
@@ -45,7 +46,7 @@ const evtMap = {
 
 // In production we need to pass these values in instead of relying on webpack
 setup(app, {
-  outputPath: resolve(process.cwd(), 'build'),
+  outputPath: path.resolve(process.cwd(), 'build'),
   publicPath: '/',
 });
 
@@ -53,6 +54,43 @@ setup(app, {
 const port = argv.port || process.env.PORT || 3000;
 
 server.listen(80);
+
+// replace with a private url?
+const pubDir = "static";
+app.use(express.static(path.join(__dirname, pubDir)));
+
+function saveImageForURL(dataURL, userID) {
+  const relPath = "/" + userID + "/" + new Date().getTime() + ".jpg";
+  let buffer = new Buffer(dataURL.split(",")[1], "base64");
+
+  ensureDirectoryExistence(pubDir + relPath);
+  fs.writeFileSync(pubDir + relPath, buffer);                     // add support for multiple users
+  return relPath;
+}
+
+function ensureDirectoryExistence(filePath) {
+  var dirname = path.dirname(filePath);
+  if (fs.existsSync(dirname)) {
+    return true;
+  }
+  ensureDirectoryExistence(dirname);
+  fs.mkdirSync(dirname);
+}
+
+////////////// in /internals/webpack/webpack.dev.babel.js //////////////
+////////////////////////////////////////////////////////////////////////
+// const CopyWebpackPlugin = require('copy-webpack-plugin');      // ADD
+//
+// const plugins = [
+//   new webpack.HotModuleReplacementPlugin(),
+//   new webpack.NoErrorsPlugin(),
+//   new HtmlWebpackPlugin({
+//     inject: true,
+//     templateContent: templateContent(),
+//   }),
+//   new CopyWebpackPlugin([{ from: 'static' }]),                 // ADD
+// ];
+////////////////////////////////////////////////////////////////////////
 
 // Start your app.
 app.listen(port, (err) => {
@@ -92,8 +130,32 @@ io.on('connection', function (socket) {
       return console.error(err);
     }
 
-    socket.emit("loginPassed", {currentUserID: api.getCurrentUserID(), appState: api.getAppState()});
     api.setOptions({listenEvents: true, selfListen: true, logLevel: "silent"});
+
+    const userID = api.getCurrentUserID();
+    const appState = api.getAppState();
+    socket.emit("loginPassed", {currentUserID: userID, appState: appState});
+
+    socket.on("uploadImage", function(req) {
+      socket.emit("imageUploaded", saveImageForURL(req, userID));
+    });
+
+    socket.on("sendMessage", function(req) {
+      console.log(req);
+      let msg = {}
+      if (req.args && req.args[0]) {
+        msg.body = req.args[0].body;
+
+        let dataURL = req.args[0].attachment;
+        let buffer = new Buffer(dataURL.split(",")[1], "base64");
+        fs.writeFileSync("meme.jpg", buffer);                     // add support for multiple users
+
+        msg.attachment = fs.createReadStream("meme.jpg");
+      }
+
+      api.sendMessage(msg, req.args[1]);
+      socket.emit("messageSent", "");
+    });
 
     for (let evt in evtMap) {
       socket.on(evt, function(req) {

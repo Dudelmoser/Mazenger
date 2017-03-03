@@ -5,8 +5,8 @@ import {call, fork, put, take, cancel, select} from 'redux-saga/effects';
 import {connected, disconnected} from "./actions/actions";
 import * as requests from "./actions/requests";
 import * as responses from "./actions/responses";
-import threadListSaga from "../ThreadList/sagas";
-import friendsListSaga from "../FriendsList/sagas";
+import threadsSaga from "../ThreadList/sagas";
+import friendsSaga from "../FriendsList/sagas";
 import {selectAppState} from "../LoginModal/selectors";
 import {DISCONNECTED} from "./actions/actions";
 import request from "../../utils/request";
@@ -92,8 +92,8 @@ function* main() {
     const emitTask = yield fork(emitEvents, socket);
     const receiveTask = yield fork(receiveEvents, socket);
     // const logTask = yield fork(logEvents, socket);
-    const tlTask = yield fork(threadListSaga, socket);
-    const flTask = yield fork(friendsListSaga, socket);
+    const threadsTask = yield fork(threadsSaga, socket);
+    const friendsTask = yield fork(friendsSaga, socket);
 
     const appState = yield select(selectAppState());
     if (appState) {
@@ -111,8 +111,8 @@ function* main() {
     yield cancel(receiveTask);
     yield cancel(emitTask);
     // yield cancel(logTask);
-    yield cancel(tlTask);
-    yield cancel(flTask);
+    yield cancel(threadsTask);
+    yield cancel(friendsTask);
   }
 }
 

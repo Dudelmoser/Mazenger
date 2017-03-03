@@ -10,6 +10,7 @@ export const FRIENDS_LIST_RECEIVED = "fb.friendsListReceived";
 export const PHOTO_URL_RESOLVED = "fb.photoUrlResolved";
 export const UPDATE_RECEIVED = "fb.updateReceived";
 export const MESSAGE_SENT = "fb.messageSent";
+export const IMAGE_UPLOADED = "imageUploaded";
 
 export function loginFailed(res) {
   return {
@@ -90,5 +91,12 @@ export function messageSent(res) {
   return {
     type: MESSAGE_SENT,
     threadID: res.args[1]
+  }
+}
+
+export function imageUploaded(res) {
+  return {
+    type: IMAGE_UPLOADED,
+    url: res
   }
 }
