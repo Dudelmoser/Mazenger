@@ -1,4 +1,3 @@
-// facebook-chat-api responses
 export const LOGIN_PASSED = "fb.loginPassed";
 export const LOGIN_FAILED = "fb.loginFailed";
 export const THREAD_LIST_RECEIVED = "fb.threadListReceived";
@@ -11,6 +10,7 @@ export const PHOTO_URL_RESOLVED = "fb.photoUrlResolved";
 export const UPDATE_RECEIVED = "fb.updateReceived";
 export const MESSAGE_SENT = "fb.messageSent";
 export const IMAGE_UPLOADED = "imageUploaded";
+export const MEMES_LOADED = "memesLoaded";
 
 export function loginFailed(res) {
   return {
@@ -98,5 +98,12 @@ export function imageUploaded(res) {
   return {
     type: IMAGE_UPLOADED,
     url: res
+  }
+}
+
+export function memesLoaded(res) {
+  return {
+    type: MEMES_LOADED,
+    memes: res
   }
 }

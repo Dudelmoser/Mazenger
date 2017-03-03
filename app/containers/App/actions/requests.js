@@ -1,4 +1,3 @@
-// facebook-chat-api requests
 export const LOGIN = "fb.login";
 export const LISTEN = "fb.listen";
 export const LOGOUT = "fb.logout";
@@ -12,6 +11,7 @@ export const RESOLVE_PHOTO_URL = "fb.resolvePhotoUrl";
 export const SEND_MESSAGE = "fb.sendMessage";
 export const DELETE_MESSAGE = "fb.deleteMessage";
 export const UPLOAD_IMAGE = "uploadImage";
+export const LOAD_MEMES = "loadMemes";
 
 export function login(args) {
   return {
@@ -106,5 +106,12 @@ export function uploadImage(dataURL) {
   return {
     type: UPLOAD_IMAGE,
     args: dataURL
+  }
+}
+
+export function loadMemes() {
+  return {
+    type: LOAD_MEMES,
+    args: []
   }
 }

@@ -88,7 +88,7 @@ function Message(props) { // eslint-disable-line react/prefer-stateless-function
     const parts = body.split(" ");
     let res = "";
     for (let part of parts) {
-      if (part.startsWith("http://") || part.startsWith("https://")) {
+      if (part.startsWith("https://") || part.startsWith("https://")) {
         if(props.message.get("attachments").get(0)) {
           continue;
         } else {

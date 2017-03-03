@@ -9,8 +9,6 @@ import threadsSaga from "../ThreadList/sagas";
 import friendsSaga from "../FriendsList/sagas";
 import {selectAppState} from "../LoginModal/selectors";
 import {DISCONNECTED} from "./actions/actions";
-import request from "../../utils/request";
-import {memesLoaded} from "../MemesTab/actions";
 
 function connect() {
   const socket = io('http://localhost:80');
@@ -101,10 +99,7 @@ function* main() {
     }
 
     yield take(responses.LOGIN_PASSED);
-    try {
-      const memes = yield call(request, "https://api.imgflip.com/get_memes");
-      yield put(memesLoaded(memes));
-    } catch (err) {}
+    yield put(requests.loadMemes());
     yield put(requests.listen());
 
     yield take(DISCONNECTED);

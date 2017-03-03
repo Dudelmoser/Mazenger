@@ -1,8 +1,8 @@
 import {fromJS} from "immutable";
 import Meme from "../../utils/meme";
-import {MEMES_LOADED, PICK_MEME, SET_TOP_CAPTION, SET_BOTTOM_CAPTION, RENDER_MEME} from "./actions";
+import {PICK_MEME, SET_TOP_CAPTION, SET_BOTTOM_CAPTION, RENDER_MEME} from "./actions";
 import {CURRENT_MEME, TOP_CAPTION, BOTTOM_CAPTION, RENDERED_MEME, TOP100_MEMES, LOCAL_MEMES} from "./constants";
-import {IMAGE_UPLOADED} from "../App/actions/responses";
+import {IMAGE_UPLOADED, MEMES_LOADED} from "../App/actions/responses";
 
 const CANVAS_ID = "memeCanvas";
 const initState = fromJS({});
@@ -36,11 +36,11 @@ export default function(state = initState, action, curUserID, curThreadID) {
         .setIn([curUserID, RENDERED_MEME], Meme(action.url, CANVAS_ID, top, bot));
 
     case MEMES_LOADED:
-      const memes = action.memes.data.memes;
+      const memes = action.memes;
       return state
         .setIn([curUserID, TOP100_MEMES], memes)
         .setIn([curUserID, CURRENT_MEME], memes[0].url)
-        // .setIn([curUserID, RENDERED_MEME], Meme(memes[0].url, CANVAS_ID, top, bot));
+        .setIn([curUserID, RENDERED_MEME], Meme(memes[0].url, CANVAS_ID, top, bot));
 
     case IMAGE_UPLOADED:
       return state
