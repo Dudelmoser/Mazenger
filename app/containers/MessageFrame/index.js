@@ -18,15 +18,6 @@ export class MessageFrame extends React.PureComponent { // eslint-disable-line r
     flexDirection: "column"
   };
 
-  divStyle = {
-    overflow: "hidden",
-    margin: "0.5em",
-    marginBottom: "0",
-    lineHeight: "32px",
-    minHeight: "32px",
-    alignSelf: this.props.isOwn ? "flex-end" : "",
-  };
-
   getReaders() {
     const count = this.props.message.get("readers", fromJS([])).count();
     if (!count)
@@ -35,6 +26,15 @@ export class MessageFrame extends React.PureComponent { // eslint-disable-line r
   }
 
   render() {
+    const divStyle = {
+      overflow: "hidden",
+      margin: "0.5em",
+      marginBottom: "0",
+      lineHeight: "32px",
+      minHeight: "32px",
+      alignSelf: this.props.isOwn ? "flex-end" : "flex-start",
+    };
+
     if (!this.props.message.get("body") && !this.props.message.get("attachments").count()) {
       return null;
     }
@@ -44,7 +44,7 @@ export class MessageFrame extends React.PureComponent { // eslint-disable-line r
           timestamp={this.props.timestamp}
           condition={this.props.timePassed > this.maxTimeSpan * 60000}/>
         <div
-          style={this.divStyle}
+          style={divStyle}
           onClick={this.props.onTouch.bind(this, this.props.index, this.props.threadID)}>
           <Message
             message={this.props.message}

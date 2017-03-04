@@ -15,7 +15,14 @@ export default defineMessages({
   },
   local: {
     id: "MemesTab.local",
-    defaultMessage: "local images",
+    defaultMessage: "custom memes",
   },
-
+  favorites: {
+    id: "MemesTab.favorites",
+    defaultMessage: "favorite memes",
+  },
+  empty: {
+    id: "MemesTab.empty",
+    defaultMessage: "no meme available"
+  },
 });

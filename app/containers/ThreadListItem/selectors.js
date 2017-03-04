@@ -1,5 +1,6 @@
 import {createSelector} from "reselect";
 import {selectThread, selectUsers} from "../ThreadList/selectors";
+import {fromJS} from "immutable";
 
 const selectThreadTitle = (threadID) => createSelector(
   selectThread(threadID),
@@ -23,8 +24,19 @@ const selectThreadImageURL = (threadID) => createSelector(
   }
 );
 
+const selectSnippetAttachments = (threadID) => createSelector(
+  selectThread(threadID),
+  (thread) => thread.get("snippetAttachments") || fromJS([])
+);
+
+const selectHasAttachment = (thread) => createSelector(
+  selectSnippetAttachments(thread),
+  (attachments) => attachments.count() > 0
+);
+
 export {
   selectThreadTitle,
   selectThreadSnippet,
   selectThreadImageURL,
+  selectHasAttachment,
 }

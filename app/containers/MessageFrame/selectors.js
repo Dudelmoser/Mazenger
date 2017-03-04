@@ -10,16 +10,14 @@ const selectMessage = (index, threadID) => createSelector(
 
 const selectSenderID = (index, threadID) => createSelector(
   selectMessage(index, threadID),
-  (message) => message.get("senderID", "fbid:").replace("fbid:", "") || ""
+  (message) => message.get("senderID", "").replace("fbid:", "") || ""
 );
 
 // bugged under certain circumstances
 const selectIsOwn = (index, threadID) => createSelector(
   selectSenderID(index, threadID),
   selectMyUserID(),
-  (sender, user) => {
-    return (sender && user) ? sender == user : false
-  }
+  (sender, user) => sender == user
 );
 
 const selectTimeStamp = (index, threadID) => createSelector(

@@ -146,13 +146,13 @@ const stateExample = {
 
   memes: {
     "userID": {
+      header: "",
+      footer: "",
       top100: [],
       local: [],
       faves: [],
-      current: "",
-      rendered: "",
-      header: "",
-      footer: "",
+      current: {},
+      activeCat: 0,
     }
   },
 

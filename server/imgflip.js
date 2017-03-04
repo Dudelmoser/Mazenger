@@ -9,12 +9,14 @@ module.exports = (dir, cb) => {
     let result = [];
 
     for (let meme of memes) {
-      console.log(meme);
       const url = "/" + meme.id + ".jpg";
 
-      download(meme.url).then(data => {
-        fs.writeFileSync(dir + url, data);
-      });
+      if (!fs.existsSync(dir + url)) {
+        console.log("Downloading", meme);
+        download(meme.url).then(data => {
+          fs.writeFileSync(dir + url, data);
+        });
+      }
 
       result.push({
         name: meme.name,

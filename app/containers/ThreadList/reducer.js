@@ -17,17 +17,18 @@ export default function (state = initState, action, curUserID, curThreadID) {
       );
 
     case THREAD_INFO_RECEIVED:
-      return state.set(action.id, fromJS(action.data));     // better merge!
+      //return state.set(action.id, fromJS(action.data));     // better merge!
+      return state.update(action.id, thread => thread.mergeDeep(fromJS(action.data)));
 
     case UPDATE_RECEIVED:
-        const data = action.data;
-        switch (data.type) {
+      const data = action.data;
+      switch (data.type) {
 
-          case "message":
-            return state
-              .setIn([data.threadID, "snippet"], data.body);
-          default:
-            return state;
+        case "message":
+          return state
+            .setIn([data.threadID, "snippet"], data.body);
+        default:
+          return state;
       }
 
     case LOGOUT:

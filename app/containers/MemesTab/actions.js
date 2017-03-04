@@ -3,6 +3,7 @@ export const RENDER_MEME = "renderMeme";
 export const SET_TOP_CAPTION = "setTopCaption";
 export const SET_BOTTOM_CAPTION = "setBottomCaption";
 export const PICK_MEME = "pickMeme";
+export const SEND_MEME = "sendMeme";
 
 export function addMeme(url) {
   return {
@@ -11,10 +12,12 @@ export function addMeme(url) {
   }
 }
 
-export function pickMeme(url) {
+export function pickMeme(cat, idx, url) {
   return {
     type: PICK_MEME,
-    url
+    cat,
+    idx,
+    url,
   }
 }
 
@@ -29,5 +32,11 @@ export function setBottomCaption(str) {
   return {
     type: SET_BOTTOM_CAPTION,
     str
+  }
+}
+
+export function sendMeme() {
+  return {
+    type: SEND_MEME
   }
 }

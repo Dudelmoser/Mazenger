@@ -3,19 +3,30 @@ import React from "react";
 import {RaisedButton, FlatButton, TextField, SelectField, MenuItem} from "material-ui";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import {createStructuredSelector} from "reselect";
-import {pickMeme, setTopCaption, setBottomCaption} from "./actions";
+import {pickMeme, setTopCaption, setBottomCaption, sendMeme} from "./actions";
 import {connect} from "react-redux";
 import {injectIntl, intlShape} from "react-intl";
-import {darkPalette} from "../App/themes";
-import {selectTop100Memes, selectCurrentMeme, selectBottomCaption, selectTopCaption, selectLocalMemes,
-  selectFavoriteMemes
+import {selectTop100Memes, selectCurrentMeme, selectBottomCaption, selectTopCaption, selectCustomMemes,
+  selectFavoriteMemes, selectActiveCategory
 } from "./selectors";
 import messages from "./messages";
 import {sendMessage, uploadImage} from "../App/actions/requests";
 import {selectMyThreadID} from "../LoginModal/selectors";
+import AddIcon from 'material-ui/svg-icons/content/add';
+import {FAVORITE_MEMES, CUSTOM_MEMES, TOP100_MEMES} from "./constants";
 
 
 export class MemeGenerator extends React.Component {
+
+  containerStyle = {
+    margin: "0 16px",
+  }
+
+  canvasStyle = {
+    maxWidth: "100%",
+    maxHeight: "448px",
+    marginBottom: "16px",
+  }
 
   loadImage(event) {
     let that = this;
@@ -26,16 +37,24 @@ export class MemeGenerator extends React.Component {
     reader.readAsDataURL(event.target.files[0]);
   }
 
-  // loadImageUrl(event) {
-  //   const URL = window.URL;
-  //   const url = URL.createObjectURL(event.target.files[0]);
-  //   this.props.addMeme(url);
-  // }
-
   render() {
+
+    const btnIconStyle = {
+      color: this.props.muiTheme.palette.borderColor,
+    }
+
+    const iconBtnStyle = {
+      minWidth: 44,
+      height: 36,
+      marginBottom: 8,
+      verticalAlign: "bottom",
+      borderRadius: 0,
+      borderBottom: "1px solid " + this.props.muiTheme.palette.borderColor,
+    }
+
     const {formatMessage} = this.props.intl;
     return (
-    <div style={{margin: "0 16px"}}>
+    <div style={this.containerStyle}>
       <TextField
         value={this.props.topCaption}
         onChange={this.props.setTopCaption.bind(this)}
@@ -51,39 +70,54 @@ export class MemeGenerator extends React.Component {
       <SelectField
         fullWidth={true}
         floatingLabelText={formatMessage(messages.top100)}
-        onChange={this.props.pickMeme}
-        value={this.props.current}>
+        onChange={this.props.pickMeme.bind(this, TOP100_MEMES)}
+        value={this.props.activeCat == TOP100_MEMES ? this.props.current.get("url") : null}>
         {this.props.top100.map((meme, key) =>
-          <MenuItem key={key} value={meme.url} primaryText={meme.name}/>
+          <MenuItem key={key} value={meme.get("url")} primaryText={meme.get("name")}/>
         )}
       </SelectField>
+
       <div>
         <SelectField
-          fullWidth={false}
+          style={{width: "calc(100% - 44px)"}}
+          fullWidth={true}
           floatingLabelText={formatMessage(messages.local)}
-          onChange={this.props.pickMeme}
-          value={this.props.current}>
+          onChange={this.props.pickMeme.bind(this, CUSTOM_MEMES)}
+          value={this.props.activeCat == CUSTOM_MEMES ? this.props.current.get("url") : null}>
           {this.props.local.map((meme, key) =>
-            <MenuItem key={key} value={meme.url} primaryText={meme.name}/>
+            <MenuItem key={key} value={meme.get("url")} primaryText={meme.get("name")}/>
           )}
         </SelectField>
-        <RaisedButton
-          style={{float: "right", marginTop: "28px"}}
-          label="Local image"
+        <FlatButton
+          style={iconBtnStyle}
           primary={true}
           containerElement="label">
+          <AddIcon style={btnIconStyle}/>
           <input
             type="file"
             accept="image/*"
             style={{display: "none"}}
             onChange={this.loadImage.bind(this)}
           />
-        </RaisedButton>
+        </FlatButton>
       </div>
-      <canvas
-        id="memeCanvas"
-        style={{border: "1px solid " + darkPalette.borderColor, width: "100%"}}>
-      </canvas>
+
+      <SelectField
+        fullWidth={true}
+        floatingLabelText={formatMessage(messages.favorites)}
+        onChange={this.props.pickMeme.bind(this, FAVORITE_MEMES)}
+        value={this.props.activeCat == FAVORITE_MEMES ? this.props.current.get("url") : null}>
+        {this.props.faves.map((meme, key) =>
+          <MenuItem key={key} value={meme.get("url")} primaryText={meme.get("name")}/>
+        )}
+      </SelectField>
+
+      <div style={{textAlign: "center"}}>
+        <canvas
+          id="memeCanvas"
+          style={this.canvasStyle}>
+        </canvas>
+      </div>
 
       <RaisedButton
         label="Send meme"
@@ -99,26 +133,28 @@ MemeGenerator.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  threadID: selectMyThreadID(),
   top100: selectTop100Memes(),
-  local: selectLocalMemes(),
+  local: selectCustomMemes(),
   faves: selectFavoriteMemes(),
   current: selectCurrentMeme(),
   topCaption: selectTopCaption(),
   bottomCaption: selectBottomCaption(),
-  threadID: selectMyThreadID(),
+  activeCat: selectActiveCategory(),
 });
 
 const mergeProps = (stateProps, {dispatch}) => {
   return {
     ...stateProps,  // unwraps the stateProps
     addMeme: (url) => dispatch(uploadImage(url)),
-    pickMeme: (evt, idx, val) => dispatch(pickMeme(val)),
+    pickMeme: (cat, evt, idx, url) => dispatch(pickMeme(cat, idx, url)),
     setTopCaption: (evt) => dispatch(setTopCaption(evt.target.value)),
     setBottomCaption: (evt) => dispatch(setBottomCaption(evt.target.value)),
 
     sendMeme: () => {
       const dataURL = document.getElementById("memeCanvas").toDataURL();
-      dispatch(sendMessage(stateProps.threadID, "", dataURL))
+      dispatch(sendMessage(stateProps.threadID, "", dataURL));
+      dispatch(sendMeme());
     }
   }
 };

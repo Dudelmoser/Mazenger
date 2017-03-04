@@ -30,6 +30,7 @@
 ## Features
 
 ### High priority
+* send files via drag and drop
 * show sender tooltip on recently received messages
 * login with return
 * login failed feedback
@@ -41,6 +42,8 @@
 * ~~keep thread scrolled to bottom~~
 
 ### Low priority
+* clean custom meme cache when user cleans his browser cache
+* make custom memes private using some sort of session cookie
 * allow textual shortcuts for emojis 
 (see http://www.webpagefx.com/tools/emoji-cheat-sheet/)
 * keep focus when entering an emoji

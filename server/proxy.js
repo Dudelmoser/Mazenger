@@ -90,6 +90,7 @@ module.exports = (app) => {
         });
       });
 
+      // no limit yet and cleaning local cache doesn't clean the server cache
       socket.on("uploadImage", function(req) {
         console.log("uploadImage");
 
