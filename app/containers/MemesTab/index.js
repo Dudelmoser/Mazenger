@@ -11,7 +11,7 @@ import {selectTop100Memes, selectCurrentMeme, selectBottomCaption, selectTopCapt
 } from "./selectors";
 import messages from "./messages";
 import {sendMessage, uploadImage} from "../App/actions/requests";
-import {selectMyThreadID} from "../LoginModal/selectors";
+import {selectCurrentThreadID} from "../LoginModal/selectors";
 import AddIcon from 'material-ui/svg-icons/content/add';
 import {FAVORITE_MEMES, CUSTOM_MEMES, TOP100_MEMES} from "./constants";
 
@@ -133,7 +133,7 @@ MemeGenerator.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  threadID: selectMyThreadID(),
+  threadID: selectCurrentThreadID(),
   top100: selectTop100Memes(),
   local: selectCustomMemes(),
   faves: selectFavoriteMemes(),

@@ -1,7 +1,7 @@
 import {createSelector} from "reselect";
 import {fromJS} from "immutable";
 import {selectRoot} from "../App/selectors";
-import {selectMyThreadID} from "../LoginModal/selectors";
+import {selectCurrentThreadID} from "../LoginModal/selectors";
 import {INPUTS} from "./constants";
 
 const selectInputs = () => createSelector(
@@ -11,7 +11,7 @@ const selectInputs = () => createSelector(
 
 const selectCurrentInput = () => createSelector(
   selectInputs(),
-  selectMyThreadID(),
+  selectCurrentThreadID(),
   (inputs, threadID) => inputs.get(threadID) || ""
 );
 

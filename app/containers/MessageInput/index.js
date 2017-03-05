@@ -7,7 +7,7 @@ import {changeMessage} from "./actions";
 import {sendMessage} from "../App/actions/requests";
 import {selectCurrentInput} from "./selectors";
 import {createStructuredSelector} from "reselect";
-import {selectMyThreadID} from "../LoginModal/selectors";
+import {selectCurrentThreadID} from "../LoginModal/selectors";
 
 export class MessageInput extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -35,7 +35,7 @@ MessageInput.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  threadID: selectMyThreadID(),
+  threadID: selectCurrentThreadID(),
   message: selectCurrentInput(),
 });
 

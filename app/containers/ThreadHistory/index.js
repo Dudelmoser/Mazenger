@@ -1,8 +1,8 @@
 import React from "react";
 import {connect} from "react-redux";
 import MessageFrame from "../MessageFrame";
-import {selectMyThreadID} from "../LoginModal/selectors";
-import {selectCurrentTypers, selectCurrentHistory} from "./selectors";
+import {selectCurrentThreadID} from "../LoginModal/selectors";
+import {selectCurrentTypersNames, selectCurrentHistory} from "./selectors";
 
 export class ThreadHistory extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -64,8 +64,8 @@ ThreadHistory.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  threadID: selectMyThreadID()(state),
-  typing: selectCurrentTypers()(state),
+  threadID: selectCurrentThreadID()(state),
+  typing: selectCurrentTypersNames()(state),
   history: selectCurrentHistory()(state),
 });
 

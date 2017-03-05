@@ -52,6 +52,7 @@
 * ~~add open emoji categories to state~~
 
 ## Code
+* remove typing notifications for group chats
 * split messenger container into sub containers 
 * extract separate reducers and actions
 * create stateless components for every stateful container

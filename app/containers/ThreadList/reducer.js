@@ -17,7 +17,6 @@ export default function (state = initState, action, curUserID, curThreadID) {
       );
 
     case THREAD_INFO_RECEIVED:
-      //return state.set(action.id, fromJS(action.data));     // better merge!
       return state.update(action.id, thread => thread.mergeDeep(fromJS(action.data)));
 
     case UPDATE_RECEIVED:

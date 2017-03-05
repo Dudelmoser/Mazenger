@@ -2,7 +2,7 @@ import {createSelector} from "reselect";
 import {fromJS} from "immutable";
 import {selectRoot} from "../App/selectors";
 import {HISTORIES, TYPERS} from "./constants";
-import {selectMyThreadID} from "../LoginModal/selectors";
+import {selectCurrentThreadID} from "../LoginModal/selectors";
 import {selectUsers} from "../ThreadList/selectors";
 
 const selectHistories = () => createSelector(
@@ -17,23 +17,27 @@ const selectHistory = (threadID) => createSelector(
 
 const selectCurrentHistory = () => createSelector(
   selectHistories(),
-  selectMyThreadID(),
+  selectCurrentThreadID(),
   (histories, threadID) => histories.get(threadID) || fromJS([])
 );
 
-const selectTypers = () => createSelector(
+const selectAllTypers = () => createSelector(
   selectRoot(),
   (root) => root.get(TYPERS) || fromJS({})
 );
 
 const selectCurrentTypers = () => createSelector(
-  selectTypers(),
+  selectAllTypers(),
+  selectCurrentThreadID(),
+  (typers, threadID) => typers.get(threadID) || fromJS({})
+);
+
+const selectCurrentTypersNames = () => createSelector(
+  selectCurrentTypers(),
   selectUsers(),
-  selectMyThreadID(),
-  (typers, users, threadID) => {
-    const myTypers = typers.get(threadID) || fromJS({});
+  (typers, users) => {
     let result = [];
-    myTypers.forEach((timestamp, userID) =>
+    typers.forEach((timestamp, userID) =>
       result.push(users.get(userID, fromJS({})).get("name")));
     return result;
   }
@@ -48,6 +52,7 @@ export {
   selectHistories,
   selectHistory,
   selectCurrentHistory,
-  selectCurrentTypers,
+  selectAllTypers,
+  selectCurrentTypersNames,
   selectMessageCount,
 };

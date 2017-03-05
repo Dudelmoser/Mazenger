@@ -33,7 +33,7 @@ const selectMyUserID = () => createSelector(
   (session) => session.get(USER_ID) || 0
 );
 
-const selectMyThreadID = () => createSelector(
+const selectCurrentThreadID = () => createSelector(
   selectSession(),
   (session) => session.get(THREAD_ID) || 0
 );
@@ -55,7 +55,7 @@ export {
   selectAppState,
   selectValidEmails,
   selectMyUserID,
-  selectMyThreadID,
+  selectCurrentThreadID,
   selectIsConnected,
   selectIsLoggedIn,
 }
