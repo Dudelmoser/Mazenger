@@ -1,10 +1,13 @@
 import React from "react";
+import muiThemeable from "material-ui/styles/muiThemeable";
 
 function File(props) {
 
   const linkStyle = {
     color: "inherit",
-    textDecoration: "none"
+    textDecoration: "none",
+    padding: 8,
+    background: props.muiTheme.message.color,
   };
 
   return (
@@ -21,4 +24,4 @@ File.propTypes = {
   name: React.PropTypes.string.isRequired,
 };
 
-export default File;
+export default muiThemeable()(File);

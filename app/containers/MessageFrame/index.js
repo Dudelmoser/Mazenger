@@ -1,7 +1,9 @@
 import React from "react";
 import {connect} from "react-redux";
 import {injectIntl, intlShape} from 'react-intl';
-import {selectMessage, selectTimeStamp, selectIsOwn, selectIsSequel, selectTimePassed, selectSenderName} from "./selectors";
+import {selectMessage, selectTimeStamp, selectIsOwn, selectIsSequel, selectTimePassed, selectSenderName,
+  selectAttachmentsCount, selectMessageBody
+} from "./selectors";
 import {messageSelected} from "./actions";
 import {fromJS} from "immutable";
 import Message from "../../components/Message";
@@ -35,7 +37,7 @@ export class MessageFrame extends React.PureComponent { // eslint-disable-line r
       alignSelf: this.props.isOwn ? "flex-end" : "flex-start",
     };
 
-    if (!this.props.message.get("body") && !this.props.message.get("attachments").count()) {
+    if (!this.props.messageBody && !this.props.attachmentsCount) {
       return null;
     }
     return (
@@ -57,6 +59,7 @@ export class MessageFrame extends React.PureComponent { // eslint-disable-line r
     );
   }
 
+  // tooltip doesn't work reliably without delayed rebuild
   componentDidMount() {
     setTimeout(() => {
       Tooltip.rebuild();
@@ -77,23 +80,17 @@ MessageFrame.propTypes = {
   index: React.PropTypes.number.isRequired,
   threadID: React.PropTypes.oneOfType(
     [React.PropTypes.number, React.PropTypes.string]).isRequired,
-  message: React.PropTypes.object,
-  isOwn: React.PropTypes.bool,
-  isSequel: React.PropTypes.bool,
-  timestamp: React.PropTypes.oneOfType(
-    [React.PropTypes.number, React.PropTypes.string]),
-  timePassed: React.PropTypes.number,
-  onTouch: React.PropTypes.func,
-  onClickImage: React.PropTypes.func,
 }
 
-const mapStateToProps = (state, props) => ({
-  message: selectMessage(props.index, props.threadID)(state),
-  senderName: selectSenderName(props.index, props.threadID)(state),
-  isOwn: selectIsOwn(props.index, props.threadID)(state),
-  isSequel: selectIsSequel(props.index, props.threadID)(state),
-  timestamp: selectTimeStamp(props.index, props.threadID)(state),
-  timePassed: selectTimePassed(props.index, props.threadID)(state),
+const mapStateToProps = (state, ownProps) => ({
+  message: selectMessage(ownProps.index, ownProps.threadID)(state),
+  isOwn: selectIsOwn(ownProps.index, ownProps.threadID)(state),
+  isSequel: selectIsSequel(ownProps.index, ownProps.threadID)(state),
+  timestamp: selectTimeStamp(ownProps.index, ownProps.threadID)(state),
+  timePassed: selectTimePassed(ownProps.index, ownProps.threadID)(state),
+  senderName: selectSenderName(ownProps.index, ownProps.threadID)(state),
+  messageBody: selectMessageBody(ownProps.index, ownProps.threadID)(state),
+  attachmentsCount: selectAttachmentsCount(ownProps.index, ownProps.threadID)(state),
 });
 
 const mapDispatchToProps = (dispatch, props) => ({

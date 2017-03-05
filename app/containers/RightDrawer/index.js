@@ -9,7 +9,7 @@ import {Scrollbars} from "react-custom-scrollbars";
 
 // constants
 import messages from "./messages";
-import {rightDrawerWidth, drawerHeight} from "../App/components";
+import {rightDrawerWidth, drawerHeight, tabBtnStyle} from "../App/components";
 
 // icons
 import SocialMood from "material-ui/svg-icons/social/mood";
@@ -28,12 +28,6 @@ import {logout} from "../App/actions/requests";
 class RightDrawer extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
   LOGOUT_BTN = "logoutBtn";
-
-  tabBtnStyle = {
-    width: "100%",
-    cursor: "pointer",
-    color: "inherit",
-  }
 
   componentDidMount() {
     document.getElementById(this.LOGOUT_BTN).onmouseup = this.props.logout;
@@ -84,7 +78,7 @@ class RightDrawer extends React.Component { // eslint-disable-line react/prefer-
             disabled={true}
             icon={
               <div id={this.LOGOUT_BTN} className="lifted">
-                <ActionPowerSettingsNew style={this.tabBtnStyle}/>
+                <ActionPowerSettingsNew style={tabBtnStyle}/>
               </div>}
           />
         </Tabs>

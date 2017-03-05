@@ -1,7 +1,6 @@
 import { injectGlobal } from 'styled-components';
 
-const ttText = "rgba(255, 255, 255, 0.5)";
-const ttBg = "rgba(255, 255, 255, 0.047)";
+const ttBg = "rgba(127, 127, 127, 0.5)";
 
 /* eslint no-unused-expressions: 0 */
 injectGlobal`
@@ -10,7 +9,7 @@ injectGlobal`
     height: 100%;
     width: 100%;
     overflow: hidden;
-    font-weight: 300;
+    font-weight: 400;
     font-size: 14px;
     font-family: Roboto, 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
@@ -46,7 +45,7 @@ injectGlobal`
   }
   
   .tooltip {
-    color: ${ttText} !important;
+    color: white !important;
     height: 32px !important;
     font-size: 1rem !important;
     padding: 4px 16px !important;

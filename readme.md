@@ -13,16 +13,19 @@
 
 ## Quick start
 1. Run `git clone https://github.com/Dudelmoser/Mazenger`
-2. Install packages (to be described)
-3. Run `npm start`
-4. Open [localhost:3000](localhost:3000)
+2. Run `npm install` inside the cloned repository to install the dependencies
+3. Run `npm start` inside the same directory to start the local 'proxy' server that is needed to 
+send cross origin requests to the facebook servers.
+4. Open [localhost:3000](localhost:3000) inside your browser and login with your official facebook 
+credentials.
 
 ## Documentation
 ...
 
 ## Credits
-This web app is based on the awesome [React Boilerplate](https://github.com/mxstbr/react-boilerplate) by
-Max Stoiber. It really helped me understand the concepts of scalable JavaScript development based on technologies like..
+This web app is based on the awesome [React Boilerplate](https://github.com/mxstbr/react-boilerplate) 
+by Max Stoiber. It really helped me understand the concepts of scalable JavaScript development based 
+on technologies like..
 * React
 * Redux
 * Reselect
@@ -37,4 +40,5 @@ devs, who actually make the whole project possible.
 Maybe you?
 
 ## License
-This project is licensed under the MIT license, Copyright (c) 2016 Jan David Kleiß. For more information see `license.md`.
+This project is licensed under the MIT license, Copyright (c) 2016 Jan David Kleiß. 
+For more information see `license.md`.

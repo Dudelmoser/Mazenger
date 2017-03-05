@@ -5,6 +5,7 @@ import File from "../File";
 import Link from "../Link";
 import emoji from "react-easy-emoji";
 import styled from "styled-components";
+import muiThemeable from "material-ui/styles/muiThemeable";
 
 function Message(props) { // eslint-disable-line react/prefer-stateless-function
 
@@ -26,10 +27,7 @@ function Message(props) { // eslint-disable-line react/prefer-stateless-function
   const divStyle = {
     whiteSpace: "preline",
     wordBreak: "break-word",
-    background: "rgba(255,255,255,0.05)",
     borderRadius: "4px",
-    paddingLeft: "8px",
-    paddingRight: "8px",
     display: "inline-block",
     maxWidth: "592px",
   };
@@ -113,13 +111,19 @@ function Message(props) { // eslint-disable-line react/prefer-stateless-function
       divider = <Divider />
     }
 
+    const bodyStyle = {
+      paddingLeft: "8px",
+      paddingRight: "8px",
+      background: props.muiTheme.message.color,
+    };
+
     return (
       <div>
         <div
           data-for={props.isOwn ? "ttleft" : "ttright"}
           data-tip={props.tooltip}
           style={divStyle}>
-          {body}
+          <div style={bodyStyle}>{body}</div>
           {divider}
           {attachment}
         </div>
@@ -139,4 +143,4 @@ Message.propTypes = {
   isOwn: React.PropTypes.bool,
 };
 
-export default Message;
+export default muiThemeable()(Message);

@@ -23,18 +23,12 @@ import {getThreadList, getFriendsList} from "../App/actions/requests";
 
 // constants
 import messages from "./messages";
-import {leftDrawerWidth, drawerHeight} from "../App/components";
+import {leftDrawerWidth, drawerHeight, tabBtnStyle} from "../App/components";
 
 
 class LeftDrawer extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
   CACHE_BTN = "cacheBtn";
-
-  tabBtnStyle = {
-    width: "100%",
-    cursor: "pointer",
-    color: "inherit",
-  }
 
   componentDidMount() {
     document.getElementById(this.CACHE_BTN).onmouseup = this.props.confirmClearCache;
@@ -82,7 +76,7 @@ class LeftDrawer extends React.Component { // eslint-disable-line react/prefer-s
             disabled={true}
             icon={
               <div id={this.CACHE_BTN} className="lifted">
-                <ActionDelete style={this.tabBtnStyle}/>
+                <ActionDelete style={tabBtnStyle}/>
               </div>}
           />
 

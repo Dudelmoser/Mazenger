@@ -1,12 +1,12 @@
-import React from 'react';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import TextField from "material-ui/TextField";
+import React from "react";
+import muiThemeable from "material-ui/styles/muiThemeable";
+import {Dialog, FlatButton, TextField} from "material-ui";
 import {selectIsLoggedIn, selectEmail, selectPassword} from "./selectors";
 import {createStructuredSelector} from "reselect";
 import {connect} from "react-redux";
 import {login} from "../App/actions/requests";
 import {changeEmail, changePassword} from "./actions";
+import {injectIntl} from "react-intl";
 
 export class LoginModal extends React.Component {
 
@@ -15,7 +15,7 @@ export class LoginModal extends React.Component {
   }
 
   overlayStyle = {
-    backgroundColor: "rgba(16,18,19,0.95)"
+    //backgroundColor: "rgba(16,18,19,0.95)"
   }
 
   actionContainerStyle = {
@@ -87,4 +87,4 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   }
 };
 
-export default connect(mapStateToProps, null, mergeProps)(LoginModal);
+export default connect(mapStateToProps, null, mergeProps)(muiThemeable()(injectIntl(LoginModal)));

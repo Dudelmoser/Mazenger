@@ -8,6 +8,21 @@ const selectMessage = (index, threadID) => createSelector(
   (history) => history.get(index) || fromJS({})
 );
 
+const selectMessageBody = (index, threadID) => createSelector(
+  selectMessage(index, threadID),
+  (message) => message.get("body")
+);
+
+const selectAttachments = (index, threadID) => createSelector(
+  selectMessage(index, threadID),
+  (message) => message.get("attachments") || fromJS([])
+)
+
+const selectAttachmentsCount = (index, threadID) => createSelector(
+  selectAttachments(index, threadID),
+  (attachments) => attachments.count()
+)
+
 const selectSenderID = (index, threadID) => createSelector(
   selectMessage(index, threadID),
   (message) => message.get("senderID", "").replace("fbid:", "") || ""
@@ -58,4 +73,7 @@ export {
   selectIsSequel,
   selectTimePassed,
   selectSenderName,
+  selectMessageBody,
+  selectAttachments,
+  selectAttachmentsCount,
 }

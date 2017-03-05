@@ -1,10 +1,15 @@
 import React from "react";
+import muiThemeable from "material-ui/styles/muiThemeable";
 
 function Link(props) {
 
   const linkStyle = {
+    display: "inline-block",
+    padding: 8,
     color: "inherit",
-    textDecoration: "none"
+    fontWeight: 300,
+    textDecoration: "none",
+    background: props.muiTheme.message.color,
   };
 
   return (
@@ -26,4 +31,4 @@ Link.propTypes = {
   source: React.PropTypes.string,
 };
 
-export default Link;
+export default muiThemeable()(Link);
