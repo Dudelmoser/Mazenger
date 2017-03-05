@@ -1,5 +1,5 @@
 # Don't check auto-generated stuff into git
-static
+static/*
 build
 node_modules
 
