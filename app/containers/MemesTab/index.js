@@ -23,6 +23,7 @@ export class MemeGenerator extends React.Component {
   }
 
   canvasStyle = {
+    display: "block",
     maxWidth: "100%",
     maxHeight: "448px",
     marginBottom: "16px",
@@ -44,10 +45,10 @@ export class MemeGenerator extends React.Component {
     }
 
     const iconBtnStyle = {
+      marginTop: 28,
       minWidth: 44,
-      height: 36,
       marginBottom: 8,
-      verticalAlign: "bottom",
+      verticalAlign: "middle",
       borderRadius: 0,
       borderBottom: "1px solid " + this.props.muiTheme.palette.borderColor,
     }
@@ -79,13 +80,13 @@ export class MemeGenerator extends React.Component {
 
       <div>
         <SelectField
-          style={{width: "calc(100% - 44px)"}}
+          style={{width: "calc(100% - 44px)", verticalAlign: "middle"}}
           fullWidth={true}
-          floatingLabelText={formatMessage(messages.local)}
+          floatingLabelText={formatMessage(messages.custom)}
           onChange={this.props.pickMeme.bind(this, CUSTOM_MEMES)}
           value={this.props.activeCat == CUSTOM_MEMES ? this.props.current.get("url") : null}>
-          {this.props.local.map((meme, key) =>
-            <MenuItem key={key} value={meme.get("url")} primaryText={meme.get("name")}/>
+          {this.props.custom.map((meme, key) =>
+            <MenuItem key={key} value={meme.get("url")} primaryText={formatMessage(messages.customPrefix) + meme.get("name")}/>
           )}
         </SelectField>
         <FlatButton
@@ -117,12 +118,12 @@ export class MemeGenerator extends React.Component {
           id="memeCanvas"
           style={this.canvasStyle}>
         </canvas>
+        <RaisedButton
+          label="Send meme"
+          primary={true}
+          onClick={this.props.sendMeme}
+        />
       </div>
-
-      <RaisedButton
-        label="Send meme"
-        primary={true}
-        onClick={this.props.sendMeme}/>
     </div>
     );
   }
@@ -135,7 +136,7 @@ MemeGenerator.propTypes = {
 const mapStateToProps = createStructuredSelector({
   threadID: selectCurrentThreadID(),
   top100: selectTop100Memes(),
-  local: selectCustomMemes(),
+  custom: selectCustomMemes(),
   faves: selectFavoriteMemes(),
   current: selectCurrentMeme(),
   topCaption: selectTopCaption(),

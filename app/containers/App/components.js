@@ -17,8 +17,9 @@ const ContainerDiv = muiThemeable()(styled.div`
   background: ${props => props.muiTheme.palette.canvasColor};
 `);
 
+// logo must eventually be replaced with svg or pixel graphic
 const TitleDiv = muiThemeable()(styled.div`
-  font-family: Raleway;
+  font-family: Raleway, Roboto;
   font-weight: 300;
   font-size: 24px;
   height: ${titleHeight}px;

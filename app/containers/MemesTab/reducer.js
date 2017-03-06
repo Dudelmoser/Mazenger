@@ -31,7 +31,6 @@ export default function(state = initState, action, curUserID, curThreadID) {
         .setIn([curUserID, BOTTOM_CAPTION], action.str);
 
     case PICK_MEME:
-      console.log(action);
       Meme(action.url, CANVAS_ID, top, bot);
       const curMeme = state.getIn([curUserID, action.cat, action.idx]) || fromJS({});
       return state
@@ -47,7 +46,7 @@ export default function(state = initState, action, curUserID, curThreadID) {
     case IMAGE_UPLOADED:
       Meme(action.url, CANVAS_ID, top, bot);
       const memes = state.getIn([curUserID, CUSTOM_MEMES]) || fromJS([]);
-      const meme = fromJS({name: "My Meme " + memes.count(), url: action.url});
+      const meme = fromJS({name: "" + memes.count(), url: action.url});
       return state
         .withMutations(state => {
           state.setIn([curUserID, CUSTOM_MEMES], memes.push(meme));

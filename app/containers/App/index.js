@@ -17,7 +17,7 @@ import MessageInput from "../MessageInput";
 import LoginModal from "../LoginModal";
 
 // constants
-import darkTheme from "./themes/darkTheme";
+import darkTheme from "./theme";
 
 class Messenger extends React.Component { // eslint-disable-line react/prefer-stateless-function
 

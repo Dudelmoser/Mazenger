@@ -13,16 +13,16 @@ export default defineMessages({
     id: "MemesTab.top100",
     defaultMessage: "imgflip top 100",
   },
-  local: {
-    id: "MemesTab.local",
+  custom: {
+    id: "MemesTab.custom",
     defaultMessage: "custom memes",
   },
   favorites: {
     id: "MemesTab.favorites",
     defaultMessage: "favorite memes",
   },
-  empty: {
-    id: "MemesTab.empty",
-    defaultMessage: "no meme available"
+  customPrefix: {
+    id: "MemesTab.customPrefix",
+    defaultMessage: "My Meme "
   },
 });

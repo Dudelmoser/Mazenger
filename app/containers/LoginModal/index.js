@@ -14,15 +14,16 @@ export class LoginModal extends React.Component {
     fontSize: "1rem",
   }
 
-  overlayStyle = {
-    //backgroundColor: "rgba(16,18,19,0.95)"
-  }
-
   actionContainerStyle = {
     textAlign: "center"
   }
 
   render() {
+    const contentStyle = {
+      overflow: "hidden",
+      boxShadow: "0 12px 32px rgba(0,0,0,0.2)",
+    }
+
     const actions = [
       <FlatButton
         label="Login"
@@ -32,14 +33,17 @@ export class LoginModal extends React.Component {
       />
     ];
 
+    // css background blur, not supported by older browsers
+    document.getElementById("app").style.filter = this.props.loggedIn ? "none" : "blur(5px)";
+
     return (
         <Dialog
           title="Login"
           actions={actions}
           modal={true}
           open={!this.props.loggedIn}
+          contentStyle={contentStyle}
           bodyStyle={this.bodyStyle}
-          overlayStyle={this.overlayStyle}
           actionsContainerStyle={this.actionContainerStyle}>
           <div>
             Connect mazenger to your facebook account. Your login data will be transferred to the facebook server once and
