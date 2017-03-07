@@ -18,6 +18,7 @@ import EmojiCategory from "../../components/EmojiCategory";
 import {createStructuredSelector} from "reselect";
 import {insertEmoji, openEmojiGroup} from "./actions";
 import {selectFavEmojis, selectOpenEmojiGroups} from "./selectors";
+import muiThemeable from "material-ui/styles/muiThemeable";
 
 export class EmojiList extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -119,4 +120,4 @@ const mapDispatchToProps = (dispatch) => ({
   openEmojiGroup: (index) => dispatch(openEmojiGroup(index)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmojiList);
+export default connect(mapStateToProps, mapDispatchToProps)(muiThemeable()(EmojiList));

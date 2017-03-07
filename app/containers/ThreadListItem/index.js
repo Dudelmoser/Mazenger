@@ -6,7 +6,7 @@ import {selectThreadSnippet, selectThreadTitle, selectThreadImageURL, selectHasA
 } from "./selectors";
 import {ListItem, Divider, Avatar} from "material-ui";
 import emoji from "react-easy-emoji";
-import Attachment from 'material-ui/svg-icons/file/attachment';
+import AttachmentIcon from 'material-ui/svg-icons/file/attachment';
 import muiThemeable from "material-ui/styles/muiThemeable";
 import messages from "./messages";
 import {injectIntl} from "react-intl";
@@ -16,14 +16,6 @@ export class ThreadListItem extends React.PureComponent { // eslint-disable-line
   render() {
     // Catch react-easy-emoji error when empty string is passed.
     // Usually happens after cleaning the cache.
-
-    const attachBtnStyle = {
-      position: "absolute",
-      top: 24,
-      right: 12,
-      color: this.props.muiTheme.palette.secondaryTextColor,
-      display: this.props.hasAttachment ? "block" : "none"
-    }
 
     const {formatMessage} = this.props.intl;
 
@@ -45,6 +37,7 @@ export class ThreadListItem extends React.PureComponent { // eslint-disable-line
         <div style={{position: "relative"}}>
           <ListItem
             leftAvatar={<Avatar src={this.props.imageURL}/>}
+            rightIcon={this.props.hasAttachment ? <AttachmentIcon/> : null}
             primaryText={this.props.title}
             secondaryText={
               <p style={{width: "90%"}}>{secondaryText}</p>
@@ -52,7 +45,6 @@ export class ThreadListItem extends React.PureComponent { // eslint-disable-line
             secondaryTextLines={1}
             onTouchTap={this.props.onTouch.bind(this, this.props.threadID)}
           />
-          <Attachment style={attachBtnStyle}/>
           <Divider
             inset={false}
             style={{backgroundColor: "rgba(127,127,127,0.2)"}}/>

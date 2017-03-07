@@ -9,7 +9,6 @@ injectGlobal`
     height: 100%;
     width: 100%;
     overflow: hidden;
-    font-weight: 400;
     font-size: 14px;
     font-family: Roboto, 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
@@ -46,10 +45,11 @@ injectGlobal`
   
   .tooltip {
     color: white !important;
-    height: 32px !important;
+    height: 30px !important;
     font-size: 1rem !important;
     padding: 4px 16px !important;
     background-color: ${ttBg} !important;
+    border-radius: 0 !important;
     &.place-left {
       &:after {
         border-left-color: ${ttBg} !important;

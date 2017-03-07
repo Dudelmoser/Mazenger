@@ -175,6 +175,9 @@ const stateExample = {
   },
 
   settings: {
-    "userID": {}
+    "userID": {
+      primaryColor: "rgb(235,255,0)",
+      backgroundColor: "rgb(32,35,38)",
+    }
   }
 };

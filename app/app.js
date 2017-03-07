@@ -25,7 +25,7 @@ injectTapEventPlugin();
 import App from 'containers/App';
 
 // Import selector for `syncHistoryWithStore`
-import { makeSelectLocationState } from 'containers/App/selectors';
+import { selectLocationState } from 'containers/App/selectors';
 
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
@@ -56,10 +56,10 @@ const initialState = {};
 const store = configureStore(initialState, browserHistory);
 
 // Sync history and store, as the react-router-redux reducer
-// is under the non-default key ("routing"), makeSelectLocationState
+// is under the non-default key ("routing"), selectLocationState
 // must be provided for resolving how to retrieve the "route" in the state
 const history = syncHistoryWithStore(browserHistory, store, {
-  selectLocationState: makeSelectLocationState(),
+  selectLocationState: selectLocationState(),
 });
 
 // Set up the router, wrapping all Routes in the App component

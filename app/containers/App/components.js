@@ -49,9 +49,11 @@ const MessageDiv = muiThemeable()(styled.div`
   height: ${titleHeight}px;
   paddingLeft: 1em;
   paddingRight: 1em;
-  border-top: ${props => props.muiTheme.palette.borderColor};
+  /*border-top: 1px solid ${props => props.muiTheme.palette.borderColor};*/
+  /*background: ${props => props.muiTheme.palette.alternateTextColor};*/
 `);
 
+// make component instead
 const tabBtnStyle = {
   width: "100%",
   cursor: "pointer",

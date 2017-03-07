@@ -16,6 +16,7 @@ import ActionDelete from "material-ui/svg-icons/action/delete";
 // containers
 import ThreadList from "../ThreadList";
 import FriendsList from "../FriendsList";
+import SettingsTab from "../SettingsTab";
 
 // actions
 import {confirmClearCache} from "../App/actions/actions";
@@ -83,6 +84,11 @@ class LeftDrawer extends React.Component { // eslint-disable-line react/prefer-s
           <Tab
             data-tooltip={formatMessage(messages.settings)}
             icon={<ActionSettings/>}>
+            <Scrollbars
+              autoHide={true}
+              style={{height: drawerHeight}}>
+              <SettingsTab/>
+            </Scrollbars>
           </Tab>
         </Tabs>
 

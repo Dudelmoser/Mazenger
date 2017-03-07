@@ -37,10 +37,11 @@ function createTheme(backgroundColor, primaryColor, secondaryColor) {
       backgroundColor: fade(darken(backgroundColor, 0.1), 0.9),
     },
     listItem: {
-      leftIconColor: emphasize(backgroundColor, .3)
+      leftIconColor: emphasize(backgroundColor, .3),
+      rightIconColor: emphasize(backgroundColor, .3),
     }
   });
 }
 
-// export default createTheme("rgb(32,35,38)", "rgb(235,255,0)");
-export default createTheme("rgb(255,255,255)", "rgb(170,190,0)");
+export default createTheme;
+// export default createTheme("rgb(253,253,253)", "rgb(170,190,0)");

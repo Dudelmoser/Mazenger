@@ -10,6 +10,7 @@ import Message from "../../components/Message";
 import Timestamp from "../../components/Timestamp";
 import {resolvePhotoUrl} from "../App/actions/requests";
 import Tooltip from "react-tooltip";
+import {selectBackgroundColor} from "../SettingsTab/selectors";
 
 export class MessageFrame extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -91,6 +92,8 @@ const mapStateToProps = (state, ownProps) => ({
   senderName: selectSenderName(ownProps.index, ownProps.threadID)(state),
   messageBody: selectMessageBody(ownProps.index, ownProps.threadID)(state),
   attachmentsCount: selectAttachmentsCount(ownProps.index, ownProps.threadID)(state),
+  // dirty workaround to force a re-render when changing the global background color
+  bgColor: selectBackgroundColor()(state),
 });
 
 const mapDispatchToProps = (dispatch, props) => ({

@@ -3,7 +3,7 @@ import {fromJS} from "immutable";
 
 const selectRoot = () => state => state ? state.get(ROOT) : fromJS({})
 
-const makeSelectLocationState = () => {
+const selectLocationState = () => {
   let prevRoutingState;
   let prevRoutingStateJS;
 
@@ -21,5 +21,5 @@ const makeSelectLocationState = () => {
 
 export {
   selectRoot,
-  makeSelectLocationState
+  selectLocationState
 };
