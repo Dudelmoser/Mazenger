@@ -14,7 +14,7 @@ function createTheme(accentColor, backgroundColor) {
       textColor: emphasize(backgroundColor, .9),            // most text
       secondaryTextColor: emphasize(backgroundColor,.6),    // list items secondary text
       alternateTextColor: backgroundColor,                  // text on primary colored elements
-      canvasColor: darken(backgroundColor, .02),            // background for drawer, images etc.
+      canvasColor: darken(backgroundColor, .04),            // background for drawer, images etc.
       shadowColor: fullBlack,
       borderColor: emphasize(backgroundColor, .1),
       disabledColor: emphasize(backgroundColor, .4),
@@ -26,10 +26,10 @@ function createTheme(accentColor, backgroundColor) {
       selectedTextColor: accentColor,
     },
     drawer: {
-      color: lighten(backgroundColor, 0.01),
+      color: lighten(backgroundColor, 0.02),
     },
     message: {
-      color: lighten(backgroundColor, 0.01),
+      color: lighten(backgroundColor, 0.02),
     },
     overlay: {
       backgroundColor: fade(darken(backgroundColor, 0.1), 0.9),

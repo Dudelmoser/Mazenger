@@ -10,7 +10,7 @@ import inputsReducer from "../MessageInput/reducer";
 import emojisReducer from "../EmojisTab/reducer";
 import memesReducer from "../MemesTab/reducer";
 import chatbotReducer from "../ChatbotTab/reducer";
-import dictionaryReducer from "../DictionaryTab/reducer";
+import abbreviationsReducer from "../AbbreviationsTab/reducer";
 import settingsReducer from "../SettingsTab/reducer";
 import {SESSION} from "../LoginModal/constants";
 import {FRIENDS} from "../FriendsList/constants";
@@ -20,7 +20,7 @@ import {INPUTS} from "../MessageInput/constants";
 import {EMOJIS} from "../EmojisTab/constants";
 import {MEMES} from "../MemesTab/constants";
 import {CHATBOT} from "../ChatbotTab/constants";
-import {DICTIONARY} from "../DictionaryTab/constants";
+import {ABBREVIATIONS} from "../AbbreviationsTab/constants";
 import {SETTINGS} from "../SettingsTab/constants";
 
 const initState = fromJS({
@@ -48,7 +48,7 @@ export default function (state = initState, action) {
 
   // const map = {
   //   session: sessionReducer,
-  //     friends: friendsReducer,
+  //   friends: friendsReducer,
   //   threads: threadsReducer,
   //   histories: historiesReducer,
   //   users: usersReducer,
@@ -57,7 +57,7 @@ export default function (state = initState, action) {
   //   emojis: emojisReducer,
   //   memes: memesReducer,
   //   chatbot: chatbotReducer,
-  //   dictionary: dictionaryReducer,
+  //   dictionary: abbreviationsReducer,
   //   settings: settingsReducer,
   // }
 
@@ -72,7 +72,7 @@ export default function (state = initState, action) {
   map[EMOJIS] = emojisReducer;
   map[MEMES] = memesReducer;
   map[CHATBOT] = chatbotReducer;
-  map[DICTIONARY] = dictionaryReducer;
+  map[ABBREVIATIONS] = abbreviationsReducer;
   map[SETTINGS] = settingsReducer;
 
   const rootReducer = combineReducers(map, [userID, threadID]);

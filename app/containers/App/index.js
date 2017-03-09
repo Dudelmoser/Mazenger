@@ -18,7 +18,7 @@ import LoginModal from "../LoginModal";
 
 // constants
 import createTheme from "./theme";
-import {selectAccentColor, selectBackgroundColor} from "../ColorPicker/selectors";
+import {selectAccentColor, selectBackgroundColor} from "../ThemeSettings/selectors";
 
 class Messenger extends React.Component { // eslint-disable-line react/prefer-stateless-function
 

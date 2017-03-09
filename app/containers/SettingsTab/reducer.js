@@ -1,4 +1,4 @@
-import themeReducer from "../ColorPicker/reducer";
+import themeReducer from "../ThemeSettings/reducer";
 import privacyReducer from "../PrivacySettings/reducer";
 import {CLEAR_SETTINGS} from "../PrivacySettings/actions";
 import {fromJS} from "immutable";

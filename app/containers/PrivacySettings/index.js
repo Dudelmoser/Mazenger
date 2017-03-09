@@ -38,7 +38,6 @@ export class PrivacySettings extends React.PureComponent { // eslint-disable-lin
         <p>{formatMessage(messages.clearHint)}</p>
         <p>{formatMessage(messages.clearHint2)}</p>
         <RaisedButton
-          primary={true}
           backgroundColor={this.alertColor}
           label={formatMessage(messages.clearSettings)}
           onClick={this.props.confirmClearSettings}

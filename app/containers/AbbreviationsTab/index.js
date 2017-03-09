@@ -14,7 +14,7 @@ export class DictionaryTab extends React.PureComponent { // eslint-disable-line 
 
     return (
      <div style={this.wrapperStyle}>
-
+g
      </div>
     );
   }
@@ -28,7 +28,6 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  confirmClearSettings: () => dispatch(confirmClearSettings()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(DictionaryTab));

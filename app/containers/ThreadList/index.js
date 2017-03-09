@@ -1,10 +1,8 @@
 import React from "react";
 import {connect} from "react-redux";
-import {FormattedMessage} from "react-intl";
-import messages from "./messages";
 import {createStructuredSelector} from "reselect";
 import {selectThreadIDs} from "./selectors";
-import {List, Subheader} from "material-ui";
+import {List} from "material-ui";
 import Thread from "../ThreadListItem";
 
 export class ThreadList extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -12,7 +10,6 @@ export class ThreadList extends React.PureComponent { // eslint-disable-line rea
   render() {
     return (
       <List>
-        <Subheader><FormattedMessage {...messages.header}/></Subheader>
         {this.props.threadIDs.map((threadID, key) =>
           <Thread
             key={threadID}
@@ -32,9 +29,7 @@ const mapStateToProps = createStructuredSelector({
   threadIDs: selectThreadIDs(),
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-  };
-}
+const mapDispatchToProps = (dispatch) => ({
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ThreadList);

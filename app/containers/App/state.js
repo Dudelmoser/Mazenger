@@ -34,21 +34,21 @@ const initState = {
   emojis: {},
   memes: {},
   chatbot: {},
-  dictionary: {},
+  abbreviations: {},
   settings: {},
 };
 
 const stateExample = {
-  isConnected: false,
 
   login: {
     email: "",
     password: "",
     appState: null,
+    validEmails: [],
     userID: null,
+    threadID: null,
+    isConnected: false,
   },
-
-  threadID: null,
 
   friends: [{                                                       // getFriendsList()
     name: "Zanger Janus",
@@ -170,13 +170,13 @@ const stateExample = {
     }
   },
 
-  dictionary: {
+  abbreviations: {
     "userID": {}
   },
 
   settings: {
     "userID": {
-      primaryColor: "rgb(235,255,0)",
+      accentColor: "rgb(235,255,0)",
       backgroundColor: "rgb(32,35,38)",
     }
   }

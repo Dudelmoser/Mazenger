@@ -10,7 +10,7 @@ import Message from "../../components/Message";
 import Timestamp from "../../components/Timestamp";
 import {resolvePhotoUrl} from "../App/actions/requests";
 import Tooltip from "react-tooltip";
-import {selectBackgroundColor} from "../ColorPicker/selectors";
+import {selectBackgroundColor} from "../ThemeSettings/selectors";
 
 export class MessageFrame extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 

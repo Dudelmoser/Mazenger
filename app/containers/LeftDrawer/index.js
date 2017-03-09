@@ -11,11 +11,12 @@ import {Scrollbars} from "react-custom-scrollbars";
 import CommunicationChat from "material-ui/svg-icons/communication/chat";
 import SocialPeople from "material-ui/svg-icons/social/people";
 import ActionSettings from "material-ui/svg-icons/action/settings";
+import EditorFormatQuote from "material-ui/svg-icons/editor/format-quote";
 
 // containers
 import ThreadList from "../ThreadList";
 import FriendsList from "../FriendsList";
-import DictionaryTab from "../DictionaryTab";
+import AbbreviationsTab from "../AbbreviationsTab";
 import SettingsTab from "../SettingsTab";
 
 // actions
@@ -62,12 +63,12 @@ class LeftDrawer extends React.Component { // eslint-disable-line react/prefer-s
           </Tab>
 
           <Tab
-            data-tooltip={formatMessage(messages.friends)}
-            icon={<SocialPeople/>}>
+            data-tooltip={formatMessage(messages.abbreviations)}
+            icon={<EditorFormatQuote/>}>
             <Scrollbars
               autoHide={true}
               style={{height: drawerHeight}}>
-              <DictionaryTab />
+              <AbbreviationsTab />
             </Scrollbars>
           </Tab>
 

@@ -3,7 +3,7 @@ import {defineMessages} from "react-intl";
 export default defineMessages({
   clearSettings: {
     id: "PrivacySettings.confirmClearSettings",
-    defaultMessage: "Delete all my private data",
+    defaultMessage: "Clear cache",
   },
   clearHint: {
     id: "PrivacySettings.clearHint",
@@ -21,7 +21,7 @@ export default defineMessages({
   },
   clearWarning: {
     id: "PrivacySettings.clearWarning",
-    defaultMessage: "Do you really want to clear all your personal data? This step can't be undone!"
+    defaultMessage: "Do you really want to delete all your personal data? This step can't be undone!"
   },
   cancel: {
     id: "PrivacySettings.cancel",
