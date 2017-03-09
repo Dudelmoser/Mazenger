@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import {login} from "../App/actions/requests";
 import {changeEmail, changePassword} from "./actions";
 import {injectIntl} from "react-intl";
+import messages from "./messages";
 
 export class LoginModal extends React.Component {
 
@@ -19,14 +20,11 @@ export class LoginModal extends React.Component {
   }
 
   render() {
-    const contentStyle = {
-      overflow: "hidden",
-      boxShadow: "0 12px 32px rgba(0,0,0,0.2)",
-    }
+    const {formatMessage} = this.props.intl;
 
     const actions = [
       <FlatButton
-        label="Login"
+        label={formatMessage(messages.login)}
         primary={true}
         disabled={false}
         onTouchTap={this.props.login}
@@ -38,27 +36,25 @@ export class LoginModal extends React.Component {
 
     return (
         <Dialog
-          title="Login"
+          title={formatMessage(messages.login)}
           actions={actions}
           modal={true}
           open={!this.props.loggedIn}
-          contentStyle={contentStyle}
           bodyStyle={this.bodyStyle}
           actionsContainerStyle={this.actionContainerStyle}>
           <div>
-            Connect mazenger to your facebook account. Your login data will be transferred to the facebook server once and
-            discarded right after. We only save your session inside the local storage.
+            {formatMessage(messages.hint)}
             <br/>
             <TextField
-              hintText="Email"
-              floatingLabelText="Email"
+              hintText={formatMessage(messages.email)}
+              floatingLabelText={formatMessage(messages.email)}
               type="text"
               onChange={this.props.changeEmail}
             />
             <br/>
             <TextField
-              hintText="Password"
-              floatingLabelText="Password"
+              hintText={formatMessage(messages.password)}
+              floatingLabelText={formatMessage(messages.password)}
               type="password"
               onChange={this.props.changePassword}
             />

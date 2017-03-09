@@ -1,6 +1,12 @@
-export default function (state, action, curUserID, curThreadID) {
+import {fromJS} from "immutable";
+import {CLEAR_SETTINGS} from "../PrivacySettings/actions";
+
+const initState = fromJS({});
+
+export default function (state, action, curUserID) {
   switch (action.type) {
-    default:
-      return state;
+    case CLEAR_SETTINGS:
+      return state
+        .set(curUserID, initState);
   }
 }

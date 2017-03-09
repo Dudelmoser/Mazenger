@@ -11,15 +11,14 @@ import {Scrollbars} from "react-custom-scrollbars";
 import CommunicationChat from "material-ui/svg-icons/communication/chat";
 import SocialPeople from "material-ui/svg-icons/social/people";
 import ActionSettings from "material-ui/svg-icons/action/settings";
-import ActionDelete from "material-ui/svg-icons/action/delete";
 
 // containers
 import ThreadList from "../ThreadList";
 import FriendsList from "../FriendsList";
+import DictionaryTab from "../DictionaryTab";
 import SettingsTab from "../SettingsTab";
 
 // actions
-import {confirmClearCache} from "../App/actions/actions";
 import {getThreadList, getFriendsList} from "../App/actions/requests";
 
 // constants
@@ -28,16 +27,6 @@ import {leftDrawerWidth, drawerHeight, tabBtnStyle} from "../App/components";
 
 
 class LeftDrawer extends React.Component { // eslint-disable-line react/prefer-stateless-function
-
-  CACHE_BTN = "cacheBtn";
-
-  componentDidMount() {
-    document.getElementById(this.CACHE_BTN).onmouseup = this.props.confirmClearCache;
-  }
-
-  componentDidUpdate() {
-    document.getElementById(this.CACHE_BTN).onmouseup = this.props.confirmClearCache;
-  }
 
   render() {
     const {formatMessage} = this.props.intl;
@@ -73,13 +62,14 @@ class LeftDrawer extends React.Component { // eslint-disable-line react/prefer-s
           </Tab>
 
           <Tab
-            data-tooltip={formatMessage(messages.clearCache)}
-            disabled={true}
-            icon={
-              <div id={this.CACHE_BTN} className="lifted">
-                <ActionDelete style={tabBtnStyle}/>
-              </div>}
-          />
+            data-tooltip={formatMessage(messages.friends)}
+            icon={<SocialPeople/>}>
+            <Scrollbars
+              autoHide={true}
+              style={{height: drawerHeight}}>
+              <DictionaryTab />
+            </Scrollbars>
+          </Tab>
 
           <Tab
             data-tooltip={formatMessage(messages.settings)}
@@ -107,7 +97,6 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = (dispatch) => ({
   getThreadList: () => dispatch(getThreadList()),
   getFriendsList: (tab) => dispatch(getFriendsList()),
-  confirmClearCache: () => dispatch(confirmClearCache()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(LeftDrawer));

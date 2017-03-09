@@ -4,6 +4,7 @@ import {PICK_MEME, SET_TOP_CAPTION, SET_BOTTOM_CAPTION, RENDER_MEME, SEND_MEME} 
 import {CURRENT_MEME, TOP_CAPTION, BOTTOM_CAPTION, TOP100_MEMES, CUSTOM_MEMES, ACTIVE_CAT, FAVORITE_MEMES
 } from "./constants";
 import {IMAGE_UPLOADED, MEMES_LOADED} from "../App/actions/responses";
+import {CLEAR_SETTINGS} from "../PrivacySettings/actions";
 
 const CANVAS_ID = "memeCanvas";
 const initState = fromJS({});
@@ -69,6 +70,10 @@ export default function(state = initState, action, curUserID, curThreadID) {
               .insert(0, fromJS({name: curMeme.get("name"), url: curMeme.get("url")}));
 
           state.setIn([curUserID, FAVORITE_MEMES], faves);
-        })
+        });
+
+    case CLEAR_SETTINGS:
+      return state
+        .set(curUserID, initState);
   }
 }

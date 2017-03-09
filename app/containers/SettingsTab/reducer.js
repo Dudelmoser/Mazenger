@@ -1,11 +1,15 @@
-import {CHANGE_PRIMARY_COLOR, PRIMARY_COLOR, CHANGE_BACKGROUND_COLOR, BACKGROUND_COLOR} from "./constants";
-export default function (state, action, curUserID, curThreadID) {
-  switch (action.type) {
-    case CHANGE_PRIMARY_COLOR:
-      return state
-        .setIn([curUserID, PRIMARY_COLOR], action.idx);
-    case CHANGE_BACKGROUND_COLOR:
-      return state
-        .setIn([curUserID, BACKGROUND_COLOR], action.idx);
-  }
+import themeReducer from "../ColorPicker/reducer";
+import privacyReducer from "../PrivacySettings/reducer";
+import {CLEAR_SETTINGS} from "../PrivacySettings/actions";
+import {fromJS} from "immutable";
+
+const initState = fromJS({});
+
+export default function (state = initState, action, curUserID) {
+  if (action.type == CLEAR_SETTINGS)
+    return state
+      .set(curUserID, initState);
+  return state
+    .merge(themeReducer(state, action, curUserID))
+    .merge(privacyReducer(state, action, curUserID));
 }

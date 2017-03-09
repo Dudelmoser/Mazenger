@@ -3,6 +3,7 @@ import { injectGlobal } from 'styled-components';
 const ttBg = "rgba(127, 127, 127, 0.5)";
 
 /* eslint no-unused-expressions: 0 */
+// language=LESS
 injectGlobal`
   html,
   body {
@@ -25,6 +26,12 @@ injectGlobal`
     opacity: 0.5;
     font-size: 0.7em;
   }
+  
+  h5 {
+    font-size: 16px;
+    font-weight: normal;
+    margin-bottom: 0 !important;
+  }
  
   button[data-tooltip]:hover:after {
     font-size: 0.75em;
@@ -43,6 +50,7 @@ injectGlobal`
     top: -3px;
   }
   
+  //noinspection CssInvalidPropertyValue
   .tooltip {
     color: white !important;
     height: 30px !important;

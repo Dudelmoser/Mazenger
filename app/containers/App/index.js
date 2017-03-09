@@ -18,7 +18,7 @@ import LoginModal from "../LoginModal";
 
 // constants
 import createTheme from "./theme";
-import {selectPrimaryColor, selectBackgroundColor} from "../SettingsTab/selectors";
+import {selectAccentColor, selectBackgroundColor} from "../ColorPicker/selectors";
 
 class Messenger extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
@@ -29,7 +29,7 @@ class Messenger extends React.Component { // eslint-disable-line react/prefer-st
 
   render() {
     return (
-        <MuiThemeProvider muiTheme={createTheme(this.props.backgroundColor, this.props.primaryColor)}>
+        <MuiThemeProvider muiTheme={createTheme(this.props.accentColor, this.props.backgroundColor)}>
           <ContainerDiv>
             <Tooltip id="ttleft" place="left" effect="solid" class="tooltip"/>
             <Tooltip id="ttright" place="right" effect="solid" class="tooltip"/>
@@ -70,7 +70,7 @@ Messenger.propTypes = {
 }
 
 const mapStateToProps = createStructuredSelector({
-  primaryColor: selectPrimaryColor(),
+  accentColor: selectAccentColor(),
   backgroundColor: selectBackgroundColor(),
 });
 

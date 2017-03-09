@@ -1,59 +1,54 @@
 import React from "react";
-import {connect} from "react-redux";
-import {createStructuredSelector} from "reselect";
-import {selectPrimaryIndex, selectPrimaryColors, selectBackgroundIndex, selectBackgroundColors} from "./selectors";
-import {FloatingActionButton} from "material-ui";
-import {changePrimaryColor, changeBackgroundColor} from "./actions";
 import {injectIntl, intlShape} from "react-intl";
-import ActionDone from "material-ui/svg-icons/action/done";
-import {emphasize} from "material-ui/utils/colorManipulator";
+import ColorPicker from "../ColorPicker";
+import PrivacySettings from "../PrivacySettings";
+import {Stepper, Step, StepButton, StepContent} from "material-ui";
+import {injectGlobal} from "styled-components";
+import muiThemeable from "material-ui/styles/muiThemeable";
+import messages from "./messages";
 
 export class SettingsTab extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
+  state = {
+    stepIndex: 0,
+  };
+
   wrapperStyle = {
-    padding: "1rem",
+    padding: "0 1rem 0 0",
   }
 
   render() {
+    injectGlobal`
+      .stepper>div span>span>svg>text {
+        fill: ${this.props.muiTheme.palette.alternateTextColor};
+      }
+    `;
 
-    const pryStyle = {
-      margin: "10px 10px 10px 0",
-    };
-
-    const bgStyle = {
-      margin: "10px 10px 10px 0",
-    };
+    const {formatMessage} = this.props.intl;
 
     return (
      <div style={this.wrapperStyle}>
-       Background
-       <div>
-         {this.props.bgColorList.map((color, idx) => {
-           return <FloatingActionButton
-             key={idx}
-             zDepth={1}
-             mini={true}
-             style={bgStyle}
-             backgroundColor={color}
-             onClick={this.props.changeBackgroundColor.bind(this, idx)}>
-             {idx == this.props.bgColorIdx ? <ActionDone style={{fill: (emphasize(color, 0.8))}}/> : <div></div>}
-           </FloatingActionButton>
-         })}
-       </div>
-       Primary color
-       <div>
-         {this.props.pryColorList.map((color, idx) => {
-           return <FloatingActionButton
-             key={idx}
-             zDepth={1}
-             mini={true}
-             style={pryStyle}
-             backgroundColor={color}
-             onClick={this.props.changePrimaryColor.bind(this, idx)}>
-             {idx == this.props.pryColorIdx ? <ActionDone style={{fill: (emphasize(color, 0.8))}}/> : <div></div>}
-           </FloatingActionButton>
-         })}
-       </div>
+       <Stepper
+         linear={false}
+         activeStep={this.state.stepIndex}
+         orientation="vertical">
+         <Step>
+           <StepButton onClick={() => this.setState({stepIndex: 0})} className="stepper">
+             {formatMessage(messages.theme)}
+           </StepButton>
+           <StepContent>
+              <ColorPicker/>
+           </StepContent>
+         </Step>
+         <Step>
+           <StepButton onClick={() => this.setState({stepIndex: 1})} className="stepper">
+             {formatMessage(messages.privacy)}
+           </StepButton>
+           <StepContent>
+             <PrivacySettings/>
+           </StepContent>
+         </Step>
+       </Stepper>
      </div>
     );
   }
@@ -63,16 +58,4 @@ SettingsTab.propTypes = {
   intl: intlShape.isRequired,
 }
 
-const mapStateToProps = createStructuredSelector({
-  pryColorIdx: selectPrimaryIndex(),
-  pryColorList: selectPrimaryColors(),
-  bgColorIdx: selectBackgroundIndex(),
-  bgColorList: selectBackgroundColors(),
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  changePrimaryColor: (idx) => dispatch(changePrimaryColor(idx)),
-  changeBackgroundColor: (idx) => dispatch(changeBackgroundColor(idx)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(SettingsTab));
+export default injectIntl(muiThemeable()(SettingsTab));

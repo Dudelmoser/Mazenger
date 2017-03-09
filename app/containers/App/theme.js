@@ -2,16 +2,14 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {lighten, darken, emphasize, fade} from "material-ui/utils/colorManipulator";
 import {transparent, fullBlack} from "material-ui/styles/colors";
 
-function createTheme(backgroundColor, primaryColor, secondaryColor) {
-  if (!secondaryColor)
-    secondaryColor = primaryColor;
+function createTheme(accentColor, backgroundColor) {
   return getMuiTheme({
     palette: {
-      primary1Color: primaryColor,                          // most focused/selected elements and appbar/tabs
-      primary2Color: primaryColor,                          // date/time picker selection & header
+      primary1Color: accentColor,                           // most focused/selected elements and appbar/tabs
+      primary2Color: accentColor,                           // date/time picker selection & header
       primary3Color: emphasize(backgroundColor, .3),        // inactive slider, toggle track
-      accent1Color: secondaryColor,                         // snackbar action, button (2nd), badge (2nd)
-      accent2Color: emphasize(backgroundColor, .01),         // toolbar bg, toggle off, table hover
+      accent1Color: accentColor,                            // snackbar action, button (2nd), badge (2nd)
+      accent2Color: emphasize(backgroundColor, .01),        // toolbar bg, toggle off, table hover
       accent3Color: emphasize(backgroundColor, .5),         // table header & footer, active slider
       textColor: emphasize(backgroundColor, .9),            // most text
       secondaryTextColor: emphasize(backgroundColor,.6),    // list items secondary text
@@ -25,7 +23,7 @@ function createTheme(backgroundColor, primaryColor, secondaryColor) {
     tabs: {
       backgroundColor: transparent,
       textColor: emphasize(backgroundColor, 0.3),
-      selectedTextColor: primaryColor,
+      selectedTextColor: accentColor,
     },
     drawer: {
       color: lighten(backgroundColor, 0.01),
@@ -39,9 +37,11 @@ function createTheme(backgroundColor, primaryColor, secondaryColor) {
     listItem: {
       leftIconColor: emphasize(backgroundColor, .3),
       rightIconColor: emphasize(backgroundColor, .3),
-    }
+    },
+    stepper: {
+      textColor: emphasize(backgroundColor, .9),
+    },
   });
 }
 
 export default createTheme;
-// export default createTheme("rgb(253,253,253)", "rgb(170,190,0)");

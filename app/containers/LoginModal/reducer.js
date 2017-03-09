@@ -57,7 +57,7 @@ export default function (state = initState, action, curUserID, curThreadID) {
     case LOGOUT:
       return state
         .set(APP_STATE, null)
-        .set(USER_ID, null)
+        //.set(USER_ID, null)
         .set(THREAD_ID, null);
 
     case CLEAR_CACHE:

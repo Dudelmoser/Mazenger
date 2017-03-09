@@ -52,6 +52,7 @@
 * ~~add open emoji categories to state~~
 
 ## Code
+* unified naming convention for actions
 * remove typing notifications for group chats
 * split messenger container into sub containers 
 * extract separate reducers and actions
