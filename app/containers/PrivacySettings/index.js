@@ -10,22 +10,17 @@ import {logout} from "../App/actions/requests";
 
 export class PrivacySettings extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
-  alertColor = "#D64541";
-
   render() {
     const {formatMessage} = this.props.intl;
 
     const actions = [
       <FlatButton
+        secondary={true}
         label={formatMessage(messages.confirm)}
-        primary={true}
-        disabled={false}
         onTouchTap={this.props.clearSettings}
       />,
       <FlatButton
         label={formatMessage(messages.cancel)}
-        primary={true}
-        disabled={false}
         onTouchTap={this.props.cancelClearSettings}
       />
     ];
@@ -38,7 +33,7 @@ export class PrivacySettings extends React.PureComponent { // eslint-disable-lin
         <p>{formatMessage(messages.clearHint)}</p>
         <p>{formatMessage(messages.clearHint2)}</p>
         <RaisedButton
-          backgroundColor={this.alertColor}
+          secondary={true}
           label={formatMessage(messages.clearSettings)}
           onClick={this.props.confirmClearSettings}
         />

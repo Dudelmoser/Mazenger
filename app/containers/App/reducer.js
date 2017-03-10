@@ -38,7 +38,7 @@ const initState = fromJS({
   emojis: {},
   memes: {},
   chatbot: {},
-  dictionary: {},
+  abbreviations: {},
   settings: {},
 });
 

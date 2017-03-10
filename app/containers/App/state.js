@@ -88,11 +88,13 @@ const stateExample = {
   },
 
   outbox: {
-    "threadID": ""
+    "threadID": "",
   },
 
   typers: {
-    "threadID": {"100001663847246": 1488059498031}
+    "threadID": {
+      "100001663847246": 1488059498031
+    },
   },
 
   history: {
@@ -141,7 +143,7 @@ const stateExample = {
     "userID": {
       favorites: {},
       openGroups: [],
-    }
+    },
   },
 
   memes: {
@@ -153,7 +155,7 @@ const stateExample = {
       faves: [],
       current: {},
       activeCat: 0,
-    }
+    },
   },
 
   chatbot: {
@@ -167,17 +169,19 @@ const stateExample = {
           [1488064245575, "message"],
         ],
       }
-    }
+    },
   },
 
   abbreviations: {
-    "userID": {}
+    "userID": {
+      "abbr": "abbreviation",
+    },
   },
 
   settings: {
     "userID": {
       accentColor: "rgb(235,255,0)",
       backgroundColor: "rgb(32,35,38)",
-    }
+    },
   }
 };

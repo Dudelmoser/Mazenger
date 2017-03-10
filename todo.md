@@ -42,6 +42,8 @@
 * ~~keep thread scrolled to bottom~~
 
 ### Low priority
+* change secondary button text color for low contrast themes
+  * probably using getContrast() method
 * clean custom meme cache when user cleans his browser cache
 * make custom memes private using some sort of session cookie
 * allow textual shortcuts for emojis 
@@ -52,6 +54,11 @@
 * ~~add open emoji categories to state~~
 
 ## Code
+* add travis ci support
+* make 'dumb' components for every 'smart' container
+  * components contain HTML and CSS only
+* convert inline styles to global styles (twice as performant)
+  * react-inline, cssobj, css modules or radium
 * unified naming convention for actions
 * remove typing notifications for group chats
 * split messenger container into sub containers 

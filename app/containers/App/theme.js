@@ -41,6 +41,15 @@ function createTheme(accentColor, backgroundColor) {
     stepper: {
       textColor: emphasize(backgroundColor, .9),
     },
+    table: {
+      backgroundColor: lighten(backgroundColor, 0.02),
+    },
+    raisedButton: {
+      secondaryColor: "#D64541",
+    },
+    flatButton: {
+      secondaryTextColor: "#D64541",
+    }
   });
 }
 
