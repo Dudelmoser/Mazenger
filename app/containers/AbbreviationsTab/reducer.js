@@ -5,8 +5,22 @@ import {DELETE_ABBREVIATIONS, ADD_ABBREVIATION} from "./actions";
 const initState = fromJS({});
 
 export const defaultAbbrs = OrderedMap({
+  ";)": "😉",
   ":D": "😀",
-  "bubub": "🐢",
+  ":)": "🙂",
+  ":(": "🙁",
+  ":/": "😕",
+  ":*": "😘",
+  ":'(": "😢",
+  ">:(": "😣",
+  "o.O": "😮",
+  "3:)": "😈",
+  "O:)": "😇",
+  "B-)": "😎 ",
+  "<3": "❤",
+  "(y)": "👍",
+  ":turtle": "🐢",
+  ":poop:": "💩",
 });
 
 export default function (state = initState, action, curUserID) {
@@ -20,7 +34,7 @@ export default function (state = initState, action, curUserID) {
       const selected = fromJS(action.keys);
       return state
         .withMutations(state => {
-          state.get(curUserID).keySeq().forEach((abbr, key) => {
+          state.get(curUserID, fromJS({})).keySeq().forEach((abbr, key) => {
             if (selected.contains(key)) {
               state.deleteIn([curUserID, abbr])
             }

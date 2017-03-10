@@ -50,6 +50,10 @@ injectGlobal`
     top: -3px;
   }
   
+  td:first-child, th:first-child {
+    padding-left: 16px !important;
+  }
+  
   //noinspection CssInvalidPropertyValue
   .tooltip {
     color: white !important;

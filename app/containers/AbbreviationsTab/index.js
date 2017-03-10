@@ -2,12 +2,15 @@ import React from "react";
 import {connect} from "react-redux";
 import {createStructuredSelector} from "reselect";
 import {injectIntl, intlShape} from "react-intl";
-import {Table, TableHeader, TableHeaderColumn, TableBody, TableRow, TableRowColumn, TextField, RaisedButton} from "material-ui";
+import {Table, TableHeader, TableHeaderColumn, TableBody, TableRow, TableRowColumn, TextField, RaisedButton, FlatButton} from "material-ui";
 import messages from "./messages";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import {selectMyAbbreviations} from "./selectors";
 import {deleteAbbreviations, addAbbreviation} from "./actions";
 import emoji from "react-easy-emoji";
+import AddIcon from "material-ui/svg-icons/content/add";
+import {drawerHeight} from "../App/components";
+import Scrollbars from "react-custom-scrollbars";
 
 export class AbbreviationTab extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -17,7 +20,12 @@ export class AbbreviationTab extends React.PureComponent { // eslint-disable-lin
     selected: [],
   }
 
+  // Add abbr line: 100% - 96px (abbr) - 2*16px (margin) - 44px (btn)
   styles = {
+    scrollbar: {
+      height: drawerHeight - 144,
+    },
+
     wrapper: {
       padding: "1rem",
     },
@@ -26,58 +34,92 @@ export class AbbreviationTab extends React.PureComponent { // eslint-disable-lin
       marginRight: 16,
     },
     textInput: {
-      width: "calc(100% - 96px - 16px)"
+      marginRight: 16,
+      width: "calc(100% - 172px)",
     }
   }
 
   render() {
     const {formatMessage} = this.props.intl;
 
-    return (
-      <div style={this.styles.wrapper}>
-        <Table
-          multiSelectable={true}
-          onRowSelection={(keys) => this.setState({selected: keys})}>
-          <TableHeader
-            displaySelectAll={true}>
-            <TableRow>
-              <TableHeaderColumn>{formatMessage(messages.abbreviation)}</TableHeaderColumn>
-              <TableHeaderColumn>{formatMessage(messages.fullForm)}</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody
-            showRowHover={true}>
-            {this.props.abbrs.map((full, abbr) => {
-              return (
-              <TableRow>
-                <TableRowColumn>{abbr}</TableRowColumn>
-                <TableRowColumn>{emoji(full)}</TableRowColumn>
-              </TableRow>)
-            })}
-          </TableBody>
-        </Table>
+    const styles = {
+      hint: {
+        color: this.props.muiTheme.palette.secondaryTextColor,
+      },
+      icon: {
+        color: this.props.muiTheme.palette.primary1Color,
+      },
+      btn: {
+        minWidth: 44,
+        marginTop: 28,
+        marginBottom: 8,
+        verticalAlign: "top",
+        borderRadius: 0,
+        borderBottom: "1px solid " + this.props.muiTheme.palette.borderColor,
+      },
+    };
 
-        <TextField
-          id="abbr"
-          style={this.styles.abbrInput}
-          floatingLabelText={formatMessage(messages.abbreviation)}
-          onChange={(evt, val) => this.setState({abbr: val})}
-        />
-        <TextField
-          style={this.styles.textInput}
-          floatingLabelText={formatMessage(messages.fullForm)}
-          onChange={(evt, val) => this.setState({full: val})}
-        />
-        <RaisedButton
-          label="Add"
-          primary={true}
-          onTouchTap={this.props.addAbbr.bind(this, this.state.abbr, this.state.full)}
-        />
-        <RaisedButton
-          label="Delete"
-          secondary={true}
-          onTouchTap={this.props.deleteAbbrs.bind(this, this.state.selected)}
-        />
+    return (
+      <div>
+        <Scrollbars
+          autoHide={true}
+          style={this.styles.scrollbar}>
+          <div
+            style={this.styles.wrapper}>
+          <Table
+            multiSelectable={true}
+            onRowSelection={(keys) => this.setState({selected: keys})}>
+            <TableHeader
+              displaySelectAll={true}>
+              <TableRow>
+                <TableHeaderColumn>{formatMessage(messages.abbreviation)}</TableHeaderColumn>
+                <TableHeaderColumn>{formatMessage(messages.fullForm)}</TableHeaderColumn>
+              </TableRow>
+            </TableHeader>
+            <TableBody
+              showRowHover={true}>
+              {this.props.abbrs.map((abbr) => {
+                return (
+                <TableRow
+                  key={abbr}>
+                  <TableRowColumn>{abbr[0]}</TableRowColumn>
+                  <TableRowColumn>{emoji(abbr[1])}</TableRowColumn>
+                </TableRow>)
+              })}
+            </TableBody>
+          </Table>
+          </div>
+        </Scrollbars>
+        <div style={this.styles.wrapper}>
+          <div style={styles.hint}>
+            <FlatButton
+              label="Delete"
+              secondary={true}
+              onTouchTap={this.props.deleteAbbrs.bind(this, this.state.selected)}
+            /> unnecessary abbreviations after selecting them.
+          </div>
+
+          <div>
+            <TextField
+              id="abbr"
+              style={this.styles.abbrInput}
+              floatingLabelText={formatMessage(messages.abbreviation)}
+              onChange={(evt, val) => this.setState({abbr: val})}
+            />
+            <TextField
+              style={this.styles.textInput}
+              floatingLabelText={formatMessage(messages.fullForm)}
+              onChange={(evt, val) => this.setState({full: val})}
+            />
+            <FlatButton
+              style={styles.btn}
+              primary={true}
+              containerElement="label"
+              onTouchTap={this.props.addAbbr.bind(this, this.state.abbr, this.state.full)}>
+              <AddIcon style={styles.icon}/>
+            </FlatButton>
+          </div>
+        </div>
       </div>
     );
   }

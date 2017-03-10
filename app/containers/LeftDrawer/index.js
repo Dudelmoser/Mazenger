@@ -65,11 +65,7 @@ class LeftDrawer extends React.Component { // eslint-disable-line react/prefer-s
           <Tab
             data-tooltip={formatMessage(messages.abbreviations)}
             icon={<EditorFormatQuote/>}>
-            <Scrollbars
-              autoHide={true}
-              style={{height: drawerHeight}}>
-              <AbbreviationsTab />
-            </Scrollbars>
+            <AbbreviationsTab />
           </Tab>
 
           <Tab

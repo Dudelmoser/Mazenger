@@ -1,7 +1,7 @@
 import {createSelector} from "reselect";
 import {selectRoot} from "../App/selectors";
 import {ABBREVIATIONS} from "./constants";
-import {fromJS} from "immutable";
+import {fromJS, List} from "immutable";
 import {selectMyUserID} from "../LoginModal/selectors";
 import {defaultAbbrs} from "./reducer";
 
@@ -13,7 +13,7 @@ const selectAbbreviations = () => createSelector(
 const selectMyAbbreviations = () => createSelector(
   selectAbbreviations(),
   selectMyUserID(),
-  (abbrs, userID) => abbrs.get(userID) || defaultAbbrs
+  (abbrs, userID) => List(abbrs.get(userID) || defaultAbbrs)
 );
 
 export {

@@ -42,6 +42,7 @@
 * ~~keep thread scrolled to bottom~~
 
 ### Low priority
+* rerender when window size changes
 * change secondary button text color for low contrast themes
   * probably using getContrast() method
 * clean custom meme cache when user cleans his browser cache
