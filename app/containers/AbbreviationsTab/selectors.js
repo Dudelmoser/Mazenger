@@ -3,7 +3,6 @@ import {selectRoot} from "../App/selectors";
 import {ABBREVIATIONS} from "./constants";
 import {fromJS, List} from "immutable";
 import {selectMyUserID} from "../LoginModal/selectors";
-import {defaultAbbrs} from "./reducer";
 
 const selectAbbreviations = () => createSelector(
   selectRoot(),
@@ -13,7 +12,7 @@ const selectAbbreviations = () => createSelector(
 const selectMyAbbreviations = () => createSelector(
   selectAbbreviations(),
   selectMyUserID(),
-  (abbrs, userID) => abbrs.get(userID) || defaultAbbrs
+  (abbrs, userID) => abbrs.get(userID) || fromJS({})
 );
 
 const selectAbbreviationsArray = () => createSelector(

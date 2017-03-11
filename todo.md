@@ -43,6 +43,7 @@
 * ~~keep thread scrolled to bottom~~
 
 ### Low priority
+* switch memes with canvas clicks
 * keyboard shortcuts
 * rerender when window size changes
 * change secondary button text color for low contrast themes
@@ -72,6 +73,7 @@
 ## Bugs
 
 ### Reproducable
+* switching accounts currently crashes the client
 * login with different credentials doesn't auto-clear the cache
 * chat input switches from uncontrolled to controlled
 (results in weird overlay effect)

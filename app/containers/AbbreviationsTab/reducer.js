@@ -25,6 +25,10 @@ export const defaultAbbrs = OrderedMap({
 });
 
 export default function (state = initState, action, curUserID) {
+  if (!state.get(curUserID))
+    return state
+      .set(curUserID, defaultAbbrs);
+
   switch (action.type) {
 
     case CLEAR_SETTINGS:
@@ -45,11 +49,7 @@ export default function (state = initState, action, curUserID) {
     case ADD_ABBREVIATION:
       if (!action.abbr || !action.full)
         return state;
-      if (!state.get(curUserID))
-        return state
-          .set(curUserID, defaultAbbrs)
-          .setIn([curUserID, action.abbr], action.full);
       return state
-        .setIn([curUserID, action.abbr], action.full)
+          .setIn([curUserID, action.abbr], action.full);
   }
 }
