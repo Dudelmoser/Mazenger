@@ -12,6 +12,7 @@ import ContentAdd from "material-ui/svg-icons/content/add";
 import ContentClear from "material-ui/svg-icons/content/clear";
 import {drawerHeight} from "../App/components";
 import Scrollbars from "react-custom-scrollbars";
+import Tooltip from "react-tooltip";
 
 export class AbbreviationTab extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -96,7 +97,9 @@ export class AbbreviationTab extends React.PureComponent { // eslint-disable-lin
           </div>
         </Scrollbars>
         <div style={this.styles.wrapper}>
+          <Tooltip class="tooltip"/>
           <FlatButton
+            data-tip={formatMessage(messages.deleteTip)}
             style={this.styles.delBtn}
             onTouchTap={this.props.deleteAbbrs.bind(this, this.state.selected)}>
             <ContentClear style={styles.delIcon}/>

@@ -162,12 +162,12 @@ const stateExample = {
     "userID": {
       "threadID": {
         enabled: false,
-        dictionary: [
-          ["received", "response"],
-        ],
-        tasks: [
-          [1488064245575, "message"],
-        ],
+        dictionary: {
+          "regexp": "response",
+        },
+        tasks: {
+          "1488064245575": "message",
+        },
       }
     },
   },

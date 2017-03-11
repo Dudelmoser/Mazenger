@@ -9,4 +9,8 @@ export default defineMessages({
     id: "AbbreviationsTab.fullForm",
     defaultMessage: "Full form"
   },
+  deleteTip: {
+    id: "AbbreviationsTab.deleteTip",
+    defaultMessage: "Delete selected abbreviations"
+  }
 });

@@ -5,7 +5,7 @@ export default function (reducers, params = []) {
     .withMutations((tempState) => {
       keys.forEach((key) => {
         const reducer = reducers[key];
-        const curSubState = tempState.get(key);
+        const curSubState = tempState.get(key); //get(userID).get(key)
         const nextSubState = reducer(curSubState, action, ...params);
         if (nextSubState)
           tempState.set(key, nextSubState);
