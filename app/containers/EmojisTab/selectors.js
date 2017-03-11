@@ -4,11 +4,6 @@ import {selectRoot} from "../App/selectors";
 import {selectMyUserID} from "../LoginModal/selectors";
 import {EMOJIS, FAVORITES, OPEN_GROUPS} from "./constants";
 
-// function getKeysSortedByValue(obj) {
-//   var keys = Object.keys(obj);
-//   return keys.sort((a,b) => obj[b] - obj[a]);
-// }
-
 const selectEmojis = () => createSelector(
   selectRoot(),
   (root) => root.get(EMOJIS) || fromJS({})
@@ -41,7 +36,7 @@ const selectFavEmojis = () => createSelector(
 
 const selectOpenEmojiGroups = () => createSelector(
   selectMyEmojis(),
-  (emojis) => emojis.get(OPEN_GROUPS) || fromJS({})
+  (emojis) => emojis.get(OPEN_GROUPS) || fromJS({0: true, 1: true})
 );
 
 export {
