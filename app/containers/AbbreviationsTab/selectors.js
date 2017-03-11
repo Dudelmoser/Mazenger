@@ -13,10 +13,16 @@ const selectAbbreviations = () => createSelector(
 const selectMyAbbreviations = () => createSelector(
   selectAbbreviations(),
   selectMyUserID(),
-  (abbrs, userID) => List(abbrs.get(userID) || defaultAbbrs)
+  (abbrs, userID) => abbrs.get(userID) || defaultAbbrs
+);
+
+const selectAbbreviationsArray = () => createSelector(
+  selectMyAbbreviations(),
+  (abbrs) => List(abbrs)
 );
 
 export {
   selectAbbreviations,
   selectMyAbbreviations,
+  selectAbbreviationsArray,
 }

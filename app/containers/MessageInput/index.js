@@ -8,6 +8,7 @@ import {sendMessage} from "../App/actions/requests";
 import {selectCurrentInput} from "./selectors";
 import {createStructuredSelector} from "reselect";
 import {selectCurrentThreadID} from "../LoginModal/selectors";
+import {selectMyAbbreviations} from "../AbbreviationsTab/selectors";
 
 export class MessageInput extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -37,18 +38,23 @@ MessageInput.propTypes = {
 const mapStateToProps = createStructuredSelector({
   threadID: selectCurrentThreadID(),
   message: selectCurrentInput(),
+  abbrs: selectMyAbbreviations(),
 });
 
 // to get access to stateProps filled by selectors
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const {threadID, message} = stateProps;
-  const {dispatch} = dispatchProps;
+const mergeProps = (stateProps, {dispatch}, ownProps) => {
+  const {threadID, message, abbrs} = stateProps;
 
   return {
     threadID,
     message,
     handleChange: (event) => {
-      dispatch(changeMessage(event.target.value));
+      // replace abbreviations with their full forms
+      let str = event.target.value;
+      abbrs.forEach((text, abbr) => {
+        str = str.replace(abbr, text);
+      });
+      dispatch(changeMessage(str));
     },
     handleKeyUp: (event) => {
       if (event.keyCode == 13) {

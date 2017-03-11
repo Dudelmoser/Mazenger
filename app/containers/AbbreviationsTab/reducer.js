@@ -7,6 +7,7 @@ const initState = fromJS({});
 export const defaultAbbrs = OrderedMap({
   ";)": "😉",
   ":D": "😀",
+  ":P": "😋",
   ":)": "🙂",
   ":(": "🙁",
   ":/": "😕",

@@ -5,7 +5,7 @@ import {injectIntl, intlShape} from "react-intl";
 import {Table, TableHeader, TableHeaderColumn, TableBody, TableRow, TableRowColumn, TextField, RaisedButton, FlatButton} from "material-ui";
 import messages from "./messages";
 import muiThemeable from "material-ui/styles/muiThemeable";
-import {selectMyAbbreviations} from "./selectors";
+import {selectAbbreviationsArray} from "./selectors";
 import {deleteAbbreviations, addAbbreviation} from "./actions";
 import emoji from "react-easy-emoji";
 import ContentAdd from "material-ui/svg-icons/content/add";
@@ -137,7 +137,7 @@ AbbreviationTab.propTypes = {
 }
 
 const mapStateToProps = createStructuredSelector({
-  abbrs: selectMyAbbreviations(),
+  abbrs: selectAbbreviationsArray(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
