@@ -6,3 +6,6 @@ export const VALID_EMAILS = "validEmails";
 export const USER_ID = "userID";
 export const THREAD_ID = "threadID";
 export const IS_CONNECTED = "isConnected";
+
+export const MAIL_INPUT = "mailInput";
+export const PWD_INPUT = "pwdInput";

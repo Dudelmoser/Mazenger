@@ -1,7 +1,5 @@
 import { injectGlobal } from 'styled-components';
 
-const ttBg = "rgba(127, 127, 127, 0.5)";
-
 /* eslint no-unused-expressions: 0 */
 // language=LESS
 injectGlobal`
@@ -53,36 +51,4 @@ injectGlobal`
   td:first-child, th:first-child {
     padding-left: 16px !important;
   }
-  
-  //noinspection CssInvalidPropertyValue
-  .tooltip {
-    color: white !important;
-    height: 30px !important;
-    font-size: 1rem !important;
-    padding: 4px 16px !important;
-    background-color: ${ttBg} !important;
-    border-radius: 0 !important;
-    &.place-left {
-      &:after {
-        border-left-color: ${ttBg} !important;
-      }
-    }        
-    &.place-top {
-      &:after {
-        border-top-color: ${ttBg} !important;
-      }
-    }   
-    &.place-right {
-      &:after {
-        border-right-color: ${ttBg} !important;
-      }
-    } 
-    &.place-bottom {
-      &:after {
-        border-bottom-color: ${ttBg} !important;
-      }
-    }
-  }
 `;
-
-// replaces the default title-attribute tooltip

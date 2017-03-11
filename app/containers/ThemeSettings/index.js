@@ -8,6 +8,8 @@ import {injectIntl, intlShape} from "react-intl";
 import ActionDone from "material-ui/svg-icons/action/done";
 import {emphasize} from "material-ui/utils/colorManipulator";
 import messages from "./messages";
+import {injectGlobal} from "styled-components";
+import muiThemeable from "material-ui/styles/muiThemeable";
 
 export class ColorPicker extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -24,6 +26,7 @@ export class ColorPicker extends React.PureComponent { // eslint-disable-line re
   }
 
   render() {
+    this.injectTooltipStyle();
     const {formatMessage} = this.props.intl;
 
     return (
@@ -59,6 +62,41 @@ export class ColorPicker extends React.PureComponent { // eslint-disable-line re
      </div>
     );
   }
+
+  injectTooltipStyle() {
+    const color = this.props.muiTheme.palette.textColor;
+    const bg = this.props.muiTheme.message.color;
+    injectGlobal`
+    .tooltip {
+        color: ${color} !important;
+        height: 30px !important;
+        font-size: 1rem !important;
+        padding: 4px 16px !important;
+        background-color: ${bg} !important;
+        border-radius: 0 !important;
+      &.place-left {
+        &:after {
+            border-left-color: ${bg} !important;
+          }
+        }
+      &.place-top {
+        &:after {
+            border-top-color: ${bg} !important;
+          }
+        }
+      &.place-right {
+        &:after {
+            border-right-color: ${bg} !important;
+          }
+        }
+      &.place-bottom {
+        &:after {
+            border-bottom-color: ${bg} !important;
+          }
+        }
+      }
+    }`;
+  }
 }
 
 ColorPicker.propTypes = {
@@ -77,4 +115,4 @@ const mapDispatchToProps = (dispatch) => ({
   changeBackgroundColor: (key) => dispatch(changeBackgroundColor(key)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ColorPicker));
+export default connect(mapStateToProps, mapDispatchToProps)(muiThemeable()(injectIntl(ColorPicker)));

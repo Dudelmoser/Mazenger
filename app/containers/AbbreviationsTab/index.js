@@ -8,7 +8,8 @@ import muiThemeable from "material-ui/styles/muiThemeable";
 import {selectMyAbbreviations} from "./selectors";
 import {deleteAbbreviations, addAbbreviation} from "./actions";
 import emoji from "react-easy-emoji";
-import AddIcon from "material-ui/svg-icons/content/add";
+import ContentAdd from "material-ui/svg-icons/content/add";
+import ContentClear from "material-ui/svg-icons/content/clear";
 import {drawerHeight} from "../App/components";
 import Scrollbars from "react-custom-scrollbars";
 
@@ -23,19 +24,23 @@ export class AbbreviationTab extends React.PureComponent { // eslint-disable-lin
   // Add abbr line: 100% - 96px (abbr) - 2*16px (margin) - 44px (btn)
   styles = {
     scrollbar: {
-      height: drawerHeight - 144,
+      height: drawerHeight - 100,
     },
-
     wrapper: {
       padding: "1rem",
     },
-    abbrInput: {
-      width: 96,
-      marginRight: 16,
+    input: {
+      width: "calc(50% - 54px)",
     },
-    textInput: {
-      marginRight: 16,
-      width: "calc(100% - 172px)",
+    delBtn: {
+      minWidth: 56,
+      marginTop: 28,
+      marginBottom: 8,
+      verticalAlign: "top",
+      marginRight: 8,
+    },
+    abbrCol: {
+      width: 172,
     }
   }
 
@@ -43,13 +48,13 @@ export class AbbreviationTab extends React.PureComponent { // eslint-disable-lin
     const {formatMessage} = this.props.intl;
 
     const styles = {
-      hint: {
-        color: this.props.muiTheme.palette.secondaryTextColor,
+      delIcon: {
+        color: this.props.muiTheme.flatButton.secondaryTextColor
       },
-      icon: {
+      addIcon: {
         color: this.props.muiTheme.palette.primary1Color,
       },
-      btn: {
+      inputBtn: {
         minWidth: 44,
         marginTop: 28,
         marginBottom: 8,
@@ -72,7 +77,7 @@ export class AbbreviationTab extends React.PureComponent { // eslint-disable-lin
             <TableHeader
               displaySelectAll={true}>
               <TableRow>
-                <TableHeaderColumn>{formatMessage(messages.abbreviation)}</TableHeaderColumn>
+                <TableHeaderColumn style={this.styles.abbrCol}>{formatMessage(messages.abbreviation)}</TableHeaderColumn>
                 <TableHeaderColumn>{formatMessage(messages.fullForm)}</TableHeaderColumn>
               </TableRow>
             </TableHeader>
@@ -82,7 +87,7 @@ export class AbbreviationTab extends React.PureComponent { // eslint-disable-lin
                 return (
                 <TableRow
                   key={abbr}>
-                  <TableRowColumn>{abbr[0]}</TableRowColumn>
+                  <TableRowColumn style={this.styles.abbrCol}>{abbr[0]}</TableRowColumn>
                   <TableRowColumn>{emoji(abbr[1])}</TableRowColumn>
                 </TableRow>)
               })}
@@ -91,39 +96,33 @@ export class AbbreviationTab extends React.PureComponent { // eslint-disable-lin
           </div>
         </Scrollbars>
         <div style={this.styles.wrapper}>
-          <div style={styles.hint}>
-            <FlatButton
-              label="Delete"
-              secondary={true}
-              onTouchTap={this.props.deleteAbbrs.bind(this, this.state.selected)}
-            /> unnecessary abbreviations after selecting them.
-          </div>
-
-          <div>
-            <TextField
-              id="abbr"
-              style={this.styles.abbrInput}
-              floatingLabelText={formatMessage(messages.abbreviation)}
-              onChange={(evt, val) => this.setState({abbr: val})}
-            />
-            <TextField
-              style={this.styles.textInput}
-              floatingLabelText={formatMessage(messages.fullForm)}
-              onChange={(evt, val) => this.setState({full: val})}
-            />
-            <FlatButton
-              style={styles.btn}
-              primary={true}
-              containerElement="label"
-              onTouchTap={this.props.addAbbr.bind(this, this.state.abbr, this.state.full)}>
-              <AddIcon style={styles.icon}/>
-            </FlatButton>
-          </div>
+          <FlatButton
+            style={this.styles.delBtn}
+            onTouchTap={this.props.deleteAbbrs.bind(this, this.state.selected)}>
+            <ContentClear style={styles.delIcon}/>
+          </FlatButton>
+          <TextField
+            id="abbr"
+            style={this.styles.input}
+            floatingLabelText={formatMessage(messages.abbreviation)}
+            onChange={(evt, val) => this.setState({abbr: val})}
+          />
+          <TextField
+            style={this.styles.input}
+            floatingLabelText={formatMessage(messages.fullForm)}
+            onChange={(evt, val) => this.setState({full: val})}
+          />
+          <FlatButton
+            style={styles.inputBtn}
+            onTouchTap={this.props.addAbbr.bind(this, this.state.abbr, this.state.full)}>
+            <ContentAdd style={styles.addIcon}/>
+          </FlatButton>
         </div>
       </div>
     );
   }
 
+  // workaround to limit the input word length (must be refreshed)
   componentDidMount(){
     document.getElementById("abbr").maxLength = 8;
   }

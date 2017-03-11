@@ -1,6 +1,6 @@
 import React from "react";
 import {injectIntl, intlShape} from "react-intl";
-import ColorPicker from "../ColorPicker";
+import ThemeSettings from "../ThemeSettings";
 import PrivacySettings from "../PrivacySettings";
 import {Stepper, Step, StepButton, StepContent} from "material-ui";
 import {injectGlobal} from "styled-components";
@@ -37,7 +37,7 @@ export class SettingsTab extends React.PureComponent { // eslint-disable-line re
              {formatMessage(messages.theme)}
            </StepButton>
            <StepContent>
-              <ColorPicker/>
+              <ThemeSettings/>
            </StepContent>
          </Step>
          <Step>

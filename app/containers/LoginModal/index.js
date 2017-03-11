@@ -8,6 +8,7 @@ import {login} from "../App/actions/requests";
 import {changeEmail, changePassword} from "./actions";
 import {injectIntl} from "react-intl";
 import messages from "./messages";
+import {PWD_INPUT, MAIL_INPUT} from "./constants";
 
 export class LoginModal extends React.Component {
 
@@ -46,22 +47,31 @@ export class LoginModal extends React.Component {
             {formatMessage(messages.hint)}
             <br/>
             <TextField
+              id={MAIL_INPUT}
               hintText={formatMessage(messages.email)}
               floatingLabelText={formatMessage(messages.email)}
               type="text"
               onChange={this.props.changeEmail}
+              onKeyUp={this.props.handleKeyUp.bind(this, 0)}
             />
             <br/>
             <TextField
+              id={PWD_INPUT}
               hintText={formatMessage(messages.password)}
               floatingLabelText={formatMessage(messages.password)}
               type="password"
               onChange={this.props.changePassword}
+              onKeyUp={this.props.handleKeyUp.bind(this, 1)}
             />
             <br/>
           </div>
         </Dialog>
     );
+  }
+
+  // temporary fix: only works for the very first login
+  componentDidMount() {
+    document.getElementById(MAIL_INPUT).focus();
   }
 }
 
@@ -84,6 +94,15 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     login: () => dispatch(login({email: stateProps.email, password: stateProps.password})),
     changeEmail: (event) => dispatch(changeEmail(event.target.value)),
     changePassword: (event) => dispatch(changePassword(event.target.value)),
+    handleKeyUp: (inputID, event) => {
+      if (event.keyCode == 13) {
+        if (inputID == 0) {
+          document.getElementById(PWD_INPUT).focus();
+        } else if (inputID == 1) {
+          dispatch(login({email: stateProps.email, password: stateProps.password}));
+        }
+      }
+    }
   }
 };
 

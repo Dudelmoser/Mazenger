@@ -24,6 +24,12 @@ export default function (state = initState, action, curUserID, curThreadID) {
       let selectStart = input.selectionStart;
       let selectEnd = input.selectionEnd;
 
+      input.focus();
+      // must be delayed cause taking focus takes a short while and resets the selection
+      setTimeout(() => {
+        input.setSelectionRange(selectStart+1, selectEnd+1)
+      }, 200);
+
       return state
         .update(curThreadID,
           message => message

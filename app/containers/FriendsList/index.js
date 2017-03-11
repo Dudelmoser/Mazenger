@@ -4,6 +4,7 @@ import {List} from "material-ui";
 import {selectFriendsCount} from "./selectors";
 import {createStructuredSelector} from "reselect";
 import FriendsListItem from "../FriendsListItem";
+import muiThemeable from "material-ui/styles/muiThemeable";
 
 export class FriendsList extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -26,4 +27,4 @@ const mapStateToProps = createStructuredSelector({
   friendsCount: selectFriendsCount(),
 });
 
-export default connect(mapStateToProps)(FriendsList);
+export default connect(mapStateToProps)(muiThemeable()(FriendsList));

@@ -49,6 +49,9 @@ function createTheme(accentColor, backgroundColor) {
     },
     flatButton: {
       secondaryTextColor: "#D64541",
+    },
+    checkbox: {
+      boxColor: emphasize(backgroundColor, .3),
     }
   });
 }

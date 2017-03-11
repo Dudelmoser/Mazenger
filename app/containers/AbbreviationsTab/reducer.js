@@ -19,8 +19,8 @@ export const defaultAbbrs = OrderedMap({
   "B-)": "😎 ",
   "<3": "❤",
   "(y)": "👍",
-  ":turtle": "🐢",
   ":poop:": "💩",
+  ":turtle:": "🐢",
 });
 
 export default function (state = initState, action, curUserID) {

@@ -30,6 +30,7 @@
 ## Features
 
 ### High priority
+* video support
 * send files via drag and drop
 * show sender tooltip on recently received messages
 * login with return
@@ -42,6 +43,7 @@
 * ~~keep thread scrolled to bottom~~
 
 ### Low priority
+* keyboard shortcuts
 * rerender when window size changes
 * change secondary button text color for low contrast themes
   * probably using getContrast() method
