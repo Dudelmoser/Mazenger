@@ -17,9 +17,8 @@ export class MessageInput extends React.PureComponent { // eslint-disable-line r
     return (
       <TextField
         id="input"
-        style={this.style}
-        value={this.props.message}
         fullWidth={true}
+        value={this.props.message}
         onKeyUp={this.props.handleKeyUp}
         onChange={this.props.handleChange}
         hintText={formatMessage(messages.hint)}
@@ -42,7 +41,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 // to get access to stateProps filled by selectors
-const mergeProps = (stateProps, {dispatch}, ownProps) => {
+const mergeProps = (stateProps, {dispatch}) => {
   const {threadID, message, abbrs} = stateProps;
 
   return {

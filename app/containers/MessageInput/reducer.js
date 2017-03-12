@@ -27,7 +27,7 @@ export default function (state = initState, action, threadID) {
       input.focus();
       // must be delayed cause taking focus takes a short while and resets the selection
       setTimeout(() => {
-        input.setSelectionRange(selectStart+1, selectEnd+1)
+        input.setSelectionRange(selectStart+2, selectEnd+2)
       }, 200);
 
       return state
