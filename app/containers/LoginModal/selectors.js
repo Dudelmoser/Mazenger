@@ -1,46 +1,47 @@
 import {createSelector} from "reselect";
 import {fromJS} from "immutable";
-import {selectRoot} from "../App/selectors";
-import {SESSION, EMAIL, PASSWORD, APP_STATE, VALID_EMAILS, THREAD_ID, USER_ID, IS_CONNECTED} from "./constants";
+import {selectRoot, selectSessions} from "../App/selectors";
+import {LOGIN, EMAIL, PASSWORD, APP_STATE, VALID_EMAILS, THREAD_ID, USER_ID} from "./constants";
 
 const selectSession = () => createSelector(
+  selectSessions(),
+  selectCurrentUserID(),
+  (sessions, userID) => sessions.get(userID) || fromJS({})
+);
+
+const selectLogin = () => createSelector(
   selectRoot(),
-  (root) => root.get(SESSION) || fromJS({})
+  (root) => root.get(LOGIN) || fromJS({})
 );
 
 const selectEmail = () => createSelector(
-  selectSession(),
-  (session) => session.get(EMAIL) || ""
+  selectLogin(),
+  (login) => login.get(EMAIL) || ""
 );
 
 const selectPassword = () => createSelector(
-  selectSession(),
-  (session) => session.get(PASSWORD) || ""
+  selectLogin(),
+  (login) => login.get(PASSWORD) || ""
 );
 
 const selectAppState = () => createSelector(
-  selectSession(),
-  (session) => session.get(APP_STATE) || null
+  selectLogin(),
+  (login) => login.get(APP_STATE) || null
 );
 
 const selectValidEmails = () => createSelector(
-  selectSession(),
-  (session) => session.get(VALID_EMAILS) || fromJS([])
+  selectLogin(),
+  (login) => login.get(VALID_EMAILS) || fromJS([])
 );
 
-const selectMyUserID = () => createSelector(
-  selectSession(),
-  (session) => session.get(USER_ID) || 0
+const selectCurrentUserID = () => createSelector(
+  selectLogin(),
+  (login) => login.get(USER_ID) || 0
 );
 
 const selectCurrentThreadID = () => createSelector(
-  selectSession(),
-  (session) => session.get(THREAD_ID) || 0
-);
-
-const selectIsConnected = () => createSelector(
-  selectSession(),
-  (session) => session.get(IS_CONNECTED) || false
+  selectLogin(),
+  (login) => login.get(THREAD_ID) || 0
 );
 
 const selectIsLoggedIn = () => createSelector(
@@ -54,8 +55,7 @@ export {
   selectPassword,
   selectAppState,
   selectValidEmails,
-  selectMyUserID,
+  selectCurrentUserID,
   selectCurrentThreadID,
-  selectIsConnected,
   selectIsLoggedIn,
 }

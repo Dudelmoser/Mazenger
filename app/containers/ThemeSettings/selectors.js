@@ -1,7 +1,7 @@
 import {createSelector} from "reselect";
 import {ACCENT_COLOR, BACKGROUND_COLOR} from "./constants";
 import {fromJS} from "immutable";
-import {selectMySettings} from "../SettingsTab/selectors";
+import {selectSettings} from "../SettingsTab/selectors";
 
 export const backgroundColors = fromJS([
   ["#202326", 0],
@@ -33,12 +33,12 @@ export const accentColors = fromJS([
 ]);
 
 const selectBackgroundKey = () => createSelector(
-  selectMySettings(),
+  selectSettings(),
   (settings) => settings.get(BACKGROUND_COLOR) || 0
 );
 
 const selectAccentKey = () => createSelector(
-  selectMySettings(),
+  selectSettings(),
   (settings) => settings.get(ACCENT_COLOR) || 0
 );
 

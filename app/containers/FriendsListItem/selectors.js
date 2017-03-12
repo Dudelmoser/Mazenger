@@ -33,7 +33,6 @@ const selectUserID = (index) => createSelector(
 );
 
 export {
-  selectFriend,
   selectImageURL,
   selectFullName,
   selectHasBirthday,

@@ -9,10 +9,10 @@ import {CLEAR_SETTINGS} from "../PrivacySettings/actions";
 const CANVAS_ID = "memeCanvas";
 const initState = fromJS({});
 
-export default function(state = initState, action, curUserID, curThreadID) {
-  const img = state.getIn([curUserID, CURRENT_MEME], fromJS({})).get("url");
-  const top = state.getIn([curUserID, TOP_CAPTION]);
-  const bot = state.getIn([curUserID, BOTTOM_CAPTION]);
+export default function(state = initState, action) {
+  const img = state.get(CURRENT_MEME, fromJS({})).get("url");
+  const top = state.get(TOP_CAPTION);
+  const bot = state.get(BOTTOM_CAPTION);
 
   switch (action.type) {
 
@@ -24,44 +24,44 @@ export default function(state = initState, action, curUserID, curThreadID) {
     case SET_TOP_CAPTION:
       Meme(img, CANVAS_ID, action.str, bot);
       return state
-        .setIn([curUserID, TOP_CAPTION], action.str);
+        .set(TOP_CAPTION, action.str);
 
     case SET_BOTTOM_CAPTION:
       Meme(img, CANVAS_ID, top, action.str);
       return state
-        .setIn([curUserID, BOTTOM_CAPTION], action.str);
+        .set(BOTTOM_CAPTION, action.str);
 
     case PICK_MEME:
       Meme(action.url, CANVAS_ID, top, bot);
-      const curMeme = state.getIn([curUserID, action.cat, action.idx]) || fromJS({});
+      const curMeme = state.getIn([action.cat, action.idx]) || fromJS({});
       return state
-        .setIn([curUserID, ACTIVE_CAT], action.cat)
-        .setIn([curUserID, CURRENT_MEME], curMeme);
+        .set(ACTIVE_CAT, action.cat)
+        .set(CURRENT_MEME, curMeme);
 
     case MEMES_LOADED:
       Meme(action.memes[0].url, CANVAS_ID, top, bot);
       return state
-        .setIn([curUserID, TOP100_MEMES], fromJS(action.memes))
-        .setIn([curUserID, CURRENT_MEME], fromJS(action.memes[0]));
+        .set(TOP100_MEMES, fromJS(action.memes))
+        .set(CURRENT_MEME, fromJS(action.memes[0]));
 
     case IMAGE_UPLOADED:
       Meme(action.url, CANVAS_ID, top, bot);
-      const memes = state.getIn([curUserID, CUSTOM_MEMES]) || fromJS([]);
+      const memes = state.get(CUSTOM_MEMES) || fromJS([]);
       const meme = fromJS({name: "" + memes.count(), url: action.url});
       return state
         .withMutations(state => {
-          state.setIn([curUserID, CUSTOM_MEMES], memes.push(meme));
+          state.set(CUSTOM_MEMES, memes.push(meme));
         })
-        .setIn([curUserID, CURRENT_MEME], meme)
-        .setIn([curUserID, ACTIVE_CAT], CUSTOM_MEMES);
+        .set(CURRENT_MEME, meme)
+        .set(ACTIVE_CAT, CUSTOM_MEMES);
 
     case SEND_MEME:
       return state
         .withMutations(state => {
-          const curMeme = state.getIn([curUserID, CURRENT_MEME]);
+          const curMeme = state.get(CURRENT_MEME);
 
           let faves = state
-              .getIn([curUserID, FAVORITE_MEMES], fromJS([]))
+              .get(FAVORITE_MEMES, fromJS([]))
               .filter(fave => {
                 if (fave.get("url") == curMeme.get("url") && fave.get("name") == curMeme.get("name"))
                   return false;
@@ -69,11 +69,10 @@ export default function(state = initState, action, curUserID, curThreadID) {
               })
               .insert(0, fromJS({name: curMeme.get("name"), url: curMeme.get("url")}));
 
-          state.setIn([curUserID, FAVORITE_MEMES], faves);
+          state.set(FAVORITE_MEMES, faves);
         });
 
     case CLEAR_SETTINGS:
-      return state
-        .set(curUserID, initState);
+      return initState;
   }
 }

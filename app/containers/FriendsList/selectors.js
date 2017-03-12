@@ -1,11 +1,11 @@
 import {createSelector} from "reselect";
-import {fromJS} from "immutable";
-import {selectRoot} from "../App/selectors";
+import {List} from "immutable";
 import {FRIENDS} from "./constants";
+import {selectSession} from "../LoginModal/selectors";
 
 const selectFriends = () => createSelector(
-  selectRoot(),
-  (root) => root.get(FRIENDS) || fromJS({})
+  selectSession(),
+  (session) => session.get(FRIENDS) || List()
 );
 
 const selectFriendsCount = () => createSelector(

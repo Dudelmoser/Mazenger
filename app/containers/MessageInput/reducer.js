@@ -5,7 +5,7 @@ import {INSERT_EMOJI} from "../EmojisTab/actions";
 
 const initState = fromJS({});
 
-export default function (state = initState, action, curUserID, curThreadID) {
+export default function (state = initState, action, threadID) {
   switch (action.type) {
 
     case MESSAGE_SENT:
@@ -14,7 +14,7 @@ export default function (state = initState, action, curUserID, curThreadID) {
 
     case CHANGE_MESSAGE:
       return state
-        .set(curThreadID, action.message);
+        .set(threadID, action.message);
 
     case INSERT_EMOJI:
       if (!action.emoji)
@@ -31,7 +31,7 @@ export default function (state = initState, action, curUserID, curThreadID) {
       }, 200);
 
       return state
-        .update(curThreadID,
+        .update(threadID,
           message => message
             ? message.substring(0,selectStart) + action.emoji + message.substring(selectEnd)
             : action.emoji);

@@ -1,9 +1,9 @@
 import {fromJS} from "immutable";
 import {CHANGE_EMAIL, CHANGE_PASSWORD} from "./actions";
-import {CONNECTED, DISCONNECTED, CLEAR_CACHE} from "../App/actions/actions";
+import {CLEAR_CACHE} from "../App/actions/actions";
 import {LOGIN_FAILED, LOGIN_PASSED, THREAD_HISTORY_RECEIVED} from "../App/actions/responses";
 import {LOGOUT} from "../App/actions/requests";
-import {THREAD_ID, EMAIL, PASSWORD, IS_CONNECTED, APP_STATE, USER_ID, VALID_EMAILS} from "./constants";
+import {THREAD_ID, EMAIL, PASSWORD, APP_STATE, USER_ID, VALID_EMAILS} from "./constants";
 
 let initState = fromJS({
   email: "",
@@ -12,10 +12,9 @@ let initState = fromJS({
   validEmails: [],
   userID: null,
   threadID: null,
-  isConnected: false,
 });
 
-export default function (state = initState, action, curUserID, curThreadID) {
+export default function (state = initState, action) {
   switch (action.type) {
 
     case CHANGE_EMAIL:
@@ -26,14 +25,6 @@ export default function (state = initState, action, curUserID, curThreadID) {
       return state
         .set(PASSWORD, action.password);
 
-    case CONNECTED:
-      return state
-        .set(IS_CONNECTED, true);
-
-    case DISCONNECTED:
-      return state
-        .set(IS_CONNECTED, false);
-
     case LOGIN_FAILED:
       return state
         .set(APP_STATE, null);
@@ -42,7 +33,8 @@ export default function (state = initState, action, curUserID, curThreadID) {
       let newState = state;
 
       let newID = action.currentUserID;
-      if (curUserID != newID)
+      let curID = state.get(USER_ID);
+      if (curID != newID)
         newState = initState;
 
       return newState
@@ -57,7 +49,7 @@ export default function (state = initState, action, curUserID, curThreadID) {
     case LOGOUT:
       return state
         .set(APP_STATE, null)
-        //.set(USER_ID, null)
+        .set(USER_ID, 0)
         .set(THREAD_ID, null);
 
     case CLEAR_CACHE:
@@ -67,5 +59,8 @@ export default function (state = initState, action, curUserID, curThreadID) {
       const threadID = action.args[0];
       return state
         .set(THREAD_ID, threadID);
+
+    default:
+      return state;
   }
 }

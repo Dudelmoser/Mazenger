@@ -5,7 +5,7 @@ import EmojiList from "../EmojiList";
 function EmojiCategory(props) {
   return (
     <ListItem
-      initiallyOpen={props.open}
+      open={props.open}
       primaryText={props.name}
       leftIcon={props.icon}
       primaryTogglesNestedList={true}

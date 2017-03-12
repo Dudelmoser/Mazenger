@@ -3,11 +3,10 @@ import {CLEAR_SETTINGS} from "../PrivacySettings/actions";
 
 const initState = fromJS({});
 
-export default function (state = initState, action, curUserID) {
+export default function (state = initState, action) {
   switch (action.type) {
 
     case CLEAR_SETTINGS:
-      return state
-        .set(curUserID, initState);
+      return initState;
   }
 }

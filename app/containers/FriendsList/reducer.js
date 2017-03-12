@@ -1,7 +1,9 @@
-import {fromJS} from "immutable";
+import {fromJS, List} from "immutable";
 import {FRIENDS_LIST_RECEIVED} from "../App/actions/responses";
 
-export default function (state, action) {
+const initState = List();
+
+export default function (state = initState, action) {
   switch (action.type) {
 
     case FRIENDS_LIST_RECEIVED:

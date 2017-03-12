@@ -1,22 +1,15 @@
 import {createSelector} from "reselect";
 import {fromJS} from "immutable";
-import {selectRoot} from "../App/selectors";
-import {selectMyUserID} from "../LoginModal/selectors";
+import {selectSession} from "../LoginModal/selectors";
 import {EMOJIS, FAVORITES, OPEN_GROUPS} from "./constants";
 
 const selectEmojis = () => createSelector(
-  selectRoot(),
-  (root) => root.get(EMOJIS) || fromJS({})
-);
-
-const selectMyEmojis = () => createSelector(
-  selectEmojis(),
-  selectMyUserID(),
-  (emojis, userID) => emojis.get(userID) || fromJS({})
+  selectSession(),
+  (session) => session.get(EMOJIS) || fromJS({})
 )
 
 const selectFavoriteEmojis = () => createSelector(
-  selectMyEmojis(),
+  selectEmojis(),
   (emojis) => emojis.get(FAVORITES) || fromJS({})
 );
 
@@ -35,13 +28,11 @@ const selectFavEmojis = () => createSelector(
 );
 
 const selectOpenEmojiGroups = () => createSelector(
-  selectMyEmojis(),
-  (emojis) => emojis.get(OPEN_GROUPS) || fromJS({0: true, 1: true})
+  selectEmojis(),
+  (emojis) => emojis.get(OPEN_GROUPS) || fromJS([])
 );
 
 export {
-  selectEmojis,
-  selectMyEmojis,
   selectFavEmojis,
   selectOpenEmojiGroups,
 }

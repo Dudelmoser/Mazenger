@@ -1,18 +1,17 @@
 import {createSelector} from "reselect";
 import {fromJS} from "immutable";
-import {selectRoot} from "../App/selectors";
 import {HISTORIES, TYPERS} from "./constants";
-import {selectCurrentThreadID} from "../LoginModal/selectors";
+import {selectCurrentThreadID, selectSession} from "../LoginModal/selectors";
 import {selectUsers} from "../ThreadList/selectors";
 
 const selectHistories = () => createSelector(
-  selectRoot(),
-  (root) => root.get(HISTORIES) || fromJS({})
+  selectSession(),
+  (session) => session.get(HISTORIES) || fromJS([])
 );
 
 const selectHistory = (threadID) => createSelector(
   selectHistories(),
-  (histories) => histories.get(threadID) || fromJS([])
+  (histories) => histories.get(threadID)
 );
 
 const selectCurrentHistory = () => createSelector(
@@ -22,8 +21,8 @@ const selectCurrentHistory = () => createSelector(
 );
 
 const selectAllTypers = () => createSelector(
-  selectRoot(),
-  (root) => root.get(TYPERS) || fromJS({})
+  selectSession(),
+  (session) => session.get(TYPERS) || fromJS({})
 );
 
 const selectCurrentTypers = () => createSelector(
@@ -49,7 +48,6 @@ const selectMessageCount = () => createSelector(
 );
 
 export {
-  selectHistories,
   selectHistory,
   selectCurrentHistory,
   selectAllTypers,

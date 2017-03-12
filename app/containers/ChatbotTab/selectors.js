@@ -1,31 +1,30 @@
-import {selectRoot} from "../App/selectors";
+import {selectSession} from "../App/selectors";
 import {CHATBOT, TASKS, DICTIONARY} from "./constants";
 import {Map} from "immutable";
-import {selectMyUserID} from "../LoginModal/selectors";
 import {createSelector} from "reselect";
 
-const selectChatbots = () => createSelector(
-  selectRoot(),
-  (root) => root.get(CHATBOT) || Map()
-);
 
-const selectMyChatbots = () => createSelector(
-  selectChatbots(),
-  selectMyUserID(),
-  (bots, userID) => bots.get(userID) || Map()
+const selectChatbots = () => createSelector(
+  selectSession(),
+  (session) => session.get(CHATBOT) || Map()
 );
 
 const selectChatbot = (threadID) => createSelector(
-  selectMyChatbots(),
+  selectChatbots(),
   (bots) => bots.get(threadID) || Map()
 );
 
 const selectTasks = (threadID) => createSelector(
-  selectMyChatbot(threadID),
+  selectChatbot(threadID),
   (bot) => bot.get(TASKS)
 );
 
 const selectDictionary = (threadID) => createSelector(
-  selectMyChatbot(threadID),
+  selectChatbot(threadID),
   (bot) => bot.get(DICTIONARY)
 );
+
+export {
+  selectTasks,
+  selectDictionary,
+}

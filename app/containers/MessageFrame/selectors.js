@@ -1,7 +1,7 @@
 import {createSelector} from "reselect";
 import {fromJS} from "immutable";
 import {selectHistory} from "../ThreadHistory/selectors";
-import {selectMyUserID} from "../LoginModal/selectors";
+import {selectCurrentUserID} from "../LoginModal/selectors";
 
 const selectMessage = (index, threadID) => createSelector(
   selectHistory(threadID),
@@ -31,7 +31,7 @@ const selectSenderID = (index, threadID) => createSelector(
 // bugged under certain circumstances
 const selectIsOwn = (index, threadID) => createSelector(
   selectSenderID(index, threadID),
-  selectMyUserID(),
+  selectCurrentUserID(),
   (sender, user) => sender == user
 );
 

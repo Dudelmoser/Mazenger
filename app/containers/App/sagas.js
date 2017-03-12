@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 import {takeEvery, eventChannel} from "redux-saga";
-import {call, fork, put, take, cancel, select} from 'redux-saga/effects';
+import {call, fork, put, take, cancel, select} from "redux-saga/effects";
 
 import {connected, disconnected} from "./actions/actions";
 import * as requests from "./actions/requests";
@@ -11,9 +11,9 @@ import {selectAppState} from "../LoginModal/selectors";
 import {DISCONNECTED} from "./actions/actions";
 
 function connect() {
-  const socket = io('http://localhost:80');
+  const socket = io("http://localhost:80");
   return new Promise(resolve => {
-    socket.on('connect', () => {
+    socket.on("connect", () => {
       resolve(socket);
     });
   });

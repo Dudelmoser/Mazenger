@@ -97,7 +97,7 @@ export class EmojiList extends React.PureComponent { // eslint-disable-line reac
             icon={category.icon}
             emojis={category.emojis}
             onClick={this.props.insertEmoji}
-            open={this.props.openGroups.get(key + 1 + "")}
+            open={this.props.openGroups.get(key + 1) === true}
             onOpen={this.props.openEmojiGroup.bind(this, key+1)}
           />
         )}

@@ -5,11 +5,10 @@ import {fromJS} from "immutable";
 
 const initState = fromJS({});
 
-export default function (state = initState, action, curUserID) {
+export default function (state = initState, action) {
   if (action.type == CLEAR_SETTINGS)
-    return state
-      .set(curUserID, initState);
+    return initState;
   return state
-    .merge(themeReducer(state, action, curUserID))
-    .merge(privacyReducer(state, action, curUserID));
+    .merge(themeReducer(state, action))
+    .merge(privacyReducer(state, action));
 }

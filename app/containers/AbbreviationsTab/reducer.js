@@ -2,9 +2,7 @@ import {fromJS, OrderedMap} from "immutable";
 import {CLEAR_SETTINGS} from "../PrivacySettings/actions";
 import {DELETE_ABBREVIATIONS, ADD_ABBREVIATION} from "./actions";
 
-const initState = fromJS({});
-
-export const defaultAbbrs = OrderedMap({
+export const initState = OrderedMap({
   ";)": "😉",
   ":D": "😀",
   ":P": "😋",
@@ -24,24 +22,17 @@ export const defaultAbbrs = OrderedMap({
   ":turtle:": "🐢",
 });
 
-export default function (state = initState, action, curUserID) {
-  if (!state.get(curUserID))
-    return state
-      .set(curUserID, defaultAbbrs);
-
+export default function (state = initState, action) {
   switch (action.type) {
 
-    case CLEAR_SETTINGS:
-      return state
-        .set(curUserID, initState);
-
     case DELETE_ABBREVIATIONS:
+      console.log(action.keys);
       const selected = fromJS(action.keys);
       return state
         .withMutations(state => {
-          state.get(curUserID, fromJS({})).keySeq().forEach((abbr, key) => {
+          state.keySeq().forEach((abbr, key) => {
             if (selected.contains(key)) {
-              state.deleteIn([curUserID, abbr])
+              state.delete(abbr)
             }
           });
         });
@@ -50,6 +41,12 @@ export default function (state = initState, action, curUserID) {
       if (!action.abbr || !action.full)
         return state;
       return state
-          .setIn([curUserID, action.abbr], action.full);
+          .set(action.abbr, action.full);
+
+    case CLEAR_SETTINGS:
+      return initState;
+
+    default:
+      return state;
   }
 }

@@ -1,11 +1,11 @@
 import {createSelector} from "reselect";
 import {fromJS} from "immutable";
-import {selectRoot} from "../App/selectors";
 import {THREADS, USERS} from "./constants";
+import {selectSession} from "../LoginModal/selectors";
 
 const selectThreads = () => createSelector(
-  selectRoot(),
-  (root) => root.get(THREADS) || fromJS({})
+  selectSession(),
+  (session) => session.get(THREADS) || fromJS({})
 );
 
 const selectThread = (threadID) => createSelector(
@@ -19,8 +19,8 @@ const selectThreadIDs = () => createSelector(
 );
 
 const selectUsers = () => createSelector(
-  selectRoot(),
-  (root) => root.get(USERS) || fromJS({})
+  selectSession(),
+  (session) => session.get(USERS) || fromJS({})
 );
 
 const selectUser = (userID) => createSelector(
