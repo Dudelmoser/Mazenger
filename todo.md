@@ -1,89 +1,77 @@
 ## Milestones
-### High priority
-* ~~fb api proxy server~~
-* ~~desktop react core~~
-* ~~client-server-saga~~
-* ~~persistent state~~
-* ~~dynamic login~~
-* ~~chats tab~~
-* ~~friends tab~~
-* ~~emoji tab~~
-* meme tab
-* chatbot tab
-* settings tab
-* encryption
-* performance tests
-* compatibility tests
-* github docs
-
-### Medium priority
-* one-click installer
-* promotion website
-
-### Low priority
-* light theme
-* multi user
-* whatsapp support (yosapp)
-* online version (openshift)
-* mobile layout
+Feature | Priority | Status
+------- | -------- | ------
+fb api proxy server|H|✓
+desktop react core|H|✓
+client-server-saga|H|✓
+persistent state|H|✓
+dynamic login|H|✓
+chats tab|H|✓
+friends tab|H|✓
+emoji tab|H|✓
+meme tab|H|✓
+settings tab|H|✓
+abbreviation tab|H|✓
+chatbot tab|H|-
+encryption|H|-
+performance tests|H|-
+compatibility tests|H|-
+github docs|H|-
+travis support|M|✓
+themes|M|✓
+multi user support|M|✓
+one-click installer|M|-
+promotion website|M|-
+whatsapp support (yosapp)|L|-
+online version (openshift)|L|-
+mobile layout|L|-
 
 ## Features
-
-### High priority
-* video support
-* send files via drag and drop
-* show sender tooltip on recently received messages
-* login with return
-* login failed feedback
-* show users typing
-* request more messages when reaching the end of the thread history
-* send message to multiple users
-* ~~make drawers scrollable~~
-* ~~logout and clear cache option~~
-* ~~keep thread scrolled to bottom~~
-
-### Low priority
-* switch memes with canvas clicks
-* keyboard shortcuts
-* rerender when window size changes
-* change secondary button text color for low contrast themes
-  * probably using getContrast() method
-* clean custom meme cache when user cleans his browser cache
-* make custom memes private using some sort of session cookie
-* allow textual shortcuts for emojis 
-(see http://www.webpagefx.com/tools/emoji-cheat-sheet/)
-* keep focus when entering an emoji
-* mini audio player in thread history
-* replace input with content-editable div to enter img emojis
-* ~~add open emoji categories to state~~
+Feature | Priority | Status
+------- | -------- | ------
+request more messages when reaching the end of the thread history|H|-
+login failed feedback|H|-
+send files via drag and drop|M|-
+rerender when window size changes|M|-
+send button|M|-
+video support|M|-
+audio support|M|-
+keyboard shortcuts|L|-
+send message to multiple users|L|-
+switch memes with canvas clicks|L|-
+clean custom meme cache when user cleans his browser cache|L|-
+make custom memes private using some sort of session cookie|L|-
+set secondary button color dynamically with getContrast()|L|-
+~~replace input with content-editable div to enter img emojis~~|L|-
+scrollable drawer|H|✓
+keep thread scrolled to bottom|H|✓
+logout and clear cache option|H|✓
+keep focus when entering an emoji|M|✓
+sender tooltip|M|✓
+users typing|M|✓
+login with return|M|✓
+stateful open emoji categories|L|✓
+textual emoji shortcuts|L|✓
 
 ## Code
-* add travis ci support
-* make 'dumb' components for every 'smart' container
-  * components contain HTML and CSS only
-* convert inline styles to global styles (twice as performant)
-  * react-inline, cssobj, css modules or radium
-* unified naming convention for actions
-* remove typing notifications for group chats
-* split messenger container into sub containers 
-* extract separate reducers and actions
-* create stateless components for every stateful container
-* ~~reference state properties with constants~~
+Feature | Priority | Status
+------- | -------- | ------
+unified naming convention for actions|H|-
+convert inline styles to global styles (2x faster, e.g. with react-inline)|M|-
+stateless components for every stateful container (containing HTML and CSS only)|M|-
+remove typing notifications for group chats|L|-
+split messenger container into sub containers|H|✓
+reference state properties with constants|H|✓
+extract separate reducers and actions|H|✓
 
 ## Bugs
-
-### Reproducable
-* switching accounts currently crashes the client
-* login with different credentials doesn't auto-clear the cache
-* chat input switches from uncontrolled to controlled
-(results in weird overlay effect)
-
-### Not reproducable
-* messages sent twice
-* own and foreign messages switch sides 
-(probably due to a bug in the selectMessage or isOwn selector)
-
-### Fixed
-* ~~thread history doesn't auto scroll~~
-* ~~self-chat caused by wrong thread IDs in typing events~~
-* ~~react-easy-emoji null pointer after clearing the cache~~
+Description | Status
+----------- | ------
+switching accounts crashes the client|!
+chat input switches from uncontrolled to controlled|!
+messages sent twice|?
+login with different credentials doesn't auto-clear the cache|F
+own and foreign messages switch sides|F
+thread history doesn't auto scroll|F
+self-chat caused by wrong thread IDs in typing events|F
+react-easy-emoji null pointer after clearing the cache|F
