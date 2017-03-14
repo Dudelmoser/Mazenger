@@ -1,30 +1,49 @@
-import {selectSession} from "../App/selectors";
-import {CHATBOT, TASKS, DICTIONARY} from "./constants";
-import {Map} from "immutable";
+import {selectSession} from "../LoginModal/selectors";
+import {CHATBOT, TASKS, DICTIONARY, GLOBAL, ENABLED, DICT} from "./constants";
+import {Map, List} from "immutable";
 import {createSelector} from "reselect";
+import {selectCurrentThreadID} from "../LoginModal/selectors";
 
 
-const selectChatbots = () => createSelector(
+const selectChatbot = () => createSelector(
   selectSession(),
   (session) => session.get(CHATBOT) || Map()
 );
 
-const selectChatbot = (threadID) => createSelector(
-  selectChatbots(),
-  (bots) => bots.get(threadID) || Map()
+const selectGlobalBot = () => createSelector(
+  selectChatbot(),
+  (bot) => bot.get(GLOBAL) || Map()
 );
 
-const selectTasks = (threadID) => createSelector(
-  selectChatbot(threadID),
-  (bot) => bot.get(TASKS)
+const selectIsGlobalEnabled = () => createSelector(
+  selectGlobalBot(),
+  (bot) => bot.get(ENABLED) || false
 );
 
-const selectDictionary = (threadID) => createSelector(
-  selectChatbot(threadID),
-  (bot) => bot.get(DICTIONARY)
+const selectGlobalDict = () => createSelector(
+  selectGlobalBot(),
+  (bot) => List(bot.get(DICT, Map()).reverse())
+);
+
+const selectLocalBot = () => createSelector(
+  selectChatbot(),
+  selectCurrentThreadID(),
+  (bot, threadID) => bot.get(threadID) || Map()
+);
+
+const selectIsLocalEnabled = () => createSelector(
+  selectLocalBot(),
+  (bot) => bot.get(ENABLED) || false
+);
+
+const selectLocalDict = () => createSelector(
+  selectLocalBot(),
+  (bot) => List(bot.get(DICT, Map()).reverse())
 );
 
 export {
-  selectTasks,
-  selectDictionary,
+  selectIsGlobalEnabled,
+  selectGlobalDict,
+  selectIsLocalEnabled,
+  selectLocalDict,
 }

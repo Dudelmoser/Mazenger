@@ -11,35 +11,7 @@
 // MemeGenerator: memes
 // Chatbot: chatbot
 
-const initState = {
-  global: {
-    email: "",
-    password: "",
-    appState: null,
-    validEmails: [],
-    userID: null,
-    threadID: null,
-    isConnected: false,
-  },
-
-  // session
-  friends: [],
-  threads: {},
-  histories: {},
-  users: {},
-  typers: {},
-  inputs: {},
-
-  // persistent
-  emojis: {},
-  memes: {},
-  chatbot: {},
-  abbreviations: {},
-  settings: {},
-};
-
 const stateExample = {
-
   global: {
     email: "",
     password: "",
@@ -156,14 +128,19 @@ const stateExample = {
     },
 
     chatbot: {
+      global: {
+        enabled: false,
+        dict: {
+          "[\s\S]?": "An employee will soon answer your question. Thank you for your patience!",
+          "(shipping|delivery)": "The shipping fee is 2,95$",
+          "(birthday|wish|best)": "Thank you :)",
+        }
+      },
       "threadID": {
         enabled: false,
-        dictionary: {
-          "regexp": "response",
-        },
-        tasks: {
-          "1488064245575": "message",
-        },
+        dict: {
+          ".*": "Wait a sec! I'm ingame.."
+        }
       },
     },
 

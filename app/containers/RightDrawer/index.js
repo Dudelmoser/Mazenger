@@ -14,12 +14,13 @@ import {rightDrawerWidth, drawerHeight, tabBtnStyle} from "../App/components";
 // icons
 import SocialMood from "material-ui/svg-icons/social/mood";
 import ImagePortrait from "material-ui/svg-icons/image/portrait";
-import CommunicationImportExport from "material-ui/svg-icons/communication/import-export";
+import ContentReplyAll from "material-ui/svg-icons/content/reply-all";
 import ActionPowerSettingsNew from "material-ui/svg-icons/action/power-settings-new";
 
 // containers
 import EmojisTab from "../EmojisTab";
 import MemesTab from "../MemesTab";
+import ChatbotTab from "../ChatbotTab";
 
 // actions
 import {logout} from "../App/actions/requests";
@@ -70,7 +71,8 @@ class RightDrawer extends React.Component { // eslint-disable-line react/prefer-
 
           <Tab
             data-tooltip={formatMessage(messages.chatbot)}
-            icon={<CommunicationImportExport/>}>
+            icon={<ContentReplyAll/>}>
+            <ChatbotTab />
           </Tab>
 
           <Tab

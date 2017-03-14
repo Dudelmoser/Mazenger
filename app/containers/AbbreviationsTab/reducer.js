@@ -26,12 +26,12 @@ export default function (state = initState, action) {
   switch (action.type) {
 
     case DELETE_ABBREVIATIONS:
-      console.log(action.keys);
+      const count = state.count();
       const selected = fromJS(action.keys);
       return state
         .withMutations(state => {
           state.keySeq().forEach((abbr, key) => {
-            if (selected.contains(key)) {
+            if (selected == "all" || selected.contains(count - 1 - key)) {
               state.delete(abbr)
             }
           });

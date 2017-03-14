@@ -10,7 +10,7 @@ const selectAbbreviations = () => createSelector(
 
 const selectAbbreviationsArray = () => createSelector(
   selectAbbreviations(),
-  (abbrs) => List(abbrs)
+  (abbrs) => List(abbrs.reverse())
 );
 
 export {
