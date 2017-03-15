@@ -26,37 +26,40 @@ export class ChatbotTab extends React.PureComponent { // eslint-disable-line rea
       position: "relative",
       top: -2,
     },
-    tabItem: {
-      backgroundColor: this.props.muiTheme.drawer.color
-    },
     tabContent: {
       paddingTop: 16,
       paddingRight: 0,
     },
     toggle: {
-      padding: "16px 16px 32px 16px",
+      padding: "32px 16px 16px 16px",
     }
   };
 
   render() {
-console.log(drawerHeight);
     const {formatMessage} = this.props.intl;
     const globalMsg = formatMessage(this.props.isGlobalEnabled ? messages.enabled : messages.disabled);
     const localMsg = formatMessage(this.props.isLocalEnabled ? messages.enabled : messages.disabled);
+
+    const styles = {
+      tabItem: {
+        backgroundColor: this.props.muiTheme.drawer.color
+      },
+    }
+
     return (
       <Tabs
         style={this.styles.tabs}
-        tabItemContainerStyle={this.styles.tabItem}>
+        tabItemContainerStyle={styles.tabItem}>
         <Tab
           label={formatMessage(messages.global)}>
           <Toggle
             toggled={this.props.isGlobalEnabled}
             onToggle={this.props.setBotState.bind(this, true)}
             label={globalMsg + formatMessage(messages.global)}
-            labelPosition="right"
             style={this.styles.toggle}
           />
-          <Dictionary
+          {this.props.isGlobalEnabled ? <Dictionary
+            style={styles}
             entries={this.props.globalDict}
             keyLabel={formatMessage(messages.regex)}
             valueLabel={formatMessage(messages.res)}
@@ -66,7 +69,7 @@ console.log(drawerHeight);
             onValueChange={(evt, val) => this.setState({gRes: val})}
             onAdd={this.props.addRegex.bind(this, true, this.state.gRegex, this.state.gRes)}
             height={drawerHeight - 118}
-          />
+          /> : null}
         </Tab>
         <Tab
           label={formatMessage(messages.local)}>
@@ -74,10 +77,9 @@ console.log(drawerHeight);
             toggled={this.props.isLocalEnabled}
             onToggle={this.props.setBotState.bind(this, false)}
             label={localMsg + formatMessage(messages.local)}
-            labelPosition="right"
             style={this.styles.toggle}
           />
-          <Dictionary
+          {this.props.isLocalEnabled ? <Dictionary
             entries={this.props.localDict}
             keyLabel={formatMessage(messages.regex)}
             valueLabel={formatMessage(messages.res)}
@@ -87,7 +89,7 @@ console.log(drawerHeight);
             onValueChange={(evt, val) => this.setState({res: val})}
             onAdd={this.props.addRegex.bind(this, false, this.state.regex, this.state.res)}
             height={drawerHeight - 118}
-          />
+          /> : null}
         </Tab>
       </Tabs>
     );

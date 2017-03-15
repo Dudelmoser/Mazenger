@@ -9,6 +9,7 @@ import {selectCurrentInput} from "./selectors";
 import {createStructuredSelector} from "reselect";
 import {selectCurrentThreadID} from "../LoginModal/selectors";
 import {selectAbbreviations} from "../AbbreviationsTab/selectors";
+import muiThemeable from "material-ui/styles/muiThemeable";
 
 export class MessageInput extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -63,4 +64,4 @@ const mergeProps = (stateProps, {dispatch}) => {
   }
 };
 
-export default connect(mapStateToProps, null, mergeProps)(injectIntl(MessageInput));
+export default connect(mapStateToProps, null, mergeProps)(muiThemeable()(injectIntl(MessageInput)));

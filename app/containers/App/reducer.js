@@ -47,7 +47,7 @@ function mergeSessionReducers(reducers, userID, threadID) {
         const reducer = reducers[key];
         const userState = tempState.get(userID) || Map();
         const curSubState = userState.get(key);
-        const nextSubState = reducer(curSubState, action, threadID);
+        const nextSubState = reducer(curSubState, action, threadID, userID);
         if (nextSubState)
           tempState.setIn([userID, key], nextSubState);
       });

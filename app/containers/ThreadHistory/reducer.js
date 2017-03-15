@@ -37,7 +37,7 @@ function historiesReducer(state = initState, action) {
   }
 }
 
-function typersReducer (state = initState, action) {
+function typersReducer (state = initState, action, threadID, userID) {
   switch (action.type) {
     case UPDATE_RECEIVED:
       const data = action.data;
@@ -46,7 +46,8 @@ function typersReducer (state = initState, action) {
           let threadID = data.threadID;
 
           // threadID equals the clients ID in non-group-chats
-          if (curUserID == data.threadID)
+
+          if (userID == data.threadID)
             threadID = data.from;
           if (data.isTyping)
             return state.setIn([threadID, data.from], new Date().getTime());
