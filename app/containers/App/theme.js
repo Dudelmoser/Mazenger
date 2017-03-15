@@ -1,58 +1,75 @@
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import getMuiTheme from "material-ui/styles/getMuiTheme";
 import {lighten, darken, emphasize, fade} from "material-ui/utils/colorManipulator";
 import {transparent, fullBlack} from "material-ui/styles/colors";
 
 function createTheme(accentColor, backgroundColor) {
+
+  const warningColor = "#D64541";
+
+  // minimum color difference
+  const minDelta = .03;
+  const darkerBg = darken(backgroundColor, minDelta);
+  const lighterBg = lighten(backgroundColor, minDelta);
+  const minDeltaColor = emphasize(backgroundColor, minDelta);
+
+  // other differences to the bg color
+  const subtleDeltaColor = emphasize(backgroundColor, .1);
+  const distinctDeltaColor = emphasize(backgroundColor, .3);
+  const mediumDeltaColor = emphasize(backgroundColor, .6);
+  const strongDeltaColor = emphasize(backgroundColor, .9);
+  const overlayColor = fade(darken(backgroundColor, 0.1), 0.9);
+
+  // base theme using the previously defined color variations
   return getMuiTheme({
     palette: {
       primary1Color: accentColor,                           // most focused/selected elements and appbar/tabs
       primary2Color: accentColor,                           // date/time picker selection & header
-      primary3Color: emphasize(backgroundColor, .3),        // inactive slider, toggle track
+      primary3Color: distinctDeltaColor,                    // inactive slider, toggle track
       accent1Color: accentColor,                            // snackbar action, button (2nd), badge (2nd)
-      accent2Color: emphasize(backgroundColor, .1),         // toolbar bg, toggle off, table hover
-      accent3Color: emphasize(backgroundColor, .5),         // table header & footer, active slider
-      textColor: emphasize(backgroundColor, .9),            // most text
-      secondaryTextColor: emphasize(backgroundColor,.6),    // list items secondary text
+      accent2Color: subtleDeltaColor,                       // toolbar bg, toggle off, table hover
+      accent3Color: mediumDeltaColor,                       // table header & footer, active slider
+      textColor: strongDeltaColor,                          // most text
+      secondaryTextColor: mediumDeltaColor,                 // list items secondary text
       alternateTextColor: backgroundColor,                  // text on primary colored elements
-      canvasColor: darken(backgroundColor, .03),            // background for drawer, images etc.
+      canvasColor: darkerBg,                                // background for drawer, images etc.
       shadowColor: fullBlack,
-      borderColor: emphasize(backgroundColor, .1),
-      disabledColor: emphasize(backgroundColor, .4),
-      clockCircleColor: emphasize(backgroundColor, .03),
+      borderColor: subtleDeltaColor,
+      disabledColor: distinctDeltaColor,
+      clockCircleColor: minDeltaColor,
     },
     tabs: {
       backgroundColor: transparent,
-      textColor: emphasize(backgroundColor, 0.3),
+      textColor: distinctDeltaColor,
       selectedTextColor: accentColor,
     },
     drawer: {
-      color: lighten(backgroundColor, 0.03),
+      color: lighterBg,
     },
     message: {
-      color: lighten(backgroundColor, 0.03),
-    },
-    overlay: {
-      backgroundColor: fade(darken(backgroundColor, 0.1), 0.9),
-    },
-    listItem: {
-      leftIconColor: emphasize(backgroundColor, .3),
-      rightIconColor: emphasize(backgroundColor, .3),
-    },
-    stepper: {
-      textColor: emphasize(backgroundColor, .9),
+      color: lighterBg,
     },
     table: {
-      backgroundColor: lighten(backgroundColor, 0.03),
+      backgroundColor: lighterBg,
     },
-    raisedButton: {
-      secondaryColor: "#D64541",
+    overlay: {
+      backgroundColor: overlayColor,
     },
-    flatButton: {
-      secondaryTextColor: "#D64541",
+    listItem: {
+      leftIconColor: distinctDeltaColor,
+      rightIconColor: distinctDeltaColor,
+    },
+    stepper: {
+      textColor: mediumDeltaColor,
     },
     checkbox: {
-      boxColor: emphasize(backgroundColor, .3),
-    }
+      boxColor: distinctDeltaColor,
+    },
+    raisedButton: {
+      secondaryColor: warningColor,
+    },
+    flatButton: {
+      secondaryTextColor: warningColor,
+    },
   });
 }
 

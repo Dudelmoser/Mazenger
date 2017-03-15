@@ -3,17 +3,34 @@ import {connect} from "react-redux";
 import MessageFrame from "../MessageFrame";
 import {selectCurrentThreadID} from "../LoginModal/selectors";
 import {selectCurrentTypersNames, selectCurrentHistory} from "./selectors";
+import {Set} from "immutable";
 
 export class ThreadHistory extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
-  wrapperStyle = {
-    marginBottom: "0.5em"
+  state = {
+    selected: Set()
   }
 
-  typersStyle = {
-    textAlign: "center",
-    fontSize: "0.75em",
-    color: "#999"
+  styles = {
+    wrapper: {
+      marginBottom: "0.5em",
+    },
+    typers: {
+      textAlign: "center",
+      fontSize: "0.75em",
+      color: "#999",
+    },
+  }
+
+  setSelected(msgIdx, msgState) {
+    console.log(msgIdx, msgState);
+    this.setState({selected: this.state.selected.withMutations(state => {
+      if (msgState) {
+        state.add(msgIdx);
+      } else {
+        state.delete(msgIdx);
+      }
+    })});
   }
 
   componentDidUpdate() {
@@ -37,17 +54,18 @@ export class ThreadHistory extends React.PureComponent { // eslint-disable-line 
       str += this.props.typing.length + " users are ";
     }
 
-    return <div style={this.typersStyle}>{str + "typing..."}</div>
+    return <div style={this.styles.typers}>{str + "typing..."}</div>
   }
 
   render() {
     return (
-      <div style={this.wrapperStyle}>
+      <div style={this.styles.wrapper}>
         {this.props.history.map((message, index) =>
           <MessageFrame
             key={index}
             index={index}
             threadID={this.props.threadID}
+            onSelect={this.setSelected.bind(this, index)}
           />
         )}
         {this.getUsersTyping()}

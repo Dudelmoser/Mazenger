@@ -14,12 +14,21 @@ import {selectBackgroundColor} from "../ThemeSettings/selectors";
 
 export class MessageFrame extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
+  state = {
+    selected: false
+  };
+
   maxTimeSpan = 5; // in minutes
 
   wrapperStyle = {
     display: "flex",
     flexDirection: "column"
   };
+
+  onSelect() {
+    this.props.onSelect(!this.state.selected);
+    this.setState({selected: !this.state.selected});
+  }
 
   getReaders() {
     const count = this.props.message.get("readers", fromJS([])).count();
@@ -35,6 +44,8 @@ export class MessageFrame extends React.PureComponent { // eslint-disable-line r
       marginBottom: "0",
       lineHeight: "32px",
       minHeight: "32px",
+      opacity: this.state.selected ? .5 : 1,
+      filter: this.state.selected ? "saturate(20%)" : "none",
       alignSelf: this.props.isOwn ? "flex-end" : "flex-start",
     };
 
@@ -42,7 +53,9 @@ export class MessageFrame extends React.PureComponent { // eslint-disable-line r
       return null;
     }
     return (
-      <div style={this.wrapperStyle}>
+      <div
+        style={this.wrapperStyle}
+        onTouchTap={this.onSelect.bind(this)}>
         <Timestamp
           timestamp={this.props.timestamp}
           condition={this.props.timePassed > this.maxTimeSpan * 60000}/>
@@ -81,6 +94,7 @@ MessageFrame.propTypes = {
   index: React.PropTypes.number.isRequired,
   threadID: React.PropTypes.oneOfType(
     [React.PropTypes.number, React.PropTypes.string]).isRequired,
+  onSelect: React.PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state, ownProps) => ({

@@ -4,6 +4,8 @@ function Image(props) {
 
   const style = {
     display: "inline-block",
+    position: "relative",
+    left: props.alignRight ? 4 : -4,
     width: props.width || 320,
     height: props.height || 180,
     backgroundImage: `url(${props.url})`,
@@ -27,6 +29,7 @@ Image.propTypes = {
   id: React.PropTypes.string,
   width: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
   height: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
+  alignRight: React.PropTypes.bool,
 };
 
 export default Image;

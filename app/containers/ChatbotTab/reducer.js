@@ -5,9 +5,7 @@ import {GLOBAL, DICT, ENABLED} from "./constants";
 
 export const initState = Map()
   .setIn([GLOBAL, DICT], OrderedMap({
-    "[\s\S]?": "An employee will soon answer your question. Thank you for your patience!",
-    "(shipping|delivery)": "The shipping fee is 2,95$",
-    "(birthday|wish|best)": "Thank you :)",
+    "(b(irth)?day|wish|best)": "Thank you :)",
   })).setIn([GLOBAL, ENABLED], false);
 
 export default function (state = initState, action, threadID) {
