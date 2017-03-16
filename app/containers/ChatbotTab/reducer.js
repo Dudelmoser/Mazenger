@@ -4,9 +4,8 @@ import {ADD_REGEX, DELETE_REGEX, SET_BOT_STATE} from "./actions";
 import {GLOBAL, DICT, ENABLED} from "./constants";
 
 export const initState = Map()
-  .setIn([GLOBAL, DICT], OrderedMap({
-    "(b(irth)?day|wish|best)": "Thank you :)",
-  })).setIn([GLOBAL, ENABLED], false);
+  .setIn([GLOBAL, DICT], OrderedMap({}))
+  .setIn([GLOBAL, ENABLED], false);
 
 export default function (state = initState, action, threadID) {
   switch (action.type) {

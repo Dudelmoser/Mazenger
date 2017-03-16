@@ -23,7 +23,6 @@ export class ThreadHistory extends React.PureComponent { // eslint-disable-line 
   }
 
   setSelected(msgIdx, msgState) {
-    console.log(msgIdx, msgState);
     this.setState({selected: this.state.selected.withMutations(state => {
       if (msgState) {
         state.add(msgIdx);
@@ -31,10 +30,6 @@ export class ThreadHistory extends React.PureComponent { // eslint-disable-line 
         state.delete(msgIdx);
       }
     })});
-  }
-
-  componentDidUpdate() {
-    this.props.onUpdate();
   }
 
   getUsersTyping() {
@@ -71,6 +66,10 @@ export class ThreadHistory extends React.PureComponent { // eslint-disable-line 
         {this.getUsersTyping()}
       </div>
     );
+  }
+
+  componentDidUpdate() {
+    this.props.onUpdate();
   }
 }
 

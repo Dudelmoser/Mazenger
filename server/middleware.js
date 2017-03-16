@@ -27,16 +27,16 @@ const addDevMiddlewares = (app, webpackConfig) => {
   if (pkg.dllPlugin) {
     app.get(/\.dll\.js$/, (req, res) => {
       const filename = req.path.replace(/^\//, '');
-      message.sendFile(path.join(process.cwd(), pkg.dllPlugin.path, filename));
+      res.sendFile(path.join(process.cwd(), pkg.dllPlugin.path, filename));
     });
   }
 
   app.get('*', (req, res) => {
     fs.readFile(path.join(compiler.outputPath, 'index.html'), (err, file) => {
       if (err) {
-        message.sendStatus(404);
+        res.sendStatus(404);
       } else {
-        message.send(file.toString());
+        res.send(file.toString());
       }
     });
   });
@@ -53,7 +53,7 @@ const addProdMiddlewares = (app, options) => {
   app.use(compression());
   app.use(publicPath, express.static(outputPath));
 
-  app.get('*', (req, res) => message.sendFile(path.resolve(outputPath, 'index.html')));
+  app.get('*', (req, res) => res.sendFile(path.resolve(outputPath, 'index.html')));
 };
 
 /**

@@ -128,7 +128,7 @@ module.exports = (app) => {
             if (err) console.log(err);
 
             let packet = {};
-            packet.data = message || {};
+            packet.data = res || {};
             packet.args = req || [];
 
             let event = evtMap[evt];

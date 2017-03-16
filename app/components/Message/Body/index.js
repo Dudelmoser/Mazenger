@@ -14,11 +14,15 @@ function Body(props) {
 
   let attachments = [];
   let message = "";
+  let key = 0;
   if (props.body) {
     const parts = props.body.split(" ");
     for (let part of parts) {
-      if (part.startsWith("https://") || part.startsWith("https://")) {
-        attachments.push(<Link url={part}/>);
+      const urlRegex = /@^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$@iS/i;
+      if (part.match(urlRegex)) {
+        attachments.push(
+          <Link key={key++} url={part}/>
+        );
       }
       message += part + " ";
     }
