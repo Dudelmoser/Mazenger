@@ -4,42 +4,43 @@ import {fromJS} from "immutable";
 import {selectSettings} from "../SettingsTab/selectors";
 
 export const backgroundColors = fromJS([
-  ["#202326", 0],
-  ["#383745", 2],
-  ["#6c7a89", 2],
-  ["#7d7870", 2],
-  ["#fffdf7", 1],
+  ["#212326", 0],
+  ["#292933", 0],
+  ["#303840", 0],
+  ["#515b66", 0],
   ["#ffffff", 1],
 ])
 
 export const accentColors = fromJS([
   [
+    "#66ffff",
+    "#66ffcc",
     "#e1ff00",
-    "#ffe6a8",
-    "#64ffda",
-    "#84ffff",
     "#ffcddc",
     "#ececec",
   ],[
-    "#c0ca33",
-    "#EBBD63",
-    "#00b5b5",
-    "#00bcd4",
+    "#245f78",
+    "#1BA39C",
+    "#9E9D24",
     "#d2527f",
     "#444444",
-  ],[
-    "#fffdf7",
-  ],
+  ]
 ]);
 
 const selectBackgroundKey = () => createSelector(
   selectSettings(),
-  (settings) => settings.get(BACKGROUND_COLOR) || 0
+  (settings) => {
+    const color = settings.get(BACKGROUND_COLOR);
+    return color != undefined ? color : 0
+  }
 );
 
 const selectAccentKey = () => createSelector(
   selectSettings(),
-  (settings) => settings.get(ACCENT_COLOR) || 0
+  (settings) => {
+    const color = settings.get(ACCENT_COLOR);
+    return color != undefined ? color : 2
+  }
 );
 
 const selectBackgroundColors = () => createSelector(

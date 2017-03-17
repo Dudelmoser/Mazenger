@@ -3,7 +3,6 @@ import {lighten, darken, emphasize, fade} from "material-ui/utils/colorManipulat
 import {transparent, fullBlack} from "material-ui/styles/colors";
 
 function createTheme(accentColor, backgroundColor) {
-
   const warningColor = "#D64541";
 
   // minimum color difference
