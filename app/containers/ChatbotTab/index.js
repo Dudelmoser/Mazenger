@@ -30,7 +30,7 @@ export class ChatbotTab extends React.PureComponent { // eslint-disable-line rea
   styles = {
     tabs: {
       position: "relative",
-      top: -2,
+      top: -2, // cover the chatbot tab slider
     },
     tabContent: {
       paddingTop: 16,
@@ -41,26 +41,20 @@ export class ChatbotTab extends React.PureComponent { // eslint-disable-line rea
     }
   };
 
-  copyToClipboard(row) {
-    // Workaround to copy text to the clipboard without using an input or textarea element
-    // Credits to Dean Taylor on stackoverflow
-    // http://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
-    var fakeInput = document.createElement("textarea");
-    fakeInput.style.position = "fixed";
-    fakeInput.style.top = 0;
-    fakeInput.style.left = 0;
-    fakeInput.style.width = "2em";
-    fakeInput.style.height = "2em";
-    fakeInput.style.padding = 0;
-    fakeInput.style.border = "none";
-    fakeInput.style.outline = "none";
-    fakeInput.style.boxShadow = "none";
-    fakeInput.style.background = "transparent";
+  copyToClipboard(intlMap, index) {
+    // create a fake textarea to copy the text from
+    let textArea = document.createElement("textarea");
 
-    fakeInput.value = Object.keys(examplesTable)[row];
-    document.body.appendChild(fakeInput);
-    fakeInput.select();
+    // hide the textarea as far as possible in case of
+    // an error before or while deleting it
+    textArea.classList.add("hidden");
 
+    // insert and select the text that shall be copied
+    textArea.value = Object.keys(intlMap)[index];
+    document.body.appendChild(textArea);
+    textArea.select();
+
+    // make sure the process worked before showing a snackbar info
     try {
       if (document.queryCommandSupported("copy")) {
         const success = document.execCommand("copy");
@@ -68,7 +62,8 @@ export class ChatbotTab extends React.PureComponent { // eslint-disable-line rea
           this.setState({open: true});
       }
     } finally {
-      document.body.removeChild(fakeInput);
+      // remove the fake textarea
+      document.body.removeChild(textArea);
     }
   }
 
@@ -96,27 +91,6 @@ export class ChatbotTab extends React.PureComponent { // eslint-disable-line rea
           style={this.styles.tabs}
           tabItemContainerStyle={styles.tabItem}>
           <Tab
-            label={formatMessage(messages.global)}>
-            <Toggle
-              toggled={this.props.isGlobalEnabled}
-              onToggle={this.props.setBotState.bind(this, true)}
-              label={globalMsg + formatMessage(messages.global)}
-              style={this.styles.toggle}
-            />
-            {this.props.isGlobalEnabled ? <Dictionary
-              style={styles}
-              entries={this.props.globalDict}
-              keyLabel={formatMessage(messages.regex)}
-              valueLabel={formatMessage(messages.res)}
-              onSelect={(keys) => this.setState({gSelect: keys})}
-              onDelete={this.props.delRegex.bind(this, true, this.state.gSelect)}
-              onKeyChange={(evt, val) => this.setState({gRegex: val})}
-              onValueChange={(evt, val) => this.setState({gRes: val})}
-              onAdd={this.props.addRegex.bind(this, true, this.state.gRegex, this.state.gRes)}
-              height={this.dictHeight}
-            /> : null}
-          </Tab>
-          <Tab
             label={formatMessage(messages.local)}>
             <Toggle
               toggled={this.props.isLocalEnabled}
@@ -137,12 +111,34 @@ export class ChatbotTab extends React.PureComponent { // eslint-disable-line rea
             /> : null}
           </Tab>
           <Tab
+            label={formatMessage(messages.global)}>
+            <Toggle
+              toggled={this.props.isGlobalEnabled}
+              onToggle={this.props.setBotState.bind(this, true)}
+              label={globalMsg + formatMessage(messages.global)}
+              style={this.styles.toggle}
+            />
+            {this.props.isGlobalEnabled ? <Dictionary
+                style={styles}
+                entries={this.props.globalDict}
+                keyLabel={formatMessage(messages.regex)}
+                valueLabel={formatMessage(messages.res)}
+                onSelect={(keys) => this.setState({gSelect: keys})}
+                onDelete={this.props.delRegex.bind(this, true, this.state.gSelect)}
+                onKeyChange={(evt, val) => this.setState({gRegex: val})}
+                onValueChange={(evt, val) => this.setState({gRes: val})}
+                onAdd={this.props.addRegex.bind(this, true, this.state.gRegex, this.state.gRes)}
+                height={this.dictHeight}
+              /> : null}
+          </Tab>
+          <Tab
             label={formatMessage(messages.examples)}>
             <IntlTable
               intlMap={examplesTable}
               keyHeader={formatMessage(messages.regex)}
               valueHeader={formatMessage(messages.explanation)}
               onSelectRow={this.copyToClipboard.bind(this)}
+              footer={formatMessage(messages.copyHint)}
               height={this.tableHeight}
             />
           </Tab>
@@ -152,6 +148,8 @@ export class ChatbotTab extends React.PureComponent { // eslint-disable-line rea
               intlMap={helpTable}
               keyHeader={formatMessage(messages.regex)}
               valueHeader={formatMessage(messages.explanation)}
+              onSelectRow={this.copyToClipboard.bind(this)}
+              footer={formatMessage(messages.caseHint)}
               height={this.tableHeight}
               keyColStyle={{width: "10rem"}}
             />

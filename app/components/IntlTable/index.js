@@ -2,16 +2,22 @@ import React from "react";
 import {intlShape, injectIntl} from "react-intl";
 import {Table, TableRow, TableHeader, TableHeaderColumn, TableBody, TableRowColumn} from "material-ui";
 import Scrollbars from "react-custom-scrollbars";
+import muiThemeable from "material-ui/styles/muiThemeable";
 
 function IntlTable(props) {
 
   const styles = {
-    keyCol: props.keyColStyle || {},
-    valueCol: props.valueColStyle || {},
     scrollbar: {
       height: props.height || 768,
     },
+    footer: {
+      padding: 16,
+      color: props.muiTheme.palette.primary1Color
+    },
+    keyCol: props.keyColStyle || {},
+    valueCol: props.valueColStyle || {},
   }
+
   const {formatMessage} = props.intl;
 
   return (
@@ -20,7 +26,7 @@ function IntlTable(props) {
       style={styles.scrollbar}>
       <Table
         selectable={false}
-        onCellClick={props.onSelectRow ? props.onSelectRow : null}>
+        onCellClick={props.onSelectRow ? props.onSelectRow.bind(this, props.intlMap) : null}>
         <TableHeader
           adjustForCheckbox={false}
           displaySelectAll={false}>
@@ -44,6 +50,12 @@ function IntlTable(props) {
           )}
         </TableBody>
       </Table>
+
+      {
+        props.footer
+        ? <div style={styles.footer}>{props.footer}</div>
+        : null
+      }
     </Scrollbars>
   )
 }
@@ -57,6 +69,7 @@ IntlTable.propTypes = {
   valueColStyle: React.PropTypes.object,
   height: React.PropTypes.number,
   onSelectRow: React.PropTypes.func,
+  footer: React.PropTypes.string,
 };
 
-export default injectIntl(IntlTable);
+export default muiThemeable()(injectIntl(IntlTable));

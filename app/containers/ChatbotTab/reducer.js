@@ -24,7 +24,6 @@ export default function (state = initState, action, threadID) {
         });
 
     case ADD_REGEX:
-      console.log(action);
       if (!action.regex || !action.res)
         return state;
       return state

@@ -51,4 +51,24 @@ injectGlobal`
   td:first-child, th:first-child {
     padding-left: 16px !important;
   }
+  
+  .hidden {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 2em;
+    height: 2em;
+    padding: 0;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    overflow: hidden;
+    color: transparent;
+    background: transparent;
+  }
+  
+  .hidden::selection {
+    color: transparent;
+    background: transparent;
+  }
 `;

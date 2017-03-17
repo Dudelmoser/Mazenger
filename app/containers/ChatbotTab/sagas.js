@@ -14,7 +14,7 @@ function* sendResponse(action) {
     if (isGlobalOn) {
       const globalDict = yield select(selectGlobalDict());
       for (let entry of globalDict.toJS()) {
-        if (data.body.match(new RegExp(entry[0])))
+        if (data.body.match(new RegExp(entry[0], "i")))
           yield put(sendMessage(data.threadID, entry[1]));
       }
     }
