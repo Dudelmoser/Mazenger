@@ -23,7 +23,7 @@ function* sendResponse(action) {
     if (isLocalOn) {
       const localDict = yield select(selectLocalDict());
       for (let entry of localDict.toJS()) {
-        if (data.body.match(new RegExp(entry[0])))
+        if (data.body.match(new RegExp(entry[0]), "i"))
           yield put(sendMessage(data.threadID, entry[1]));
       }
     }

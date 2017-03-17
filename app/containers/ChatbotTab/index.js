@@ -14,7 +14,7 @@ import IntlTable from "../../components/IntlTable";
 
 export class ChatbotTab extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
-  dictHeight = drawerHeight - 118;
+  dictHeight = drawerHeight - 120;
   tableHeight = drawerHeight - 48;
 
   state = {
@@ -79,7 +79,7 @@ export class ChatbotTab extends React.PureComponent { // eslint-disable-line rea
     }
 
     return (
-      <div>
+      <div style={{position: "relative"}}>
         <Snackbar
           open={this.state.open}
           message={formatMessage(messages.copied)}
@@ -99,6 +99,7 @@ export class ChatbotTab extends React.PureComponent { // eslint-disable-line rea
               style={this.styles.toggle}
             />
             {this.props.isLocalEnabled ? <Dictionary
+              id="regexLocal"
               entries={this.props.localDict}
               keyLabel={formatMessage(messages.regex)}
               valueLabel={formatMessage(messages.res)}
@@ -119,6 +120,7 @@ export class ChatbotTab extends React.PureComponent { // eslint-disable-line rea
               style={this.styles.toggle}
             />
             {this.props.isGlobalEnabled ? <Dictionary
+                id="regexLocal"
                 style={styles}
                 entries={this.props.globalDict}
                 keyLabel={formatMessage(messages.regex)}

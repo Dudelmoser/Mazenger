@@ -16,10 +16,11 @@ function Dictionary(props) { // eslint-disable-line react/prefer-stateless-funct
   const styles = {
     input: {
       width: "calc(50% - 36px)",
-      marginLeft: "12px"
+      marginLeft: "12px",
+      verticalAlign: "bottom",
     },
     scrollbar: {
-      height: (props.height || 768) - 124,
+      height: (props.height || 768) - 122, // -36px (delBtn) -86px (addBar)
     },
     delIcon: {
       color: props.muiTheme.flatButton.secondaryTextColor
@@ -28,7 +29,7 @@ function Dictionary(props) { // eslint-disable-line react/prefer-stateless-funct
       color: props.muiTheme.palette.primary1Color
     },
     delBtn: {
-      top: 16,
+      top: 24,
       minWidth: 48,
     },
     addBtn: {
@@ -41,8 +42,23 @@ function Dictionary(props) { // eslint-disable-line react/prefer-stateless-funct
     },
   };
 
+  function handleKeypress(isKey, evt) {
+    if (evt.keyCode == 13) {
+      props.onAdd();
+      const keyInput = document.getElementById(props.id + "Key");
+      const valInput = document.getElementById(props.id + "Val");
+      keyInput.value = "";
+      valInput.value = "";
+      keyInput.focus();
+    } else if (isKey) {
+      props.onKeyChange(evt, evt.target.value);
+    } else {
+      props.onValueChange(evt, evt.target.value);
+    }
+  }
+
   return (
-    <div>
+    <div id="test" style={{height: props.height}}>
       <Scrollbars
         autoHide={true}
         style={styles.scrollbar}>
@@ -73,8 +89,10 @@ function Dictionary(props) { // eslint-disable-line react/prefer-stateless-funct
           </Table>
         </div>
       </Scrollbars>
-      <div style={{position: "relative", top: 16, overflow: "hidden"}}>
-        <Tooltip class="tooltip"/>
+      <div>
+        <Tooltip
+          class="tooltip"
+          place={"right"}/>
         <div>
           <FlatButton
             style={styles.delBtn}
@@ -91,14 +109,16 @@ function Dictionary(props) { // eslint-disable-line react/prefer-stateless-funct
             <ContentAdd style={styles.addIcon}/>
           </FlatButton>
           <TextField
+            id={props.id + "Key"}
             style={styles.input}
             floatingLabelText={props.keyLabel}
-            onChange={(evt, val) => props.onKeyChange(evt, val)}
+            onKeyUp={handleKeypress.bind(this, true)}
           />
           <TextField
+            id={props.id + "Val"}
             style={styles.input}
             floatingLabelText={props.valueLabel}
-            onChange={(evt, val) => props.onValueChange(evt, val)}
+            onKeyUp={handleKeypress.bind(this, false)}
           />
         </div>
       </div>
@@ -107,6 +127,7 @@ function Dictionary(props) { // eslint-disable-line react/prefer-stateless-funct
 }
 
 Dictionary.propTypes = {
+  id: React.PropTypes.string.isRequired,
   entries: React.PropTypes.object.isRequired,
   onSelect: React.PropTypes.func.isRequired,
   onDelete: React.PropTypes.func.isRequired,

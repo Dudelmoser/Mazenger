@@ -22,6 +22,7 @@ export class AbbreviationTab extends React.PureComponent { // eslint-disable-lin
 
     return (
       <Dictionary
+        id="abbr"
         entries={this.props.abbrs}
         keyLabel={formatMessage(messages.abbreviation)}
         valueLabel={formatMessage(messages.fullForm)}
