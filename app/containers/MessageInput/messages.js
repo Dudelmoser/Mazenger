@@ -2,7 +2,15 @@ import { defineMessages } from "react-intl";
 
 export default defineMessages({
   hint: {
-    id: "app.containers.Messenger.MessageInput.hint",
-    defaultMessage: "Enter a message",
+    id: "MessageInput.hint",
+    defaultMessage: "Enter a message"
+  },
+  send: {
+    id: "MessageInput.send",
+    defaultMessage: "Send"
+  },
+  delete: {
+    id: "MessageInput.delete",
+    defaultMessage: "Delete selected"
   },
 });

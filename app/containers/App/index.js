@@ -44,8 +44,7 @@ class Messenger extends React.Component { // eslint-disable-line react/prefer-st
               <ThreadDiv>
                 <Scrollbars
                   ref="scrollbar"
-                  autoHide={true}
-                  style={{height: threadHeight}}>
+                  autoHide={true}>
                   <ThreadHistory onUpdate={this.scrollToBottom.bind(this)}/>
                 </Scrollbars>
               </ThreadDiv>

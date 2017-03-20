@@ -5,12 +5,14 @@ import {selectCurrentThreadID} from "../LoginModal/selectors";
 import {selectCurrentTypersNames, selectCurrentHistory} from "./selectors";
 import {createStructuredSelector} from "reselect";
 import {deleteMessages, selectAllMessages, deselectAllMessages} from "./actions";
+import {titleHeight} from "../App/components";
 
 export class ThreadHistory extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
   styles = {
     wrapper: {
-      marginBottom: "0.5em",
+      paddingTop: titleHeight,
+      paddingBottom: titleHeight * 2,
     },
     typers: {
       textAlign: "center",

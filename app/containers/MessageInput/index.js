@@ -2,7 +2,9 @@ import React from "react";
 import {connect} from "react-redux";
 import {injectIntl, intlShape} from "react-intl";
 import messages from "./messages";
-import {TextField} from "material-ui";
+import {TextField, FlatButton, IconMenu, IconButton, MenuItem} from "material-ui";
+import MenuIcon from "material-ui/svg-icons/navigation/more-vert";
+import SendIcon from "material-ui/svg-icons/content/send";
 import {changeMessage} from "./actions";
 import {sendMessage} from "../App/actions/requests";
 import {selectCurrentInput} from "./selectors";
@@ -10,20 +12,38 @@ import {createStructuredSelector} from "reselect";
 import {selectCurrentThreadID} from "../LoginModal/selectors";
 import {selectAbbreviations} from "../AbbreviationsTab/selectors";
 import muiThemeable from "material-ui/styles/muiThemeable";
+import {INPUT_ID} from "./constants";
+import {deleteMessages} from "../ThreadHistory/actions";
 
 export class MessageInput extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
   render() {
     const {formatMessage} = this.props.intl;
+
     return (
-      <TextField
-        id="input"
-        fullWidth={true}
-        value={this.props.message}
-        onKeyUp={this.props.handleKeyUp}
-        onChange={this.props.handleChange}
-        hintText={formatMessage(messages.hint)}
-      />
+      <div>
+        <TextField
+          id={INPUT_ID}
+          value={this.props.message}
+          onKeyUp={this.props.handleKeyUp}
+          onChange={this.props.handleChange}
+          hintText={formatMessage(messages.hint)}
+          style={{width: "calc(100% - 96px)"}}
+        />
+        <IconButton
+          onTouchTap={this.props.sendMessage}>
+          <SendIcon/>
+        </IconButton>
+        <IconMenu
+          iconButtonElement={<IconButton><MenuIcon/></IconButton>}
+          anchorOrigin={{horizontal: "right", vertical: "bottom"}}
+          targetOrigin={{horizontal: "right", vertical: "bottom"}}>
+          <MenuItem
+            primaryText={formatMessage(messages.delete)}
+            onTouchTap={this.props.deleteMessages}
+          />
+        </IconMenu>
+      </div>
     );
   }
 }
@@ -60,7 +80,9 @@ const mergeProps = (stateProps, {dispatch}) => {
       if (event.keyCode == 13) {
         dispatch(sendMessage(threadID, event.target.value))
       }
-    }
+    },
+    sendMessage: () => dispatch(sendMessage(threadID, document.getElementById(INPUT_ID).value)),
+    deleteMessages: () => dispatch(deleteMessages()),
   }
 };
 

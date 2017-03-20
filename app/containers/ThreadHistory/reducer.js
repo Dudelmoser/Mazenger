@@ -3,7 +3,7 @@ import {LOGOUT, DELETE_MESSAGE} from "../App/actions/requests";
 import {THREAD_HISTORY_RECEIVED, UPDATE_RECEIVED} from "../App/actions/responses";
 import {TOGGLE_MESSAGE_SELECT} from "../MessageFrame/actions";
 import {IS_MSG_SELECT} from "./constants";
-import {SELECT_ALL_MESSAGES, DESELECT_ALL_MESSAGES} from "./actions";
+import {SELECT_ALL_MESSAGES, DESELECT_ALL_MESSAGES, DELETE_MESSAGES} from "./actions";
 
 const initState = fromJS({});
 
@@ -55,8 +55,9 @@ function historiesReducer(state = initState, action, threadID) {
       });
 
     case DELETE_MESSAGE:
+      const newHistory = state.get(threadID).filter(msg => !msg.get(IS_MSG_SELECT));
       return state
-        .deleteIn([action.threadID, action.index]);
+        .set(threadID, newHistory);
 
     case LOGOUT:
       return initState;

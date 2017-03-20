@@ -10,19 +10,10 @@ function* deleteMessages() {
   const threadID = yield select(selectCurrentThreadID());
   const history = yield select(selectHistory(threadID));
   const selected = [];
-  history.forEach((msg, index) => {
-    if (msg.get(IS_MSG_SELECT)) {
-      selected.push({
-        messageID: msg.get("messageID"),
-        threadID,
-        index,
-      });
-    }
-  });
-  console.log(selected);
-  for (let msg of selected) {
-    yield put(deleteMessage(msg.messageID, msg.threadID, msg.index));
-  }
+  history.filter(msg => msg.get(IS_MSG_SELECT)).forEach(msg =>
+    selected.push(msg.get("messageID"))
+  );
+  yield put(deleteMessage(selected));
 }
 
 export default function* main() {

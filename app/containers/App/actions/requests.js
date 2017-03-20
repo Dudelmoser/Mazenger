@@ -95,12 +95,10 @@ export function sendMessage(threadID, message, attachment) {
   return action;
 }
 
-export function deleteMessage(messageID, threadID, index) {
+export function deleteMessage(messageID) {
   return {
     type: DELETE_MESSAGE,
     args: [messageID],
-    threadID,
-    index,
   }
 }
 

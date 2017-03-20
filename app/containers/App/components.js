@@ -6,7 +6,7 @@ const rightDrawerWidth = 480;
 const titleHeight = 48;
 
 const threadWidth = window.innerWidth - leftDrawerWidth - rightDrawerWidth;
-const threadHeight = window.innerHeight - 2 * titleHeight;
+const threadHeight = window.innerHeight;
 const drawerHeight = window.innerHeight - titleHeight;
 
 const ContainerDiv = muiThemeable()(styled.div`
@@ -19,6 +19,9 @@ const ContainerDiv = muiThemeable()(styled.div`
 
 // logo must eventually be replaced with svg or pixel graphic
 const TitleDiv = muiThemeable()(styled.div`
+  z-index: 10;
+  position: absolute;
+  width: 100%;
   font-family: Raleway, Roboto;
   font-weight: 400;
   font-size: 24px;
@@ -26,14 +29,14 @@ const TitleDiv = muiThemeable()(styled.div`
   line-height: ${titleHeight}px;
   text-align: center;
   color: ${props => props.muiTheme.palette.primary1Color};
-  background: ${props => props.muiTheme.palette.canvasColor};
+  background: ${props => props.muiTheme.palette.semitrans};
 `);
 
 const CenterDiv = muiThemeable()(styled.div`
   position: absolute;
   left: ${leftDrawerWidth}px;
-  top: 0;
   width: calc(100% - ${leftDrawerWidth + rightDrawerWidth}px);
+  top: 0;
   height: 100%;
   border-left: 1px solid ${props => props.muiTheme.palette.borderColor};
   border-right: 1px solid ${props => props.muiTheme.palette.borderColor};
@@ -41,16 +44,16 @@ const CenterDiv = muiThemeable()(styled.div`
 
 const ThreadDiv = styled.div`
   width: ${threadWidth}px;
-  height: ${threadHeight}px;
+  height: 100%;
 `;
 
 const MessageDiv = muiThemeable()(styled.div`
+  position: absolute;
+  bottom: 0;
   width: 100%;
   height: ${titleHeight}px;
-  paddingLeft: 1em;
-  paddingRight: 1em;
-  /*border-top: 1px solid ${props => props.muiTheme.palette.borderColor};*/
-  /*background: ${props => props.muiTheme.palette.alternateTextColor};*/
+  padding-left: 8px;
+  background: ${props => props.muiTheme.palette.semitrans};
 `);
 
 // make component instead
@@ -62,6 +65,6 @@ const tabBtnStyle = {
 
 export {
   CenterDiv, ContainerDiv, TitleDiv, ThreadDiv, MessageDiv,
-  threadWidth, threadHeight, leftDrawerWidth, rightDrawerWidth, drawerHeight,
+  threadWidth, threadHeight, leftDrawerWidth, rightDrawerWidth, drawerHeight, titleHeight,
   tabBtnStyle,
 }

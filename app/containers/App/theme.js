@@ -35,6 +35,7 @@ function createTheme(accentColor, backgroundColor) {
       borderColor: subtleDeltaColor,
       disabledColor: distinctDeltaColor,
       clockCircleColor: minDeltaColor,
+      semitrans: fade(darkerBg, 0.95),
     },
     tabs: {
       backgroundColor: transparent,
@@ -42,9 +43,6 @@ function createTheme(accentColor, backgroundColor) {
       selectedTextColor: accentColor,
     },
     drawer: {
-      color: lighterBg,
-    },
-    message: {
       color: lighterBg,
     },
     table: {
@@ -68,6 +66,9 @@ function createTheme(accentColor, backgroundColor) {
     },
     flatButton: {
       secondaryTextColor: warningColor,
+    },
+    message: {
+      color: lighterBg,
     },
   });
 }

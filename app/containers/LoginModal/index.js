@@ -71,7 +71,9 @@ export class LoginModal extends React.Component {
 
   // temporary fix: only works for the very first login
   componentDidMount() {
-    document.getElementById(MAIL_INPUT).focus();
+    const mailInput = document.getElementById(MAIL_INPUT);
+    if (mailInput)
+      mailInput.focus();
   }
 }
 
