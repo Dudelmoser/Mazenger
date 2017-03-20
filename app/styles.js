@@ -71,4 +71,8 @@ injectGlobal`
     color: transparent;
     background: transparent;
   }
+  
+  div[tabindex]:focus {
+    outline: none;
+  }
 `;

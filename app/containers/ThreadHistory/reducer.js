@@ -1,15 +1,19 @@
 import {fromJS} from "immutable";
-import {LOGOUT} from "../App/actions/requests";
+import {LOGOUT, DELETE_MESSAGE} from "../App/actions/requests";
 import {THREAD_HISTORY_RECEIVED, UPDATE_RECEIVED} from "../App/actions/responses";
+import {TOGGLE_MESSAGE_SELECT} from "../MessageFrame/actions";
+import {IS_MSG_SELECT} from "./constants";
+import {SELECT_ALL_MESSAGES, DESELECT_ALL_MESSAGES} from "./actions";
 
 const initState = fromJS({});
 
-function historiesReducer(state = initState, action) {
+function historiesReducer(state = initState, action, threadID) {
   switch (action.type) {
     case THREAD_HISTORY_RECEIVED:
-      const threadID = action.args[0];
+      const thrID = action.args[0];
       return state
-        .set(threadID, fromJS(action.data));
+        .set(thrID, fromJS(action.data)
+          .map(val => val.set(IS_MSG_SELECT, false)));
 
     case UPDATE_RECEIVED:
       const data = action.data;
@@ -24,13 +28,35 @@ function historiesReducer(state = initState, action) {
           return state;
 
         case "message":
-          const history = state.getIn([data.threadID]);
+          const history = state.get(data.threadID);
           const index = history ? history.count() : 0;
           return state
-            .setIn([data.threadID, index], fromJS(data));
+            .setIn([data.threadID, index], fromJS(data).set(IS_MSG_SELECT, false));
         default:
           return state;
       }
+
+    case TOGGLE_MESSAGE_SELECT:
+      return state
+        .updateIn([action.threadID, action.index, IS_MSG_SELECT], isSelect => !isSelect);
+
+    case SELECT_ALL_MESSAGES:
+      return state.withMutations(state => {
+        const count = state.get(threadID).count();
+        for (let i = 0; i < count; i++)
+          state.setIn([threadID, i, IS_MSG_SELECT], true);
+      });
+
+    case DESELECT_ALL_MESSAGES:
+      return state.withMutations(state => {
+        const count = state.get(threadID).count();
+        for (let i = 0; i < count; i++)
+          state.setIn([threadID, i, IS_MSG_SELECT], false);
+      });
+
+    case DELETE_MESSAGE:
+      return state
+        .deleteIn([action.threadID, action.index]);
 
     case LOGOUT:
       return initState;

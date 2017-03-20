@@ -3,13 +3,10 @@ import {connect} from "react-redux";
 import MessageFrame from "../MessageFrame";
 import {selectCurrentThreadID} from "../LoginModal/selectors";
 import {selectCurrentTypersNames, selectCurrentHistory} from "./selectors";
-import {Set} from "immutable";
+import {createStructuredSelector} from "reselect";
+import {deleteMessages, selectAllMessages, deselectAllMessages} from "./actions";
 
 export class ThreadHistory extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-
-  state = {
-    selected: Set()
-  }
 
   styles = {
     wrapper: {
@@ -20,16 +17,6 @@ export class ThreadHistory extends React.PureComponent { // eslint-disable-line 
       fontSize: "0.75em",
       color: "#999",
     },
-  }
-
-  setSelected(msgIdx, msgState) {
-    this.setState({selected: this.state.selected.withMutations(state => {
-      if (msgState) {
-        state.add(msgIdx);
-      } else {
-        state.delete(msgIdx);
-      }
-    })});
   }
 
   getUsersTyping() {
@@ -54,13 +41,16 @@ export class ThreadHistory extends React.PureComponent { // eslint-disable-line 
 
   render() {
     return (
-      <div style={this.styles.wrapper}>
+      <div
+        tabIndex="0"
+        onClick={this.props.deselectAll}
+        onKeyDown={this.props.handleKeypress}
+        style={this.styles.wrapper}>
         {this.props.history.map((message, index) =>
           <MessageFrame
             key={index}
             index={index}
             threadID={this.props.threadID}
-            onSelect={this.setSelected.bind(this, index)}
           />
         )}
         {this.getUsersTyping()}
@@ -75,18 +65,24 @@ export class ThreadHistory extends React.PureComponent { // eslint-disable-line 
 
 ThreadHistory.propTypes = {
   onUpdate: React.PropTypes.func,
-  threadID: React.PropTypes.oneOfType(
-    [React.PropTypes.string, React.PropTypes.number]),
-  typing: React.PropTypes.array,
 }
 
-const mapStateToProps = (state) => ({
-  threadID: selectCurrentThreadID()(state),
-  typing: selectCurrentTypersNames()(state),
-  history: selectCurrentHistory()(state),
+const mapStateToProps = createStructuredSelector({
+  threadID: selectCurrentThreadID(),
+  typing: selectCurrentTypersNames(),
+  history: selectCurrentHistory(),
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch, props) => ({
+  handleKeypress: (evt) => {
+    if (evt.keyCode == 46) {
+      dispatch(deleteMessages());
+    } else if (evt.ctrlKey && evt.keyCode == 65) {
+      dispatch(selectAllMessages());
+      evt.preventDefault();
+    }
+  },
+  deselectAll: () => dispatch(deselectAllMessages()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ThreadHistory);

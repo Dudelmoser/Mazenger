@@ -2,6 +2,7 @@ import {createSelector} from "reselect";
 import {fromJS} from "immutable";
 import {selectHistory} from "../ThreadHistory/selectors";
 import {selectCurrentUserID} from "../LoginModal/selectors";
+import {IS_MSG_SELECT} from "../ThreadHistory/constants";
 
 const selectMessage = (index, threadID) => createSelector(
   selectHistory(threadID),
@@ -65,6 +66,11 @@ const selectSenderName = (index, threadID) => createSelector(
   (message) => message.get("participantNames", fromJS([])).get(0) || ""
 );
 
+const selectIsSelected = (index, threadID) => createSelector(
+  selectMessage(index, threadID),
+  (message) => message.get(IS_MSG_SELECT) || false
+);
+
 export {
   selectMessage,
   selectSenderID,
@@ -76,4 +82,5 @@ export {
   selectMessageBody,
   selectAttachments,
   selectAttachmentsCount,
+  selectIsSelected,
 }

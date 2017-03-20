@@ -1,8 +1,8 @@
-export const MESSAGE_SELECTED = "fb.messageSelected";
+export const TOGGLE_MESSAGE_SELECT = "toggleMessageSelect";
 
-export function messageSelected(index, threadID) {
+export function toggleMessageSelect(index, threadID) {
   return {
-    type: MESSAGE_SELECTED,
+    type: TOGGLE_MESSAGE_SELECT,
     index,
     threadID
   }

@@ -8,6 +8,7 @@ import * as responses from "./actions/responses";
 import threadsSaga from "../ThreadList/sagas";
 import friendsSaga from "../FriendsList/sagas";
 import chatbotSaga from "../ChatbotTab/sagas";
+import historySaga from "../ThreadHistory/sagas";
 import {selectAppState} from "../LoginModal/selectors";
 import {DISCONNECTED} from "./actions/actions";
 
@@ -94,6 +95,7 @@ function* main() {
     const threadsTask = yield fork(threadsSaga, socket);
     const friendsTask = yield fork(friendsSaga, socket);
     const chatbotTask = yield fork(chatbotSaga);
+    const historyTask = yield fork(historySaga);
 
     const appState = yield select(selectAppState());
     if (appState) {
@@ -111,6 +113,7 @@ function* main() {
     yield cancel(threadsTask);
     yield cancel(friendsTask);
     yield cancel(chatbotTask);
+    yield cancel(historySaga);
   }
 }
 
