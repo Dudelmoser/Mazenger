@@ -48,10 +48,16 @@ export function getThreadInfo(threadID) {
   }
 }
 
-export function getThreadHistory(threadID) {
+/**
+* Get a thread history
+* @param {Integer} threadID Thread ID
+* @param {Timestamp} [startAt] Timestamp at which the thread history chunk shall start
+* @param {Integer} [count] Number of messages to fetch with one request. Avoid requesting large chunks at once.
+*/
+export function getThreadHistory(threadID, startAt, count = 20) {
   return {
     type: GET_THREAD_HISTORY,
-    args: [threadID, 0, 20, null]
+    args: [threadID, 0, count, startAt || Date.now()]
   }
 }
 

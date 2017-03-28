@@ -47,10 +47,25 @@ const selectMessageCount = () => createSelector(
   (history) => history.count() || 0
 );
 
+const selectOldestTimestamp = () => createSelector(
+  selectCurrentHistory(),
+  (history) => {
+    const first = history.first();
+    let timestamp;
+    if (first) {
+      timestamp = first.get("timestamp");
+    } else {
+      timestamp = Date.now();
+    }
+    return timestamp;
+  }
+);
+
 export {
   selectHistory,
   selectCurrentHistory,
   selectAllTypers,
   selectCurrentTypersNames,
   selectMessageCount,
+  selectOldestTimestamp,
 };

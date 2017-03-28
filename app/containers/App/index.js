@@ -6,7 +6,6 @@ import Tooltip from "react-tooltip";
 
 // components
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import {Scrollbars} from "react-custom-scrollbars";
 import {CenterDiv, ContainerDiv, TitleDiv, ThreadDiv, MessageDiv, threadHeight} from "./components";
 
 // containers
@@ -21,11 +20,6 @@ import createTheme from "./theme";
 import {selectAccentColor, selectBackgroundColor} from "../ThemeSettings/selectors";
 
 class Messenger extends React.Component { // eslint-disable-line react/prefer-stateless-function
-
-  scrollToBottom() {
-    if (this.refs)
-      this.refs.scrollbar.scrollToBottom();
-  }
 
   render() {
     return (
@@ -42,11 +36,7 @@ class Messenger extends React.Component { // eslint-disable-line react/prefer-st
                 mazenger
               </TitleDiv>
               <ThreadDiv>
-                <Scrollbars
-                  ref="scrollbar"
-                  autoHide={true}>
-                  <ThreadHistory onUpdate={this.scrollToBottom.bind(this)}/>
-                </Scrollbars>
+                <ThreadHistory/>
               </ThreadDiv>
               <MessageDiv>
                 <MessageInput/>
@@ -57,10 +47,6 @@ class Messenger extends React.Component { // eslint-disable-line react/prefer-st
         </ContainerDiv>
       </MuiThemeProvider>
     );
-  }
-
-  componentDidMount() {
-    this.scrollToBottom.bind(this)();
   }
 }
 

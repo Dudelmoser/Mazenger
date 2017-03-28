@@ -70,7 +70,7 @@ const stateExample = {
       },
     },
 
-    history: {
+    histories: {
       "threadID": [{
         messageID: "mid.1466685572194:30d37fc836dd59e621",
         body: "uiuiui",

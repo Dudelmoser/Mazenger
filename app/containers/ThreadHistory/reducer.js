@@ -1,19 +1,36 @@
-import {fromJS} from "immutable";
+import {fromJS, Map, List} from "immutable";
 import {LOGOUT, DELETE_MESSAGE} from "../App/actions/requests";
 import {THREAD_HISTORY_RECEIVED, UPDATE_RECEIVED} from "../App/actions/responses";
 import {TOGGLE_MESSAGE_SELECT} from "../MessageFrame/actions";
 import {IS_MSG_SELECT} from "./constants";
-import {SELECT_ALL_MESSAGES, DESELECT_ALL_MESSAGES, DELETE_MESSAGES} from "./actions";
+import {SELECT_ALL_MESSAGES, DESELECT_ALL_MESSAGES} from "./actions";
 
 const initState = fromJS({});
 
 function historiesReducer(state = initState, action, threadID) {
   switch (action.type) {
     case THREAD_HISTORY_RECEIVED:
-      const thrID = action.args[0];
+      const threadId = action.args[0];
+      const newHistory = fromJS(action.data); // assume history to be sorted
+      const firstStamp = (newHistory.first() || Map()).get("timestamp");
+      const lastStamp = (newHistory.last() || Map()).get("timestamp");
+      const oldHistory = state.get(threadId) || List();
+      const latestStamp = (oldHistory.last() || Map()).get("timestamp") || 0;
+      const oldestStamp = (oldHistory.first() || Map()).get("timestamp");
+
+      console.log(firstStamp, lastStamp, latestStamp, oldestStamp);
       return state
-        .set(thrID, fromJS(action.data)
-          .map(val => val.set(IS_MSG_SELECT, false)));
+        .withMutations(state => {
+          if (lastStamp < oldestStamp) {
+            state.set(threadId, newHistory.concat(oldHistory));
+          } else if (firstStamp > latestStamp) {
+            state.set(threadId, oldHistory.concat(newHistory));
+          } else if (firstStamp <= latestStamp && firstStamp >= oldestStamp) {
+            state.set(threadId, oldHistory.concat(newHistory.skipUntil(msg => msg.get("timestamp") > latestStamp)));
+          } else if (lastStamp >= oldestStamp && lastStamp <= latestStamp) {
+            // should not occur, therefore not handled
+          }
+        });
 
     case UPDATE_RECEIVED:
       const data = action.data;
@@ -55,9 +72,9 @@ function historiesReducer(state = initState, action, threadID) {
       });
 
     case DELETE_MESSAGE:
-      const newHistory = state.get(threadID).filter(msg => !msg.get(IS_MSG_SELECT));
+      const newHist = state.get(threadID).filter(msg => !msg.get(IS_MSG_SELECT));
       return state
-        .set(threadID, newHistory);
+        .set(threadID, newHist);
 
     case LOGOUT:
       return initState;

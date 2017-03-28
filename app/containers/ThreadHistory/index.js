@@ -1,10 +1,11 @@
 import React from "react";
 import {connect} from "react-redux";
 import MessageFrame from "../MessageFrame";
+import {Scrollbars} from "react-custom-scrollbars";
 import {selectCurrentThreadID} from "../LoginModal/selectors";
 import {selectCurrentTypersNames, selectCurrentHistory} from "./selectors";
 import {createStructuredSelector} from "reselect";
-import {deleteMessages, selectAllMessages, deselectAllMessages} from "./actions";
+import {deleteMessages, selectAllMessages, deselectAllMessages, loadMoreMessages} from "./actions";
 import {titleHeight} from "../App/components";
 
 export class ThreadHistory extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -19,8 +20,48 @@ export class ThreadHistory extends React.PureComponent { // eslint-disable-line 
       fontSize: "0.75em",
       color: "#999",
     },
+  };
+
+  render() {
+    return (
+      <Scrollbars
+        ref="scrollbar"
+        autoHide={true}
+        onScrollFrame={(values) => {
+          if (values.top == 0) this.props.loadMore()}
+        }>
+        <div
+          tabIndex="0"
+          onClick={this.props.deselectAll}
+          onKeyDown={this.props.handleKeypress}
+          style={this.styles.wrapper}>
+          {this.props.history.map((message, index) =>
+            <MessageFrame
+              key={index}
+              index={index}
+              threadID={this.props.threadID}
+            />
+          )}
+          {this.getUsersTyping()}
+        </div>
+      </Scrollbars>
+    );
   }
 
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
+
+  componentDidMount() {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom() {
+    if (this.refs)
+      this.refs.scrollbar.scrollToBottom();
+  }
+
+  // add intl support
   getUsersTyping() {
     if (!this.props.typing || this.props.typing.length < 1)
       return;
@@ -40,33 +81,9 @@ export class ThreadHistory extends React.PureComponent { // eslint-disable-line 
 
     return <div style={this.styles.typers}>{str + "typing..."}</div>
   }
-
-  render() {
-    return (
-      <div
-        tabIndex="0"
-        onClick={this.props.deselectAll}
-        onKeyDown={this.props.handleKeypress}
-        style={this.styles.wrapper}>
-        {this.props.history.map((message, index) =>
-          <MessageFrame
-            key={index}
-            index={index}
-            threadID={this.props.threadID}
-          />
-        )}
-        {this.getUsersTyping()}
-      </div>
-    );
-  }
-
-  componentDidUpdate() {
-    this.props.onUpdate();
-  }
 }
 
 ThreadHistory.propTypes = {
-  onUpdate: React.PropTypes.func,
 }
 
 const mapStateToProps = createStructuredSelector({
@@ -85,6 +102,7 @@ const mapDispatchToProps = (dispatch, props) => ({
     }
   },
   deselectAll: () => dispatch(deselectAllMessages()),
+  loadMore: () => dispatch(loadMoreMessages()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ThreadHistory);
