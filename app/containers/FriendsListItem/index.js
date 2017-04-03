@@ -3,10 +3,14 @@ import {connect} from "react-redux";
 import {ListItem, Divider, Avatar} from "material-ui";
 import {getThreadHistory} from "../App/actions/requests";
 import {selectImageURL, selectFullName, selectProfileURL, selectHasBirthday, selectUserID} from "./selectors";
+import muiThemeable from "material-ui/styles/muiThemeable";
 
 export class FriendsListItem extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
   render() {
+    // Remove unnecessary muiThemeables in parent components and the following line
+    // if the bug preventing muiThemeable to update is found
+    const textColor = this.props.muiTheme.palette.textColor;
     return (
       <div key={this.props.index}>
         <ListItem
@@ -45,4 +49,4 @@ const mapDispatchToProps = (dispatch) => ({
   click: (userID) => dispatch(getThreadHistory(userID))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(FriendsListItem);
+export default connect(mapStateToProps, mapDispatchToProps)(muiThemeable()(FriendsListItem));

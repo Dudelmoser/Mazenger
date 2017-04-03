@@ -2,12 +2,14 @@ import React from "react";
 import {connect} from "react-redux";
 import {injectIntl, intlShape} from "react-intl";
 import messages from "./messages";
-import {TextField, FlatButton, IconMenu, IconButton, MenuItem} from "material-ui";
+import {TextField, IconMenu, IconButton, MenuItem} from "material-ui";
+import LockIcon from "material-ui/svg-icons/action/lock-open";
+import KeyIcon from "material-ui/svg-icons/communication/vpn-key";
 import MenuIcon from "material-ui/svg-icons/navigation/more-vert";
 import SendIcon from "material-ui/svg-icons/content/send";
-import {changeMessage} from "./actions";
+import {changeMessage, revokeAesKey, sendPublicKey} from "./actions";
 import {sendMessage} from "../App/actions/requests";
-import {selectCurrentInput} from "./selectors";
+import {selectCurrentAesKey, selectCurrentInput} from "./selectors";
 import {createStructuredSelector} from "reselect";
 import {selectCurrentThreadID} from "../LoginModal/selectors";
 import {selectAbbreviations} from "../AbbreviationsTab/selectors";
@@ -28,11 +30,15 @@ export class MessageInput extends React.PureComponent { // eslint-disable-line r
           onKeyUp={this.props.handleKeyUp}
           onChange={this.props.handleChange}
           hintText={formatMessage(messages.hint)}
-          style={{width: "calc(100% - 96px)"}}
+          style={{width: "calc(100% - 144px)"}}
         />
         <IconButton
           onTouchTap={this.props.sendMessage}>
           <SendIcon/>
+        </IconButton>
+        <IconButton
+          onTouchTap={this.props.aes ? this.props.revokeAesKey : this.props.sendPublicKey}>
+          {this.props.aes ? <LockIcon/> : <KeyIcon/>}
         </IconButton>
         <IconMenu
           iconButtonElement={<IconButton><MenuIcon/></IconButton>}
@@ -59,6 +65,7 @@ const mapStateToProps = createStructuredSelector({
   threadID: selectCurrentThreadID(),
   message: selectCurrentInput(),
   abbrs: selectAbbreviations(),
+  aes: selectCurrentAesKey(),
 });
 
 // to get access to stateProps filled by selectors
@@ -83,6 +90,8 @@ const mergeProps = (stateProps, {dispatch}) => {
     },
     sendMessage: () => dispatch(sendMessage(threadID, document.getElementById(INPUT_ID).value)),
     deleteMessages: () => dispatch(deleteMessages()),
+    sendPublicKey: () => dispatch(sendPublicKey()),
+    revokeAesKey: () => dispatch(revokeAesKey()),
   }
 };
 

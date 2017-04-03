@@ -7,8 +7,14 @@ import {selectCurrentTypersNames, selectCurrentHistory} from "./selectors";
 import {createStructuredSelector} from "reselect";
 import {deleteMessages, selectAllMessages, deselectAllMessages, loadMoreMessages} from "./actions";
 import {titleHeight} from "../App/components";
+import muiThemeable from "material-ui/styles/muiThemeable";
 
 export class ThreadHistory extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+
+  state = {
+    prevThread: 0,
+    prevHeight: 0,
+  }
 
   styles = {
     wrapper: {
@@ -48,8 +54,24 @@ export class ThreadHistory extends React.PureComponent { // eslint-disable-line 
     );
   }
 
+  componentWillUpdate() {
+    if (this.refs && this.refs.scrollbar.getScrollTop() == 0) {
+      this.setState({
+        prevHeight: this.refs.scrollbar.getScrollHeight(),
+      });
+    }
+  }
+
   componentDidUpdate() {
-    this.scrollToBottom();
+    if (this.props.threadID == this.state.prevThread) {
+      const top = this.refs.scrollbar.getScrollHeight() - this.state.prevHeight;
+      this.refs.scrollbar.scrollTop(top);
+    } else {
+      this.scrollToBottom();
+      this.setState({
+        prevThread: this.props.threadID,
+      });
+    }
   }
 
   componentDidMount() {
@@ -83,9 +105,6 @@ export class ThreadHistory extends React.PureComponent { // eslint-disable-line 
   }
 }
 
-ThreadHistory.propTypes = {
-}
-
 const mapStateToProps = createStructuredSelector({
   threadID: selectCurrentThreadID(),
   typing: selectCurrentTypersNames(),
@@ -105,4 +124,5 @@ const mapDispatchToProps = (dispatch, props) => ({
   loadMore: () => dispatch(loadMoreMessages()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ThreadHistory);
+// muiThemeable needed for nested message components to receive theme updates - reason?
+export default connect(mapStateToProps, mapDispatchToProps)(muiThemeable()(ThreadHistory));

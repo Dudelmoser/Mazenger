@@ -75,4 +75,16 @@ injectGlobal`
   div[tabindex]:focus {
     outline: none;
   }
+
+  @-webkit-keyframes autofill {
+    to {
+      color: inherit;
+      background: transparent;
+    }
+  }
+
+  input:-webkit-autofill {
+    -webkit-animation-name: autofill;
+    -webkit-animation-fill-mode: both;
+  }
 `;

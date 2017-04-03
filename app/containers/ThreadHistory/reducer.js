@@ -18,7 +18,6 @@ function historiesReducer(state = initState, action, threadID) {
       const latestStamp = (oldHistory.last() || Map()).get("timestamp") || 0;
       const oldestStamp = (oldHistory.first() || Map()).get("timestamp");
 
-      console.log(firstStamp, lastStamp, latestStamp, oldestStamp);
       return state
         .withMutations(state => {
           if (lastStamp < oldestStamp) {

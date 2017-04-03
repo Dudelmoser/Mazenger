@@ -60,6 +60,14 @@ const stateExample = {
       },
     },
 
+    keys: {
+      "threadID": {
+        aes: "",
+        pk: "",
+        sk: "",
+      },
+    },
+
     inputs: {
       "threadID": "",
     },

@@ -6,17 +6,16 @@ import {selectThreadSnippet, selectThreadTitle, selectThreadImageURL, selectHasA
 } from "./selectors";
 import {ListItem, Divider, Avatar} from "material-ui";
 import emoji from "react-easy-emoji";
-import AttachmentIcon from 'material-ui/svg-icons/file/attachment';
+import ClipIcon from "material-ui/svg-icons/file/attachment";
+import LockIcon from "material-ui/svg-icons/action/lock-outline";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import messages from "./messages";
 import {injectIntl} from "react-intl";
+import {selectCurrentAesKey} from "../MessageInput/selectors";
 
 export class ThreadListItem extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
   render() {
-    // Catch react-easy-emoji error when empty string is passed.
-    // Usually happens after cleaning the cache.
-
     const {formatMessage} = this.props.intl;
 
     // can be simplified cause API reveils no typers in group chats
@@ -26,7 +25,7 @@ export class ThreadListItem extends React.PureComponent { // eslint-disable-line
 
     const snippet = this.props.snippet
       ? emoji(this.props.snippet)
-      : formatMessage(messages.attachment);
+      : <ClipIcon style={{height: 20}}/>;
 
     const secondaryText = this.props.typersCount
       ? this.props.typersNames + typing
@@ -37,7 +36,7 @@ export class ThreadListItem extends React.PureComponent { // eslint-disable-line
         <div style={{position: "relative"}}>
           <ListItem
             leftAvatar={<Avatar src={this.props.imageURL}/>}
-            rightIcon={this.props.hasAttachment ? <AttachmentIcon/> : null}
+            rightIcon={this.props.crypted ? <LockIcon/> : null}
             primaryText={this.props.title}
             secondaryText={
               <p style={{width: "90%"}}>{secondaryText}</p>
@@ -51,8 +50,7 @@ export class ThreadListItem extends React.PureComponent { // eslint-disable-line
         </div>
       );
     } catch (err) {
-      console.log(err); //meme.js workaround
-      return null;
+      return null; //meme.js workaround
     }
   }
 }
@@ -63,13 +61,14 @@ ThreadListItem.propTypes = {
   onTouch: React.PropTypes.func,
 }
 
-const mapStateToProps = (state, ownProps) => ({
-  title: selectThreadTitle(ownProps.threadID)(state),
-  snippet: selectThreadSnippet(ownProps.threadID)(state),
-  imageURL: selectThreadImageURL(ownProps.threadID)(state),
-  hasAttachment: selectHasAttachment(ownProps.threadID)(state),
-  typersNames: selectTypersNamesStr(ownProps.threadID)(state),
-  typersCount: selectTypersCount(ownProps.threadID)(state),
+const mapStateToProps = (state, props) => ({
+  title: selectThreadTitle(props.threadID)(state),
+  snippet: selectThreadSnippet(props.threadID)(state),
+  imageURL: selectThreadImageURL(props.threadID)(state),
+  hasAttachment: selectHasAttachment(props.threadID)(state),
+  typersNames: selectTypersNamesStr(props.threadID)(state),
+  typersCount: selectTypersCount(props.threadID)(state),
+  crypted: selectCurrentAesKey(props.threadID)(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

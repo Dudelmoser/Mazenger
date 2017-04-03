@@ -2,6 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import {injectIntl, intlShape} from "react-intl";
 import {createStructuredSelector} from "reselect";
+import muiThemeable from "material-ui/styles/muiThemeable";
 
 // components
 import {Tabs, Tab, Drawer} from "material-ui";
@@ -96,4 +97,4 @@ const mapDispatchToProps = (dispatch) => ({
   getFriendsList: (tab) => dispatch(getFriendsList()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(LeftDrawer));
+export default connect(mapStateToProps, mapDispatchToProps)(muiThemeable()(injectIntl(LeftDrawer)));

@@ -1,10 +1,8 @@
-import {fromJS} from "immutable";
+import {fromJS, Map} from "immutable";
 import {THREAD_LIST_RECEIVED, THREAD_INFO_RECEIVED, UPDATE_RECEIVED, USER_INFO_RECEIVED} from "../App/actions/responses";
 import {LOGOUT} from "../App/actions/requests";
 
-const initState = fromJS({});
-
-function threadsReducer(state = initState, action) {
+function threadsReducer(state = Map(), action) {
   switch (action.type) {
 
     case THREAD_LIST_RECEIVED:
@@ -31,11 +29,11 @@ function threadsReducer(state = initState, action) {
       }
 
     case LOGOUT:
-      return initState;
+      return Map();
   }
 }
 
-function usersReducer(state = initState, action) {
+function usersReducer(state = Map(), action) {
   switch (action.type) {
     case USER_INFO_RECEIVED:
       const userID = Object.keys(action.data)[0];
@@ -44,7 +42,7 @@ function usersReducer(state = initState, action) {
         .set(userID, fromJS(userInfo));
 
     case LOGOUT:
-      return initState;
+      return Map();
   }
 }
 

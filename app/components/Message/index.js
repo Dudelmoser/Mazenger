@@ -1,5 +1,4 @@
 import React from "react";
-import muiThemeable from "material-ui/styles/muiThemeable";
 import Body from "./Body";
 import Attachments from "./Attachments";
 
@@ -36,6 +35,7 @@ Message.propTypes = {
   onClick: React.PropTypes.func,
   tooltip: React.PropTypes.string,
   isOwn: React.PropTypes.bool,
+  bgColor: React.PropTypes.string,
 };
 
-export default muiThemeable()(Message);
+export default Message;

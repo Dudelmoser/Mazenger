@@ -57,7 +57,8 @@ export class MessageFrame extends React.PureComponent { // eslint-disable-line r
             message={this.props.message}
             tooltip={this.props.senderName}
             isOwn={this.props.isOwn}
-            onClick={this.props.resolvePhotoUrl}/>
+            onClick={this.props.resolvePhotoUrl}
+          />
           {this.getReaders()}
         </div>
       </div>
