@@ -7,9 +7,8 @@ import LockIcon from "material-ui/svg-icons/action/lock-open";
 import KeyIcon from "material-ui/svg-icons/communication/vpn-key";
 import MenuIcon from "material-ui/svg-icons/navigation/more-vert";
 import SendIcon from "material-ui/svg-icons/content/send";
-import {changeMessage, revokeAesKey, sendPublicKey} from "./actions";
-import {sendMessage} from "../App/actions/requests";
-import {selectCurrentAesKey, selectCurrentInput} from "./selectors";
+import {changeMessage, encryptMessage, revokeAesKey, sendPublicKey} from "./actions";
+import {selectPasswords, selectCurrentInput} from "./selectors";
 import {createStructuredSelector} from "reselect";
 import {selectCurrentThreadID} from "../LoginModal/selectors";
 import {selectAbbreviations} from "../AbbreviationsTab/selectors";
@@ -37,7 +36,7 @@ export class MessageInput extends React.PureComponent { // eslint-disable-line r
           <SendIcon/>
         </IconButton>
         <IconButton
-          onTouchTap={this.props.aes ? this.props.revokeAesKey : this.props.sendPublicKey}>
+          onTouchTap={this.props.aes && this.props.aes.count() ? this.props.revokeAesKey : this.props.sendPublicKey}>
           {this.props.aes ? <LockIcon/> : <KeyIcon/>}
         </IconButton>
         <IconMenu
@@ -65,7 +64,7 @@ const mapStateToProps = createStructuredSelector({
   threadID: selectCurrentThreadID(),
   message: selectCurrentInput(),
   abbrs: selectAbbreviations(),
-  aes: selectCurrentAesKey(),
+  aes: selectPasswords(),
 });
 
 // to get access to stateProps filled by selectors
@@ -85,13 +84,13 @@ const mergeProps = (stateProps, {dispatch}) => {
     },
     handleKeyUp: (event) => {
       if (event.keyCode == 13) {
-        dispatch(sendMessage(threadID, event.target.value))
+        dispatch(encryptMessage(threadID, event.target.value))
       }
     },
-    sendMessage: () => dispatch(sendMessage(threadID, document.getElementById(INPUT_ID).value)),
+    sendMessage: () => dispatch(encryptMessage(threadID, document.getElementById(INPUT_ID).value)),
     deleteMessages: () => dispatch(deleteMessages()),
-    sendPublicKey: () => dispatch(sendPublicKey()),
-    revokeAesKey: () => dispatch(revokeAesKey()),
+    sendPublicKey: () => dispatch(sendPublicKey(threadID)),
+    revokeAesKey: () => dispatch(revokeAesKey(threadID)),
   }
 };
 

@@ -62,9 +62,9 @@ const stateExample = {
 
     keys: {
       "threadID": {
-        aes: "",
-        pk: "",
-        sk: "",
+        pk: null,
+        pws: [],
+        enc: false,
       },
     },
 

@@ -1,11 +1,12 @@
 import {fromJS, Map} from "immutable";
-import {THREAD_LIST_RECEIVED, THREAD_INFO_RECEIVED, UPDATE_RECEIVED, USER_INFO_RECEIVED} from "../App/actions/responses";
+import {THREAD_INFO_RECEIVED, USER_INFO_RECEIVED} from "../App/actions/responses";
 import {LOGOUT} from "../App/actions/requests";
+import {MESSAGE_DECRYPTED, THREAD_LIST_DECRYPTED} from "../MessageInput/actions";
 
 function threadsReducer(state = Map(), action) {
   switch (action.type) {
 
-    case THREAD_LIST_RECEIVED:
+    case THREAD_LIST_DECRYPTED:
       if (!action.data)
         return state;
       return fromJS({}).withMutations(map =>
@@ -15,9 +16,9 @@ function threadsReducer(state = Map(), action) {
       );
 
     case THREAD_INFO_RECEIVED:
-      return state.update(action.id, thread => thread.mergeDeep(fromJS(action.data)));
+      return state.update(action.id, thread => (thread || Map()).mergeDeep(fromJS(action.data)));
 
-    case UPDATE_RECEIVED:
+    case MESSAGE_DECRYPTED:
       const data = action.data;
       switch (data.type) {
 

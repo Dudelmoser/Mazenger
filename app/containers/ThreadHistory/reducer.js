@@ -4,12 +4,13 @@ import {THREAD_HISTORY_RECEIVED, UPDATE_RECEIVED} from "../App/actions/responses
 import {TOGGLE_MESSAGE_SELECT} from "../MessageFrame/actions";
 import {IS_MSG_SELECT} from "./constants";
 import {SELECT_ALL_MESSAGES, DESELECT_ALL_MESSAGES} from "./actions";
+import {MESSAGE_DECRYPTED, THREAD_HISTORY_DECRYPTED} from "../MessageInput/actions";
 
 const initState = fromJS({});
 
 function historiesReducer(state = initState, action, threadID) {
   switch (action.type) {
-    case THREAD_HISTORY_RECEIVED:
+    case THREAD_HISTORY_DECRYPTED:
       const threadId = action.args[0];
       const newHistory = fromJS(action.data); // assume history to be sorted
       const firstStamp = (newHistory.first() || Map()).get("timestamp");
@@ -31,7 +32,7 @@ function historiesReducer(state = initState, action, threadID) {
           }
         });
 
-    case UPDATE_RECEIVED:
+    case MESSAGE_DECRYPTED:
       const data = action.data;
       switch (data.type) {
 

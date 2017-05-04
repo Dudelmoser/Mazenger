@@ -40,7 +40,7 @@ function Body(props) {
 }
 
 Body.propTypes = {
-  body: React.PropTypes.string.isRequired,
+  body: React.PropTypes.string,
 };
 
 export default muiThemeable()(Body);
