@@ -1,69 +1,57 @@
 import {takeEvery} from "redux-saga";
 import {put, select, call} from "redux-saga/effects";
+import forge from "node-forge";
 import {
-  ENCRYPT_MESSAGE, messageDecrypted, REVOKE_AES_KEY, savePrivateKey, SEND_PUBLIC_KEY,
-  threadHistoryDecrypted
+  ENCRYPT_MESSAGE, DISABLE_ENCRYPTION, SEND_PUBLIC_KEY,
+  threadHistoryDecrypted, saveSymmetricKey, savePrivateKey, messageDecrypted,
 } from "./actions";
-import CryptoJS from "crypto-js";
-import JSEncrypt from "../../utils/jsencrypt.min";
-import {AES_TAG, PK_PREFIX, SK_PREFIX} from "./constants";
-import {selectPublicKey, selectPasswords} from "./selectors";
+import {AD_TAG, EK_TAG, PK_TAG, DSBL_TAG, CHECK_STR, CT_TAG} from "./constants";
+import {selectLatestKey, selectPrivateKey, selectSymmetricKeys} from "./selectors";
 import {THREAD_HISTORY_RECEIVED, THREAD_LIST_RECEIVED, UPDATE_RECEIVED} from "../App/actions/responses";
 import {sendMessage} from "../App/actions/requests";
 import {selectCurrentUserID} from "../LoginModal/selectors";
 
-function getRandomPassword() {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  const passwordLength = 64;
+const RSA_EXPONENT = 0x10001;
+const RSA_KEY_BITS = 1024;
+const AES_KEY_BYTES = 32;
+const TAG_PREFIX = "» ";
+const VAL_PREFIX = "\n";
 
-  let password = "";
-  for(let i = 0; i < password_length; i++) {
-    password += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return password;
+function pemToStr(pem) {
+  return pem.replace(/(?:\r|\n|-|BEGIN |END |PUBLIC KEY)/g, "");
+}
+
+function strToPem(str) {
+  return "-----BEGIN PUBLIC KEY-----" + str + "-----END PUBLIC KEY-----";
+}
+
+function createTaggedMessage(tag, ...values) {
+  let msg = TAG_PREFIX + tag;
+  for (let val of values)
+    msg += "\n" + val;
+  return msg;
 }
 
 function* decrypt(msg, threadID) {
   if (!msg)
     return "";
-  const keys = yield select(selectPasswords(threadID));
-  // filter encryption messages
-  if (msg.startsWith(PK_PREFIX) || msg.startsWith(SK_PREFIX)) {
-    return "";
-  } else {
-    for (let key of keys) {
-      const decrypted = CryptoJS.AES.decrypt(msg, key).toString(CryptoJS.enc.Utf8);
-      if (decrypted.startsWith(AES_TAG))
-        return decrypted.substr(AES_TAG.length);
-    }
+  if (!msg.startsWith(CT_TAG))
+    return msg;
+
+  const parts = msg.split(VAL_PREFIX);
+  const ctBytes = forge.util.decode64(parts[1]);
+  const ivBytes = forge.util.decode64(parts[2]);
+
+  const keys = yield select(selectSymmetricKeys(threadID));
+  for (let key of keys.reverse().toJS()) {
+    const decipher = forge.cipher.createDecipher("AES-CBC", key);
+    decipher.start({iv: ivBytes});
+    decipher.update(forge.util.createBuffer(ctBytes));
+    decipher.finish();
+    if (decipher.output.startsWith(CHECK_STR))
+      return decipher.output.substr(CHECK_STR.length);
   }
   return msg;
-}
-
-function* decryptMessage(action) {
-  if (action.data.type == "message" && action.data.body) {
-    const userID = yield select(selectCurrentUserID());
-    if (action.data.senderID != userID) {
-      if (action.data.body.startsWith(PK_PREFIX)) {
-        const pk = action.data.body.replace(PK_PREFIX, "");
-        const pw = getRandomPassword();
-        const crypt = new JSEncrypt({default_key_size: 1024});
-        crypt.setPublicKey(pk);
-        const res = SK_PREFIX + crypt.encrypt(pw);
-        yield put(sendMessage(res));
-        yield put(saveAESKey(action.data.threadID, pw));
-
-      } else if (action.data.body.startsWith(SK_PREFIX)) {
-        const sk = yield select(selectPublicKey(action.data.threadID));
-        const JSEncrypt = new JSEncrypt({default_key_size: 1024});
-        JSEncrypt.setPrivateKey(sk);
-        const aes = JSEncrypt.decrypt(action.data.body.replace(SK_PREFIX, ""));
-        yield put(saveAESKey(action.data.threadID, aes));
-      }
-    }
-    action.data.body = yield call(decrypt, action.data.body, action.data.threadID);
-  }
-  yield put(messageDecrypted(action));
 }
 
 function* decryptHistory(action) {
@@ -79,42 +67,95 @@ function* decryptThreadList(action) {
   }
 }
 
-function reduceKey(key) {
-  return key
-    .replace("-----BEGIN PUBLIC KEY-----", "")
-    .replace("-----END PUBLIC KEY-----", "")
-    .replace("-----BEGIN RSA PRIVATE KEY-----", "")
-    .replace("-----END RSA PRIVATE KEY-----", "")
-    .replace(/(?:\r\n|\r|\n)/g, "");
+function* encryptMessage(action) {
+  const key = yield select(selectLatestKey(action.threadID));
+  if (key) {
+    const iv = forge.random.getBytesSync(AES_KEY_BYTES);
+    const cipher = forge.cipher.createCipher("AES-CBC", key);
+    cipher.start({iv: iv});
+    const buffer = forge.util.createBuffer(CHECK_STR + action.message);
+    cipher.update(buffer);
+    cipher.finish;
+    const ctBytes = cipher.output.getBytes();
+    const ctBase64 = forge.util.encode64(ctBytes);
+    const ivBase64 = forge.util.encode64(iv);
+    action.message = createTaggedMessage(CT_TAG, ctBase64, ivBase64);
+  }
+  yield put(sendMessage(action.threadID, action.message));
 }
 
 function* sendPublicKey(action) {
-  const crypt = new JSEncrypt({default_key_size: 1024});
-  crypt.getKey();
-  const pk = reduceKey(crypt.getPublicKey());
-  const sk = reduceKey(crypt.getPrivateKey());
-  yield put(sendMessage(action.threadID, PK_PREFIX + pk));
-  yield put(savePrivateKey(sk));
+  const keypair = forge.pki.rsa.generateKeyPair({bits: RSA_KEY_BITS, e: RSA_EXPONENT});
+  const pubKey = pemToStr(forge.pki.publicKeyToPem(keypair.publicKey));
+  const privKey = forge.pki.privateKeyToPem(keypair.privateKey);
+  const prefix = createTaggedMessage(AD_TAG);
+  const msg = createTaggedMessage(PK_TAG, pubKey);
+  yield put(sendMessage(action.threadID, prefix + "\n\n" + msg));
+  yield put(savePrivateKey(action.threadID, privKey));
 }
 
-function* revokeAesKey() {
+function* sendEncryptedKey(threadID, pk) {
+  const symKey = forge.random.getBytesSync(AES_KEY_BYTES);
+  const pubKey = forge.pki.publicKeyFromPem(strToPem(pk));
+  const ctBytes = pubKey.encrypt(CHECK_STR + symKey);
+  const ctBase64 = forge.util.encode64(ctBytes);
+  const msg = createTaggedMessage(EK_TAG, ctBase64);
+  yield put(sendMessage(threadID, msg));
+  yield put(saveSymmetricKey(threadID, symKey));
+}
+
+function* saveEncryptedKey(threadID, ek64) {
+  const privKeyPem = yield select(selectPrivateKey(threadID));
+  console.log(privKeyPem);
+  const privKey = forge.pki.privateKeyFromPem(privKeyPem);
+  const ek = forge.util.decode64(ek64);
+  const symKey = privKey.decrypt(ek);
+  if (symKey.startsWith(CHECK_STR))
+    yield put(saveSymmetricKey(threadID, symKey.substr(CHECK_STR.length)));
+}
+
+function* disableEncryption() {
 
 }
 
-function* encryptMessage(action) {
-  const pwd = yield select(selectLatestPassword(action.threadID));
-  const msg = action.message;
-  if (pwd) {
+function* parseUpdate(action) {
+  if (action.data.type == "message" && action.data.body && action.data.body.startsWith(TAG_PREFIX)) {
+    const userID = yield select(selectCurrentUserID());
+    const entries = action.data.body.split(TAG_PREFIX);
+
+    for (let i = 1; i < entries.length; i++) {
+      const entry = entries[i].split(VAL_PREFIX);
+
+      if (action.data.senderID != userID) {
+        switch (entry[0]) {
+          case PK_TAG:
+            yield call(sendEncryptedKey, action.data.threadID, entry[1]);
+            break;
+
+          case EK_TAG:
+            yield call(saveEncryptedKey, action.data.threadID, entry[1]);
+            break;
+
+          case DSBL_TAG:
+            yield call(disableEncryption, action.data.threadID);
+            break;
+        }
+      }
+
+      if (entry[0] == CT_TAG)
+        action.data.body = yield call(decrypt, action.data.body, action.data.threadID);
+    }
   }
+  yield put(messageDecrypted(action));
 }
 
 function* main() {
   yield takeEvery(ENCRYPT_MESSAGE, encryptMessage);
-  yield takeEvery(UPDATE_RECEIVED, decryptMessage);
+  yield takeEvery(UPDATE_RECEIVED, parseUpdate);
   yield takeEvery(THREAD_HISTORY_RECEIVED, decryptHistory);
   yield takeEvery(THREAD_LIST_RECEIVED, decryptThreadList);
   yield takeEvery(SEND_PUBLIC_KEY, sendPublicKey);
-  yield takeEvery(REVOKE_AES_KEY, revokeAesKey);
+  yield takeEvery(DISABLE_ENCRYPTION, disableEncryption);
 }
 
 export default main;

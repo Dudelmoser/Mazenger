@@ -62,9 +62,9 @@ const stateExample = {
 
     keys: {
       "threadID": {
-        pk: null,
-        pws: [],
-        enc: false,
+        privKey: null,
+        symKeys: [],
+        isActive: false,
       },
     },
 
@@ -159,6 +159,7 @@ const stateExample = {
     settings: {
       accentColor: "rgb(235,255,0)",
       backgroundColor: "rgb(32,35,38)",
+      showCommands: true,
     }
   },
 };

@@ -1,12 +1,12 @@
 export const CHANGE_MESSAGE = "changeMessage";
 export const SEND_PUBLIC_KEY = "sendPublicKey";
-export const REVOKE_AES_KEY = "revokeAesKey";
+export const DISABLE_ENCRYPTION = "disableEncryption";
 export const ENCRYPT_MESSAGE ="encryptMessage";
 export const MESSAGE_DECRYPTED = "messageDecrypted";
 export const THREAD_LIST_DECRYPTED = "threadListDecrypted";
 export const THREAD_HISTORY_DECRYPTED = "threadHistoryDecrypted";
 export const SAVE_PRIVATE_KEY = "savePrivateKey";
-export const SAVE_AES_KEY = "saveAESKey";
+export const SAVE_SYMMETRIC_KEY = "saveSymmetricKey";
 
 export function changeMessage(message) {
   return {
@@ -30,17 +30,17 @@ export function savePrivateKey(threadID, key) {
   }
 }
 
-export function saveAESKey(threadID, key) {
+export function saveSymmetricKey(threadID, key) {
   return {
-    type: SAVE_AES_KEY,
+    type: SAVE_SYMMETRIC_KEY,
     threadID,
     key
   }
 }
 
-export function revokeAesKey(threadID) {
+export function disableEncryption(threadID) {
   return {
-    type: REVOKE_AES_KEY,
+    type: DISABLE_ENCRYPTION,
     threadID
   }
 }

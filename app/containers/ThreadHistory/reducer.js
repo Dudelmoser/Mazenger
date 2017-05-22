@@ -38,7 +38,9 @@ function historiesReducer(state = initState, action, threadID) {
 
         // never triggered ?
         case "read_receipt":
-          return state.updateIn([data.threadID, -1, "readers"], readers => readers.push(data.reader));
+          return state.updateIn([data.threadID, -1, "readers"], readers => {
+            return (readers || List()).push(data.reader);
+          });
 
         // not implemented yet
         case "presence":

@@ -57,7 +57,7 @@ export function getThreadInfo(threadID) {
 export function getThreadHistory(threadID, startAt, count = 20) {
   return {
     type: GET_THREAD_HISTORY,
-    args: [threadID, 0, count, startAt || Date.now()]
+    args: [threadID, count, startAt || Date.now()]
   }
 }
 

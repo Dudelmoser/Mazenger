@@ -7,8 +7,8 @@ import LockIcon from "material-ui/svg-icons/action/lock-open";
 import KeyIcon from "material-ui/svg-icons/communication/vpn-key";
 import MenuIcon from "material-ui/svg-icons/navigation/more-vert";
 import SendIcon from "material-ui/svg-icons/content/send";
-import {changeMessage, encryptMessage, revokeAesKey, sendPublicKey} from "./actions";
-import {selectPasswords, selectCurrentInput} from "./selectors";
+import {changeMessage, encryptMessage, disableEncryption, sendPublicKey} from "./actions";
+import {selectSymmetricKeys, selectCurrentInput} from "./selectors";
 import {createStructuredSelector} from "reselect";
 import {selectCurrentThreadID} from "../LoginModal/selectors";
 import {selectAbbreviations} from "../AbbreviationsTab/selectors";
@@ -64,7 +64,7 @@ const mapStateToProps = createStructuredSelector({
   threadID: selectCurrentThreadID(),
   message: selectCurrentInput(),
   abbrs: selectAbbreviations(),
-  aes: selectPasswords(),
+  aes: selectSymmetricKeys(),
 });
 
 // to get access to stateProps filled by selectors
@@ -90,7 +90,7 @@ const mergeProps = (stateProps, {dispatch}) => {
     sendMessage: () => dispatch(encryptMessage(threadID, document.getElementById(INPUT_ID).value)),
     deleteMessages: () => dispatch(deleteMessages()),
     sendPublicKey: () => dispatch(sendPublicKey(threadID)),
-    revokeAesKey: () => dispatch(revokeAesKey(threadID)),
+    revokeAesKey: () => dispatch(disableEncryption(threadID)),
   }
 };
 

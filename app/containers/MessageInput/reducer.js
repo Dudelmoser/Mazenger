@@ -1,8 +1,8 @@
-import {fromJS, Map} from "immutable";
+import {fromJS, Map, List} from "immutable";
 import {MESSAGE_SENT} from "../App/actions/responses";
-import {CHANGE_MESSAGE, SAVE_AES_KEY, SAVE_PRIVATE_KEY} from "./actions";
+import {CHANGE_MESSAGE, SAVE_SYMMETRIC_KEY, SAVE_PRIVATE_KEY} from "./actions";
 import {INSERT_EMOJI} from "../EmojisTab/actions";
-import {PWS, PK} from "./constants";
+import {SYMMETRIC_KEYS, PRIVATE_KEY} from "./constants";
 
 const initState = fromJS({});
 
@@ -43,9 +43,13 @@ export function keysReducer(state = Map(), action) {
   switch (action.type) {
     case SAVE_PRIVATE_KEY:
       return state
-        .setIn([action.threadID, PK], action.key);
-    case SAVE_AES_KEY:
+        .setIn([action.threadID, PRIVATE_KEY], action.key);
+    case SAVE_SYMMETRIC_KEY:
       return state
-        .updateIn([action.threadID, PWS], keys => keys.push(action.key));
+        .updateIn([action.threadID, SYMMETRIC_KEYS], keys => {
+          if (!keys)
+            keys = List()
+          return keys.push(action.key)
+        });
   }
 }

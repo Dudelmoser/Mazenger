@@ -1,7 +1,8 @@
 import {createSelector} from "reselect";
 import {Map, List} from "immutable";
 import {selectCurrentThreadID, selectSession} from "../LoginModal/selectors";
-import {INPUTS, KEYS, PK, PWS} from "./constants";
+import {IS_ENCRYPTED, INPUTS, KEYS, PRIVATE_KEY, SYMMETRIC_KEYS, SHOW_COMMANDS} from "./constants";
+import {selectSettings} from "../SettingsTab/selectors";
 
 const selectInputs = () => createSelector(
   selectSession(),
@@ -24,24 +25,36 @@ const selectKeys = (threadID) => createSelector(
   (keys) => keys.get(threadID) || Map()
 );
 
-const selectPublicKey = (threadID) => createSelector(
+const selectPrivateKey = (threadID) => createSelector(
   selectKeys(threadID),
-  (keys) => keys.get(PK)
+  (keys) => keys.get(PRIVATE_KEY)
 );
 
-const selectPasswords = (threadID) => createSelector(
+const selectSymmetricKeys = (threadID) => createSelector(
   selectKeys(threadID),
-  (keys) => keys.get(PWS) || List()
+  (keys) => keys.get(SYMMETRIC_KEYS) || List()
 );
 
-const selectLatestPassword = (threadID) => createSelector(
-  selectPasswords(threadID),
+const selectLatestKey = (threadID) => createSelector(
+  selectSymmetricKeys(threadID),
   (pws) => pws.last()
+);
+
+const selectIsEncrypted = (threadID) => createSelector(
+  selectKeys(threadID),
+  (keys) => keys.get(IS_ENCRYPTED)
+);
+
+const selectShowCommands = () => createSelector(
+  selectSettings(),
+  (settings) => settings.get(SHOW_COMMANDS)
 );
 
 export {
   selectCurrentInput,
-  selectPublicKey,
-  selectPasswords,
-  selectLatestPassword,
+  selectPrivateKey,
+  selectSymmetricKeys,
+  selectLatestKey,
+  selectIsEncrypted,
+  selectShowCommands,
 }
