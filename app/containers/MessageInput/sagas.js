@@ -35,7 +35,7 @@ function createTaggedMessage(tag, ...values) {
 function* decrypt(msg, threadID) {
   if (!msg)
     return "";
-  if (!msg.startsWith(CT_TAG))
+  if (!msg.startsWith(TAG_PREFIX + CT_TAG))
     return msg;
 
   const parts = msg.split(VAL_PREFIX);
@@ -48,8 +48,9 @@ function* decrypt(msg, threadID) {
     decipher.start({iv: ivBytes});
     decipher.update(forge.util.createBuffer(ctBytes));
     decipher.finish();
-    if (decipher.output.startsWith(CHECK_STR))
-      return decipher.output.substr(CHECK_STR.length);
+    const msg = decipher.output.getBytes();
+    if (msg.startsWith(CHECK_STR))
+      return msg.substr(CHECK_STR.length);
   }
   return msg;
 }
@@ -75,7 +76,7 @@ function* encryptMessage(action) {
     cipher.start({iv: iv});
     const buffer = forge.util.createBuffer(CHECK_STR + action.message);
     cipher.update(buffer);
-    cipher.finish;
+    cipher.finish();
     const ctBytes = cipher.output.getBytes();
     const ctBase64 = forge.util.encode64(ctBytes);
     const ivBase64 = forge.util.encode64(iv);
@@ -106,7 +107,6 @@ function* sendEncryptedKey(threadID, pk) {
 
 function* saveEncryptedKey(threadID, ek64) {
   const privKeyPem = yield select(selectPrivateKey(threadID));
-  console.log(privKeyPem);
   const privKey = forge.pki.privateKeyFromPem(privKeyPem);
   const ek = forge.util.decode64(ek64);
   const symKey = privKey.decrypt(ek);

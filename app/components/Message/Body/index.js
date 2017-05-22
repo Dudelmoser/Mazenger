@@ -27,13 +27,17 @@ function Body(props) {
       message += part + " ";
     }
 
-    if (message.length > 0)
-      message = emoji(message);
+    // if (message.length > 0)
+    //   message = emoji(message);
   }
 
   return (
     <div>
-      <span style={style}>{message}</span>
+      <span style={style}>{
+        message.split("\n").map((line, key) => {
+          return <div key={key}>{line.length > 0 ? emoji(line) : <br/>}</div>
+        })
+      }</span>
       {attachments}
     </div>
   );
