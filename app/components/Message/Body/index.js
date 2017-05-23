@@ -34,9 +34,9 @@ function Body(props) {
   return (
     <div>
       <span style={style}>{
-        message.split("\n").map((line, key) => {
-          return <div key={key}>{line.length > 0 ? emoji(line) : <br/>}</div>
-        })
+        message.length == 0 ? <div/> : message.split("\n").map((line, key) =>
+          <div key={key}>{line.length > 0 ? emoji(line) : <br/>}</div>
+        )
       }</span>
       {attachments}
     </div>

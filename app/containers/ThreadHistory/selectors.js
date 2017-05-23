@@ -1,5 +1,5 @@
 import {createSelector} from "reselect";
-import {fromJS} from "immutable";
+import {fromJS, List, Map} from "immutable";
 import {HISTORIES, TYPERS} from "./constants";
 import {selectCurrentThreadID, selectSession} from "../LoginModal/selectors";
 import {selectUsers} from "../ThreadList/selectors";
@@ -11,24 +11,24 @@ const selectHistories = () => createSelector(
 
 const selectHistory = (threadID) => createSelector(
   selectHistories(),
-  (histories) => histories.get(threadID)
+  (histories) => histories.get(threadID) || List()
 );
 
 const selectCurrentHistory = () => createSelector(
   selectHistories(),
   selectCurrentThreadID(),
-  (histories, threadID) => histories.get(threadID) || fromJS([])
+  (histories, threadID) => histories.get(threadID) || List()
 );
 
 const selectAllTypers = () => createSelector(
   selectSession(),
-  (session) => session.get(TYPERS) || fromJS({})
+  (session) => session.get(TYPERS) || Map()
 );
 
 const selectCurrentTypers = () => createSelector(
   selectAllTypers(),
   selectCurrentThreadID(),
-  (typers, threadID) => typers.get(threadID) || fromJS({})
+  (typers, threadID) => typers.get(threadID) || Map()
 );
 
 const selectCurrentTypersNames = () => createSelector(
@@ -37,7 +37,7 @@ const selectCurrentTypersNames = () => createSelector(
   (typers, users) => {
     let result = [];
     typers.forEach((timestamp, userID) =>
-      result.push(users.get(userID, fromJS({})).get("name")));
+      result.push(users.get(userID, Map()).get("name")));
     return result;
   }
 );

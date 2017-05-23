@@ -1,11 +1,11 @@
 import {selectSession} from "../LoginModal/selectors";
 import {createSelector} from "reselect";
-import {fromJS} from "immutable";
-import {SETTINGS, CLEAR_CONFIRMED} from "./constants";
+import {Map} from "immutable";
+import {SETTINGS} from "./constants";
 
 const selectSettings = () => createSelector(
   selectSession(),
-  (session) => session.get(SETTINGS) || fromJS({})
+  (session) => session.get(SETTINGS) || Map()
 );
 
 export {

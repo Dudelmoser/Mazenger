@@ -1,12 +1,12 @@
 import {createSelector} from "reselect";
-import {fromJS} from "immutable";
+import {Map, List} from "immutable";
 import {selectHistory} from "../ThreadHistory/selectors";
 import {selectCurrentUserID} from "../LoginModal/selectors";
 import {IS_MSG_SELECT} from "../ThreadHistory/constants";
 
 const selectMessage = (index, threadID) => createSelector(
   selectHistory(threadID),
-  (history) => history.get(index) || fromJS({})
+  (history, showCmds) => history.get(index) || Map()
 );
 
 const selectMessageBody = (index, threadID) => createSelector(
@@ -16,7 +16,7 @@ const selectMessageBody = (index, threadID) => createSelector(
 
 const selectAttachments = (index, threadID) => createSelector(
   selectMessage(index, threadID),
-  (message) => message.get("attachments") || fromJS([])
+  (message) => message.get("attachments") || List()
 )
 
 const selectAttachmentsCount = (index, threadID) => createSelector(
@@ -63,7 +63,7 @@ const selectTimePassed = (index, threadID) => createSelector(
 
 const selectSenderName = (index, threadID) => createSelector(
   selectMessage(index, threadID),
-  (message) => message.get("participantNames", fromJS([])).get(0) || ""
+  (message) => message.get("participantNames", List()).get(0) || ""
 );
 
 const selectIsSelected = (index, threadID) => createSelector(

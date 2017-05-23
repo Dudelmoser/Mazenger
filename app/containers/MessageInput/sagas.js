@@ -5,17 +5,15 @@ import {
   ENCRYPT_MESSAGE, DISABLE_ENCRYPTION, SEND_PUBLIC_KEY,
   threadHistoryDecrypted, saveSymmetricKey, savePrivateKey, messageDecrypted,
 } from "./actions";
-import {AD_TAG, EK_TAG, PK_TAG, DSBL_TAG, CHECK_STR, CT_TAG} from "./constants";
+import {
+  AD_TAG, SK_TAG, PK_TAG, DSBL_TAG, CHECK_STR, CT_TAG, TAG_PREFIX, VAL_PREFIX, AES_KEY_BYTES,
+  RSA_KEY_BITS, RSA_EXPONENT
+} from "./constants";
 import {selectLatestKey, selectPrivateKey, selectSymmetricKeys} from "./selectors";
 import {THREAD_HISTORY_RECEIVED, THREAD_LIST_RECEIVED, UPDATE_RECEIVED} from "../App/actions/responses";
 import {sendMessage} from "../App/actions/requests";
 import {selectCurrentUserID} from "../LoginModal/selectors";
 
-const RSA_EXPONENT = 0x10001;
-const RSA_KEY_BITS = 1024;
-const AES_KEY_BYTES = 32;
-const TAG_PREFIX = "» ";
-const VAL_PREFIX = "\n";
 
 function pemToStr(pem) {
   return pem.replace(/(?:\r|\n|-|BEGIN |END |PUBLIC KEY)/g, "");
@@ -32,13 +30,17 @@ function createTaggedMessage(tag, ...values) {
   return msg;
 }
 
-function* decrypt(msg, threadID) {
-  if (!msg)
+function* decrypt(message, threadID) {
+  if (!message)
     return "";
-  if (!msg.startsWith(TAG_PREFIX + CT_TAG))
-    return msg;
+  if (message.startsWith(TAG_PREFIX + AD_TAG))
+    return TAG_PREFIX + PK_TAG;
+  if (message.startsWith(TAG_PREFIX + SK_TAG))
+    return TAG_PREFIX + SK_TAG;
+  if (!message.startsWith(TAG_PREFIX + CT_TAG))
+    return message;
 
-  const parts = msg.split(VAL_PREFIX);
+  const parts = message.split(VAL_PREFIX);
   const ctBytes = forge.util.decode64(parts[1]);
   const ivBytes = forge.util.decode64(parts[2]);
 
@@ -52,7 +54,7 @@ function* decrypt(msg, threadID) {
     if (msg.startsWith(CHECK_STR))
       return msg.substr(CHECK_STR.length);
   }
-  return msg;
+  return TAG_PREFIX + CT_TAG;
 }
 
 function* decryptHistory(action) {
@@ -100,7 +102,7 @@ function* sendEncryptedKey(threadID, pk) {
   const pubKey = forge.pki.publicKeyFromPem(strToPem(pk));
   const ctBytes = pubKey.encrypt(CHECK_STR + symKey);
   const ctBase64 = forge.util.encode64(ctBytes);
-  const msg = createTaggedMessage(EK_TAG, ctBase64);
+  const msg = createTaggedMessage(SK_TAG, ctBase64);
   yield put(sendMessage(threadID, msg));
   yield put(saveSymmetricKey(threadID, symKey));
 }
@@ -132,7 +134,7 @@ function* parseUpdate(action) {
             yield call(sendEncryptedKey, action.data.threadID, entry[1]);
             break;
 
-          case EK_TAG:
+          case SK_TAG:
             yield call(saveEncryptedKey, action.data.threadID, entry[1]);
             break;
 
