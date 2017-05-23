@@ -65,13 +65,18 @@ export class ThreadHistory extends React.PureComponent { // eslint-disable-line 
   componentDidUpdate() {
     if (this.props.threadID == this.state.prevThread) {
       const top = this.refs.scrollbar.getScrollHeight() - this.state.prevHeight;
-      this.refs.scrollbar.scrollTop(top);
+      // only scroll to last position when height changed (more history was loaded)
+      if (top > 0)
+        this.refs.scrollbar.scrollTop(top);
     } else {
       this.scrollToBottom();
       this.setState({
         prevThread: this.props.threadID,
       });
     }
+    this.setState({
+      prevHeight: this.refs.scrollbar.getScrollHeight()
+    });
   }
 
   componentDidMount() {
