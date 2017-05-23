@@ -4,6 +4,7 @@ import {ListItem, Divider, Avatar} from "material-ui";
 import {getThreadHistory} from "../App/actions/requests";
 import {selectImageURL, selectFullName, selectProfileURL, selectHasBirthday, selectUserID} from "./selectors";
 import muiThemeable from "material-ui/styles/muiThemeable";
+import CakeIcon from "material-ui/svg-icons/social/cake";
 
 export class FriendsListItem extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -15,6 +16,7 @@ export class FriendsListItem extends React.PureComponent { // eslint-disable-lin
       <div key={this.props.index}>
         <ListItem
           leftAvatar={<Avatar src={this.props.imageURL}/>}
+          rightIcon={this.props.hasBirthday ? <CakeIcon/> : <div/>}
           primaryText={this.props.fullName}
           onTouchTap={this.props.click.bind(this, this.props.userID)}
         />

@@ -14,6 +14,7 @@ export class ThreadHistory extends React.PureComponent { // eslint-disable-line 
   state = {
     prevThread: 0,
     prevHeight: 0,
+    prevScrollTop: 0,
   }
 
   styles = {
@@ -34,8 +35,12 @@ export class ThreadHistory extends React.PureComponent { // eslint-disable-line 
         ref="scrollbar"
         autoHide={true}
         onScrollFrame={(values) => {
-          if (values.top == 0) this.props.loadMore()}
-        }>
+          if (values.top == 0) {
+            this.props.loadMore();
+            this.setState({prevHeight: values.scrollHeight});
+          }
+          this.setState({prevScrollTop: values.top});
+        }}>
         <div
           tabIndex="0"
           onClick={this.props.deselectAll}
@@ -54,38 +59,21 @@ export class ThreadHistory extends React.PureComponent { // eslint-disable-line 
     );
   }
 
-  componentWillUpdate() {
-    if (this.refs && this.refs.scrollbar.getScrollTop() == 0) {
-      this.setState({
-        prevHeight: this.refs.scrollbar.getScrollHeight(),
-      });
-    }
-  }
-
   componentDidUpdate() {
-    if (this.props.threadID == this.state.prevThread) {
-      const top = this.refs.scrollbar.getScrollHeight() - this.state.prevHeight;
-      // only scroll to last position when height changed (more history was loaded)
-      if (top > 0)
-        this.refs.scrollbar.scrollTop(top);
-    } else {
-      this.scrollToBottom();
-      this.setState({
-        prevThread: this.props.threadID,
-      });
+    const top = this.refs.scrollbar.getScrollHeight() - this.state.prevHeight;
+    // scroll to bottom if thread changed or message arrived
+    if (this.props.threadID != this.state.prevThread || this.state.prevScrollTop == 1) {
+      this.refs.scrollbar.scrollToBottom();
+      this.setState({prevThread: this.props.threadID});
     }
-    this.setState({
-      prevHeight: this.refs.scrollbar.getScrollHeight()
-    });
+    // keep scroll position when more history is loaded
+    if (this.state.prevScrollTop == 0) {
+      this.refs.scrollbar.scrollTop(top);
+    }
   }
 
   componentDidMount() {
-    this.scrollToBottom();
-  }
-
-  scrollToBottom() {
-    if (this.refs)
-      this.refs.scrollbar.scrollToBottom();
+    if (this.refs) this.refs.scrollbar.scrollToBottom();
   }
 
   // add intl support

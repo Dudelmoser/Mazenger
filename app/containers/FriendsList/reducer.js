@@ -8,5 +8,12 @@ export default function (state = initState, action) {
 
     case FRIENDS_LIST_RECEIVED:
       return fromJS(action.data)
+        .sort((a, b) => {
+          const na = a.get("fullName");
+          const nb = b.get("fullName");
+          if (na < nb) return -1;
+          if (na > nb) return 1;
+          if (na == nb) return 0;
+        });
   }
 }
