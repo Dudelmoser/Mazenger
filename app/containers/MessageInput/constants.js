@@ -4,7 +4,7 @@ export const INPUT_ID = "input";
 export const KEYS = "keys";
 export const PRIVATE_KEY = "privKey";
 export const SYMMETRIC_KEYS = "symKeys";
-export const IS_ENCRYPTED = "isActive";
+export const IS_ENCRYPTED = "isEncrypted";
 
 export const AES_KEY_BYTES = 32;
 export const RSA_KEY_BITS = 1024;

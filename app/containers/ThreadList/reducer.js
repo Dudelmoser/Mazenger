@@ -24,7 +24,8 @@ function threadsReducer(state = Map(), action) {
 
         case "message":
           return state
-            .setIn([data.threadID, "snippet"], data.body);
+            .setIn([data.threadID, "snippet"], data.body)
+            .setIn([data.threadID, "timestamp"], data.timestamp);
         default:
           return state;
       }

@@ -64,7 +64,7 @@ const stateExample = {
       "threadID": {
         privKey: null,
         symKeys: [],
-        isActive: false,
+        isEncrypted: false,
       },
     },
 

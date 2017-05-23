@@ -7,6 +7,7 @@ export const THREAD_LIST_DECRYPTED = "threadListDecrypted";
 export const THREAD_HISTORY_DECRYPTED = "threadHistoryDecrypted";
 export const SAVE_PRIVATE_KEY = "savePrivateKey";
 export const SAVE_SYMMETRIC_KEY = "saveSymmetricKey";
+export const SET_ENCRYPTED = "setEncrypted";
 
 export function changeMessage(message) {
   return {
@@ -35,6 +36,14 @@ export function saveSymmetricKey(threadID, key) {
     type: SAVE_SYMMETRIC_KEY,
     threadID,
     key
+  }
+}
+
+export function setEncrypted(threadID, isEncrypted) {
+  return {
+    type: SET_ENCRYPTED,
+    threadID,
+    isEncrypted,
   }
 }
 

@@ -8,7 +8,7 @@ import KeyIcon from "material-ui/svg-icons/communication/vpn-key";
 import MenuIcon from "material-ui/svg-icons/navigation/more-vert";
 import SendIcon from "material-ui/svg-icons/content/send";
 import {changeMessage, encryptMessage, disableEncryption, sendPublicKey} from "./actions";
-import {selectSymmetricKeys, selectCurrentInput} from "./selectors";
+import {selectCurrentInput, selectIsEncrypted} from "./selectors";
 import {createStructuredSelector} from "reselect";
 import {selectCurrentThreadID} from "../LoginModal/selectors";
 import {selectAbbreviations} from "../AbbreviationsTab/selectors";
@@ -36,8 +36,8 @@ export class MessageInput extends React.PureComponent { // eslint-disable-line r
           <SendIcon/>
         </IconButton>
         <IconButton
-          onTouchTap={this.props.aes && this.props.aes.count() ? this.props.revokeAesKey : this.props.sendPublicKey}>
-          {this.props.aes ? <LockIcon/> : <KeyIcon/>}
+          onTouchTap={this.props.isEncrypted ? this.props.disableEncryption : this.props.sendPublicKey}>
+          {this.props.isEncrypted ? <LockIcon/> : <KeyIcon/>}
         </IconButton>
         <IconMenu
           iconButtonElement={<IconButton><MenuIcon/></IconButton>}
@@ -64,7 +64,8 @@ const mapStateToProps = createStructuredSelector({
   threadID: selectCurrentThreadID(),
   message: selectCurrentInput(),
   abbrs: selectAbbreviations(),
-  aes: selectSymmetricKeys(),
+  isEncrypted: selectIsEncrypted(),
+
 });
 
 // to get access to stateProps filled by selectors
@@ -74,14 +75,15 @@ const mergeProps = (stateProps, {dispatch}) => {
   return {
     threadID,
     message,
+    // replace abbreviations with their full forms
     handleChange: (event) => {
-      // replace abbreviations with their full forms
       let str = event.target.value;
       abbrs.forEach((text, abbr) => {
         str = str.replace(abbr, text);
       });
       dispatch(changeMessage(str));
     },
+    // send message with return key
     handleKeyUp: (event) => {
       if (event.keyCode == 13) {
         dispatch(encryptMessage(threadID, event.target.value))
@@ -90,7 +92,7 @@ const mergeProps = (stateProps, {dispatch}) => {
     sendMessage: () => dispatch(encryptMessage(threadID, document.getElementById(INPUT_ID).value)),
     deleteMessages: () => dispatch(deleteMessages()),
     sendPublicKey: () => dispatch(sendPublicKey(threadID)),
-    revokeAesKey: () => dispatch(disableEncryption(threadID)),
+    disableEncryption: () => dispatch(disableEncryption(threadID)),
   }
 };
 

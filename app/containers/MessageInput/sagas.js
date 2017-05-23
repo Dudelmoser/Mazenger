@@ -3,7 +3,7 @@ import {put, select, call} from "redux-saga/effects";
 import forge from "node-forge";
 import {
   ENCRYPT_MESSAGE, DISABLE_ENCRYPTION, SEND_PUBLIC_KEY,
-  threadHistoryDecrypted, saveSymmetricKey, savePrivateKey, messageDecrypted,
+  threadHistoryDecrypted, saveSymmetricKey, savePrivateKey, messageDecrypted, setEncrypted,
 } from "./actions";
 import {
   AD_TAG, SK_TAG, PK_TAG, DSBL_TAG, CHECK_STR, CT_TAG, TAG_PREFIX, VAL_PREFIX, AES_KEY_BYTES,
@@ -117,6 +117,7 @@ function* sendEncryptedKey(threadID, pk) {
   const msg = createTaggedMessage(SK_TAG, ctBase64);
   yield put(sendMessage(threadID, msg));
   yield put(saveSymmetricKey(threadID, symKey));
+  yield put(setEncrypted(threadID, true));
 }
 
 function* saveEncryptedKey(threadID, ek64) {
@@ -124,12 +125,14 @@ function* saveEncryptedKey(threadID, ek64) {
   const privKey = getKeyFromString(privKeyStr);
   const ek = forge.util.decode64(ek64);
   const symKey = privKey.decrypt(ek);
-  if (symKey.startsWith(CHECK_STR))
+  if (symKey.startsWith(CHECK_STR)) {
     yield put(saveSymmetricKey(threadID, symKey.substr(CHECK_STR.length)));
+    yield put(setEncrypted(threadID, true));
+  }
 }
 
-function* disableEncryption() {
-
+function* disableEncryption(threadID) {
+  yield put(setEncrypted(threadID, false));
 }
 
 function* parseUpdate(action) {
