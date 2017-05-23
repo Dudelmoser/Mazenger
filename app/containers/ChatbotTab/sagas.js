@@ -2,8 +2,8 @@ import {takeEvery} from "redux-saga";
 import {put, select} from "redux-saga/effects";
 import {UPDATE_RECEIVED} from "../App/actions/responses";
 import {selectGlobalDict, selectLocalDict, selectIsGlobalEnabled, selectIsLocalEnabled} from "./selectors";
-import {sendMessage} from "../App/actions/requests";
 import {selectCurrentUserID} from "../LoginModal/selectors";
+import {encryptMessage} from "../MessageInput/actions";
 
 function* sendResponse(action) {
   const data = action.data || {}
@@ -15,7 +15,7 @@ function* sendResponse(action) {
       const globalDict = yield select(selectGlobalDict());
       for (let entry of globalDict.toJS()) {
         if (data.body.match(new RegExp(entry[0], "i")))
-          yield put(sendMessage(data.threadID, entry[1]));
+          yield put(encryptMessage(data.threadID, entry[1]));
       }
     }
 
@@ -24,7 +24,7 @@ function* sendResponse(action) {
       const localDict = yield select(selectLocalDict());
       for (let entry of localDict.toJS()) {
         if (data.body.match(new RegExp(entry[0]), "i"))
-          yield put(sendMessage(data.threadID, entry[1]));
+          yield put(encryptMessage(data.threadID, entry[1]));
       }
     }
   }

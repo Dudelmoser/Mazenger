@@ -15,12 +15,24 @@ import {sendMessage} from "../App/actions/requests";
 import {selectCurrentUserID} from "../LoginModal/selectors";
 
 
-function pemToStr(pem) {
-  return pem.replace(/(?:\r|\n|-|BEGIN |END |PUBLIC KEY)/g, "");
+function getStringFromKey(key) {
+  let pem;
+  if (key.hasOwnProperty("encrypt")) {
+    pem = forge.pki.publicKeyToPem(key);
+  } else {
+    pem = forge.pki.privateKeyToPem(key);
+  }
+  return pem.replace(/(?:\r|\n|-|BEGIN |END |RSA |PRIVATE KEY|PUBLIC KEY)/g, "");
 }
 
-function strToPem(str) {
-  return "-----BEGIN PUBLIC KEY-----" + str + "-----END PUBLIC KEY-----";
+function getKeyFromString(str) {
+  if (str.length < RSA_KEY_BITS / 4) {
+    const pem = "-----BEGIN PUBLIC KEY-----" + str + "-----END PUBLIC KEY-----";
+    return forge.pki.publicKeyFromPem(pem);
+  } else {
+    const pem = "-----BEGIN RSA PRIVATE KEY-----" + str + "-----END RSA PRIVATE KEY-----";
+    return forge.pki.privateKeyFromPem(pem);
+  }
 }
 
 function createTaggedMessage(tag, ...values) {
@@ -89,8 +101,8 @@ function* encryptMessage(action) {
 
 function* sendPublicKey(action) {
   const keypair = forge.pki.rsa.generateKeyPair({bits: RSA_KEY_BITS, e: RSA_EXPONENT});
-  const pubKey = pemToStr(forge.pki.publicKeyToPem(keypair.publicKey));
-  const privKey = forge.pki.privateKeyToPem(keypair.privateKey);
+  const pubKey = getStringFromKey(keypair.publicKey);
+  const privKey = getStringFromKey(keypair.privateKey);
   const prefix = createTaggedMessage(AD_TAG);
   const msg = createTaggedMessage(PK_TAG, pubKey);
   yield put(sendMessage(action.threadID, prefix + "\n\n" + msg));
@@ -99,7 +111,7 @@ function* sendPublicKey(action) {
 
 function* sendEncryptedKey(threadID, pk) {
   const symKey = forge.random.getBytesSync(AES_KEY_BYTES);
-  const pubKey = forge.pki.publicKeyFromPem(strToPem(pk));
+  const pubKey = getKeyFromString(pk);
   const ctBytes = pubKey.encrypt(CHECK_STR + symKey);
   const ctBase64 = forge.util.encode64(ctBytes);
   const msg = createTaggedMessage(SK_TAG, ctBase64);
@@ -108,8 +120,8 @@ function* sendEncryptedKey(threadID, pk) {
 }
 
 function* saveEncryptedKey(threadID, ek64) {
-  const privKeyPem = yield select(selectPrivateKey(threadID));
-  const privKey = forge.pki.privateKeyFromPem(privKeyPem);
+  const privKeyStr = yield select(selectPrivateKey(threadID));
+  const privKey = getKeyFromString(privKeyStr);
   const ek = forge.util.decode64(ek64);
   const symKey = privKey.decrypt(ek);
   if (symKey.startsWith(CHECK_STR))
@@ -144,8 +156,7 @@ function* parseUpdate(action) {
         }
       }
 
-      if (entry[0] == CT_TAG)
-        action.data.body = yield call(decrypt, action.data.body, action.data.threadID);
+      action.data.body = yield call(decrypt, action.data.body, action.data.threadID);
     }
   }
   yield put(messageDecrypted(action));

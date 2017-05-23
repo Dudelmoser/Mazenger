@@ -10,7 +10,7 @@ export class ThreadList extends React.PureComponent { // eslint-disable-line rea
   render() {
     return (
       <List>
-        {this.props.threadIDs.map((threadID, key) =>
+        {this.props.threadIDs.map((threadID) =>
           <Thread
             key={threadID}
             threadID={threadID}

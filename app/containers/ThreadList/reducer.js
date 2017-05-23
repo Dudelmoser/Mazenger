@@ -9,9 +9,9 @@ function threadsReducer(state = Map(), action) {
     case THREAD_LIST_DECRYPTED:
       if (!action.data)
         return state;
-      return fromJS({}).withMutations(map =>
-        action.data.forEach((element) => {
-          map.set(element.threadID, fromJS(element))
+      return Map().withMutations(map =>
+        action.data.forEach((thread) => {
+          map.set(thread.threadID, fromJS(thread))
         })
       );
 

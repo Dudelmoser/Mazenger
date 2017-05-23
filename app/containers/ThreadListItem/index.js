@@ -11,7 +11,7 @@ import LockIcon from "material-ui/svg-icons/action/lock-outline";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import messages from "./messages";
 import {injectIntl} from "react-intl";
-import {selectSymmetricKeys, selectCurrentAESKeys} from "../MessageInput/selectors";
+import {selectIsEncrypted} from "../MessageInput/selectors";
 
 export class ThreadListItem extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -36,7 +36,7 @@ export class ThreadListItem extends React.PureComponent { // eslint-disable-line
         <div style={{position: "relative"}}>
           <ListItem
             leftAvatar={<Avatar src={this.props.imageURL}/>}
-            rightIcon={this.props.crypted ? <LockIcon/> : null}
+            rightIcon={this.props.isEncrypted ? <LockIcon/> : null}
             primaryText={this.props.title}
             secondaryText={
               <p style={{width: "90%"}}>{secondaryText}</p>
@@ -68,7 +68,7 @@ const mapStateToProps = (state, props) => ({
   hasAttachment: selectHasAttachment(props.threadID)(state),
   typersNames: selectTypersNamesStr(props.threadID)(state),
   typersCount: selectTypersCount(props.threadID)(state),
-  crypted: selectSymmetricKeys(props.threadID)(state),
+  isEncrypted: selectIsEncrypted(props.threadID)(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
