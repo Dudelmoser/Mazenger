@@ -2,39 +2,37 @@ import React from "react";
 import emoji from "react-easy-emoji";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import Link from "../Link";
+import {CT_ICON, DSBL_ICON, PK_ICON, SK_ICON} from "../../../containers/MessageInput/constants";
 
 function Body(props) {
+
+  const urlRegex = /@^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$@iS/i;
+
+  let msg = props.body;
+  const isMeta = msg.startsWith(PK_ICON) || msg.startsWith(SK_ICON) || msg.startsWith(CT_ICON) || msg.startsWith(DSBL_ICON);
 
   const style = {
     display: "inline-block",
     paddingLeft: 8,
     paddingRight: 8,
-    background: props.muiTheme.message.color,
+    background: isMeta ? "transparent" : props.muiTheme.message.color,
+    color: isMeta ? props.muiTheme.palette.secondaryTextColor : props.muiTheme.palette.textColor
   };
 
+  // extract links
   let attachments = [];
-  let message = "";
-  let key = 0;
-  if (props.body) {
-    const parts = props.body.split(" ");
-    for (let part of parts) {
-      const urlRegex = /@^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$@iS/i;
-      if (part.match(urlRegex)) {
-        attachments.push(
-          <Link key={key++} url={part}/>
-        );
-      }
-      message += part + " ";
+  if (msg) {
+    const parts = msg.split(/\s+/g);
+    for (let i = 0; i < parts.length; i++) {
+      if (parts[i].match(urlRegex))
+        attachments.push(<Link key={i} url={parts[i]}/>);
     }
-
-    // if (message.length > 0)
-    //   message = emoji(message);
   }
 
   return (
     <div>
       <span style={style}>{
-        message.length == 0 ? <div/> : message.split("\n").map((line, key) =>
+        msg.length == 0 ? <div/> : msg.split("\n").map((line, key) =>
           <div key={key}>{line.length > 0 ? emoji(line) : <br/>}</div>
         )
       }</span>

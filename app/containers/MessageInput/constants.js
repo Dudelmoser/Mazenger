@@ -20,3 +20,8 @@ export const CT_TAG = "CIPHER TEXT";
 export const DSBL_TAG = "DISABLE AES";
 export const AD_TAG = "Download Mazenger for encrypted chats, custom memes, auto responses, themes etc. " +
   "Visit http://www.newmeta.de/mazenger - it's free and open source!";
+
+export const PK_ICON = "🔑 ✓";
+export const SK_ICON = "🔑 ✓✓";
+export const DSBL_ICON = "🔑 ✗";
+export const CT_ICON = "🔒";

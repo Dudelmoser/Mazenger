@@ -30,7 +30,7 @@ injectGlobal`
     font-weight: normal;
     margin-bottom: 0 !important;
   }
- 
+  
   button[data-tooltip]:hover:after {
     font-size: 0.75em;
     content: attr(data-tooltip);

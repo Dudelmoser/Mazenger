@@ -8,7 +8,7 @@ import KeyIcon from "material-ui/svg-icons/communication/vpn-key";
 import MenuIcon from "material-ui/svg-icons/navigation/more-vert";
 import SendIcon from "material-ui/svg-icons/content/send";
 import {changeMessage, encryptMessage, disableEncryption, sendPublicKey} from "./actions";
-import {selectCurrentInput, selectIsEncrypted} from "./selectors";
+import {selectCurrentInput, selectIsCurrentThreadEncrypted} from "./selectors";
 import {createStructuredSelector} from "reselect";
 import {selectCurrentThreadID} from "../LoginModal/selectors";
 import {selectAbbreviations} from "../AbbreviationsTab/selectors";
@@ -64,17 +64,17 @@ const mapStateToProps = createStructuredSelector({
   threadID: selectCurrentThreadID(),
   message: selectCurrentInput(),
   abbrs: selectAbbreviations(),
-  isEncrypted: selectIsEncrypted(),
-
+  isEncrypted: selectIsCurrentThreadEncrypted(),
 });
 
 // to get access to stateProps filled by selectors
 const mergeProps = (stateProps, {dispatch}) => {
-  const {threadID, message, abbrs} = stateProps;
+  const {threadID, message, abbrs, isEncrypted} = stateProps;
 
   return {
     threadID,
     message,
+    isEncrypted,
     // replace abbreviations with their full forms
     handleChange: (event) => {
       let str = event.target.value;

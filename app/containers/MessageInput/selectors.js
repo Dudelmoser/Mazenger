@@ -16,7 +16,7 @@ const selectCurrentInput = () => createSelector(
 
 const selectAllKeys = () => createSelector(
   selectSession(),
-  (session, threadID) => session.get(KEYS) || Map()
+  (session) => session.get(KEYS) || Map()
 );
 
 const selectKeys = (threadID) => createSelector(
@@ -44,10 +44,17 @@ const selectIsEncrypted = (threadID) => createSelector(
   (keys) => keys.get(IS_ENCRYPTED)
 );
 
+const selectIsCurrentThreadEncrypted = () => createSelector(
+  selectCurrentThreadID(),
+  selectAllKeys(),
+  (threadID, keys) => keys.getIn([threadID, IS_ENCRYPTED])
+);
+
 export {
   selectCurrentInput,
   selectPrivateKey,
   selectSymmetricKeys,
   selectLatestKey,
   selectIsEncrypted,
+  selectIsCurrentThreadEncrypted,
 }

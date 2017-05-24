@@ -7,9 +7,9 @@ import {
 } from "./actions";
 import {
   AD_TAG, SK_TAG, PK_TAG, DSBL_TAG, CHECK_STR, CT_TAG, TAG_PREFIX, VAL_PREFIX, AES_KEY_BYTES,
-  RSA_KEY_BITS, RSA_EXPONENT
+  RSA_KEY_BITS, RSA_EXPONENT, CT_ICON, DSBL_ICON, SK_ICON, PK_ICON
 } from "./constants";
-import {selectLatestKey, selectPrivateKey, selectSymmetricKeys} from "./selectors";
+import {selectIsEncrypted, selectLatestKey, selectPrivateKey, selectSymmetricKeys} from "./selectors";
 import {THREAD_HISTORY_RECEIVED, THREAD_LIST_RECEIVED, UPDATE_RECEIVED} from "../App/actions/responses";
 import {sendMessage} from "../App/actions/requests";
 import {selectCurrentUserID} from "../LoginModal/selectors";
@@ -46,27 +46,30 @@ function* decrypt(message, threadID) {
   if (!message)
     return "";
   if (message.startsWith(TAG_PREFIX + AD_TAG))
-    return TAG_PREFIX + PK_TAG;
+    return PK_ICON;
   if (message.startsWith(TAG_PREFIX + SK_TAG))
-    return TAG_PREFIX + SK_TAG;
-  if (!message.startsWith(TAG_PREFIX + CT_TAG))
+    return SK_ICON;
+  if (message.startsWith(TAG_PREFIX + DSBL_TAG))
+    return DSBL_ICON;
+  if (message.startsWith(TAG_PREFIX + CT_TAG)) {
+    const parts = message.split(VAL_PREFIX);
+    const ctBytes = forge.util.decode64(parts[1]);
+    const ivBytes = forge.util.decode64(parts[2]);
+
+    const keys = yield select(selectSymmetricKeys(threadID));
+    for (let key of keys.reverse().toJS()) {
+      const decipher = forge.cipher.createDecipher("AES-CBC", key);
+      decipher.start({iv: ivBytes});
+      decipher.update(forge.util.createBuffer(ctBytes));
+      decipher.finish();
+      const msg = decipher.output.getBytes();
+      if (msg.startsWith(CHECK_STR))
+        return msg.substr(CHECK_STR.length);
+    }
+    return CT_ICON;
+  } else {
     return message;
-
-  const parts = message.split(VAL_PREFIX);
-  const ctBytes = forge.util.decode64(parts[1]);
-  const ivBytes = forge.util.decode64(parts[2]);
-
-  const keys = yield select(selectSymmetricKeys(threadID));
-  for (let key of keys.reverse().toJS()) {
-    const decipher = forge.cipher.createDecipher("AES-CBC", key);
-    decipher.start({iv: ivBytes});
-    decipher.update(forge.util.createBuffer(ctBytes));
-    decipher.finish();
-    const msg = decipher.output.getBytes();
-    if (msg.startsWith(CHECK_STR))
-      return msg.substr(CHECK_STR.length);
   }
-  return TAG_PREFIX + CT_TAG;
 }
 
 function* decryptHistory(action) {
@@ -83,8 +86,9 @@ function* decryptThreadList(action) {
 }
 
 function* encryptMessage(action) {
+  const isEncrypted = yield select(selectIsEncrypted(action.threadID));
   const key = yield select(selectLatestKey(action.threadID));
-  if (key) {
+  if (isEncrypted && key) {
     const iv = forge.random.getBytesSync(AES_KEY_BYTES);
     const cipher = forge.cipher.createCipher("AES-CBC", key);
     cipher.start({iv: iv});
@@ -110,6 +114,7 @@ function* sendPublicKey(action) {
 }
 
 function* sendEncryptedKey(threadID, pk) {
+  console.log("Test");
   const symKey = forge.random.getBytesSync(AES_KEY_BYTES);
   const pubKey = getKeyFromString(pk);
   const ctBytes = pubKey.encrypt(CHECK_STR + symKey);
@@ -131,12 +136,15 @@ function* saveEncryptedKey(threadID, ek64) {
   }
 }
 
-function* disableEncryption(threadID) {
-  yield put(setEncrypted(threadID, false));
+function* disableEncryption(action) {
+  const msg = createTaggedMessage(DSBL_TAG);
+  yield put(sendMessage(action.threadID, msg));
+  yield put(setEncrypted(action.threadID, false));
 }
 
-function* parseUpdate(action) {
+function* parseMessage(action) {
   if (action.data.type == "message" && action.data.body && action.data.body.startsWith(TAG_PREFIX)) {
+
     const userID = yield select(selectCurrentUserID());
     const entries = action.data.body.split(TAG_PREFIX);
 
@@ -158,7 +166,6 @@ function* parseUpdate(action) {
             break;
         }
       }
-
       action.data.body = yield call(decrypt, action.data.body, action.data.threadID);
     }
   }
@@ -167,7 +174,7 @@ function* parseUpdate(action) {
 
 function* main() {
   yield takeEvery(ENCRYPT_MESSAGE, encryptMessage);
-  yield takeEvery(UPDATE_RECEIVED, parseUpdate);
+  yield takeEvery(UPDATE_RECEIVED, parseMessage);
   yield takeEvery(THREAD_HISTORY_RECEIVED, decryptHistory);
   yield takeEvery(THREAD_LIST_RECEIVED, decryptThreadList);
   yield takeEvery(SEND_PUBLIC_KEY, sendPublicKey);
