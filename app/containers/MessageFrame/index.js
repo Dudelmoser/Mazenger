@@ -22,12 +22,17 @@ export class MessageFrame extends React.PureComponent { // eslint-disable-line r
     flexDirection: "column"
   };
 
-  getReaders() {
-    const count = this.props.message.get("readers", fromJS([])).count();
-    if (!count)
-      return;
-    return <span>✓<sup>{count}</sup></span>
-  }
+  /* Needs an overhaul */
+  // getReaders() {
+  //   const count = this.props.message.get("readers", fromJS([])).count();
+  //   if (!count)
+  //     return;
+  //   return (
+  //     <span style={{opacity: .5}}>✓
+  //       {count > 1 ? <sup>{count}</sup> : null}
+  //     </span>
+  //   );
+  // }
 
   render() {
     const divStyle = {
@@ -59,7 +64,7 @@ export class MessageFrame extends React.PureComponent { // eslint-disable-line r
             isOwn={this.props.isOwn}
             onClick={this.props.resolvePhotoUrl}
           />
-          {this.getReaders()}
+          {/*{this.getReaders()}*/}
         </div>
       </div>
     );

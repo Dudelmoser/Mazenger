@@ -3,14 +3,18 @@ import {put, select, call} from "redux-saga/effects";
 import forge from "node-forge";
 import {
   ENCRYPT_MESSAGE, DISABLE_ENCRYPTION, SEND_PUBLIC_KEY,
-  threadHistoryDecrypted, saveSymmetricKey, savePrivateKey, messageDecrypted, setEncrypted,
+  threadHistoryDecrypted, saveSymmetricKey, savePrivateKey, messageDecrypted, setEncrypted, threadListDecrypted,
+  threadInfoDecrypted,
 } from "./actions";
 import {
   AD_TAG, SK_TAG, PK_TAG, DSBL_TAG, CHECK_STR, CT_TAG, TAG_PREFIX, VAL_PREFIX, AES_KEY_BYTES,
   RSA_KEY_BITS, RSA_EXPONENT, CT_ICON, DSBL_ICON, SK_ICON, PK_ICON
 } from "./constants";
 import {selectIsEncrypted, selectLatestKey, selectPrivateKey, selectSymmetricKeys} from "./selectors";
-import {THREAD_HISTORY_RECEIVED, THREAD_LIST_RECEIVED, UPDATE_RECEIVED} from "../App/actions/responses";
+import {
+  THREAD_HISTORY_RECEIVED, THREAD_INFO_RECEIVED, THREAD_LIST_RECEIVED,
+  UPDATE_RECEIVED
+} from "../App/actions/responses";
 import {sendMessage} from "../App/actions/requests";
 import {selectCurrentUserID} from "../LoginModal/selectors";
 
@@ -62,7 +66,7 @@ function* decrypt(message, threadID) {
       decipher.start({iv: ivBytes});
       decipher.update(forge.util.createBuffer(ctBytes));
       decipher.finish();
-      const msg = decipher.output.getBytes();
+      const msg = forge.util.decodeUtf8(decipher.output.getBytes());
       if (msg.startsWith(CHECK_STR))
         return msg.substr(CHECK_STR.length);
     }
@@ -72,17 +76,23 @@ function* decrypt(message, threadID) {
   }
 }
 
-function* decryptHistory(action) {
-  for (let i = 0; i < action.data.length; i++) {
-    action.data[i].body = yield call(decrypt, action.data[i].body, action.args[0]);
-  }
-  yield put(threadHistoryDecrypted(action));
+function* decryptThreadInfo(action) {
+  action.data.snippet = yield call(decrypt, action.data.snippet, action.data.threadID);
+  yield put(threadInfoDecrypted(action))
 }
 
 function* decryptThreadList(action) {
   for (let i = 0; i < action.data.length; i++) {
     action.data[i].snippet = yield call(decrypt, action.data[i].snippet, action.data[i].threadID);
   }
+  yield put(threadListDecrypted(action));
+}
+
+function* decryptHistory(action) {
+  for (let i = 0; i < action.data.length; i++) {
+    action.data[i].body = yield call(decrypt, action.data[i].body, action.args[0]);
+  }
+  yield put(threadHistoryDecrypted(action));
 }
 
 function* encryptMessage(action) {
@@ -92,7 +102,8 @@ function* encryptMessage(action) {
     const iv = forge.random.getBytesSync(AES_KEY_BYTES);
     const cipher = forge.cipher.createCipher("AES-CBC", key);
     cipher.start({iv: iv});
-    const buffer = forge.util.createBuffer(CHECK_STR + action.message);
+    const text = forge.util.encodeUtf8(CHECK_STR + action.message);
+    const buffer = forge.util.createBuffer(text);
     cipher.update(buffer);
     cipher.finish();
     const ctBytes = cipher.output.getBytes();
@@ -104,6 +115,7 @@ function* encryptMessage(action) {
 }
 
 function* sendPublicKey(action) {
+  console.log("Sending public RSA key and saving private RSA key");
   const keypair = forge.pki.rsa.generateKeyPair({bits: RSA_KEY_BITS, e: RSA_EXPONENT});
   const pubKey = getStringFromKey(keypair.publicKey);
   const privKey = getStringFromKey(keypair.privateKey);
@@ -114,7 +126,7 @@ function* sendPublicKey(action) {
 }
 
 function* sendEncryptedKey(threadID, pk) {
-  console.log("Test");
+  console.log("Sending AES key encrypted with public RSA key");
   const symKey = forge.random.getBytesSync(AES_KEY_BYTES);
   const pubKey = getKeyFromString(pk);
   const ctBytes = pubKey.encrypt(CHECK_STR + symKey);
@@ -126,6 +138,7 @@ function* sendEncryptedKey(threadID, pk) {
 }
 
 function* saveEncryptedKey(threadID, ek64) {
+  console.log("Decrypting AES key with private RSA key");
   const privKeyStr = yield select(selectPrivateKey(threadID));
   const privKey = getKeyFromString(privKeyStr);
   const ek = forge.util.decode64(ek64);
@@ -173,12 +186,16 @@ function* parseMessage(action) {
 }
 
 function* main() {
-  yield takeEvery(ENCRYPT_MESSAGE, encryptMessage);
-  yield takeEvery(UPDATE_RECEIVED, parseMessage);
-  yield takeEvery(THREAD_HISTORY_RECEIVED, decryptHistory);
-  yield takeEvery(THREAD_LIST_RECEIVED, decryptThreadList);
+  // handle events triggered by user
   yield takeEvery(SEND_PUBLIC_KEY, sendPublicKey);
+  yield takeEvery(ENCRYPT_MESSAGE, encryptMessage);
   yield takeEvery(DISABLE_ENCRYPTION, disableEncryption);
+  // decrypt or execute new messages
+  yield takeEvery(UPDATE_RECEIVED, parseMessage);
+  // decrypt old messages
+  yield takeEvery(THREAD_INFO_RECEIVED, decryptThreadInfo);
+  yield takeEvery(THREAD_LIST_RECEIVED, decryptThreadList);
+  yield takeEvery(THREAD_HISTORY_RECEIVED, decryptHistory);
 }
 
 export default main;

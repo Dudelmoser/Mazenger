@@ -1,7 +1,7 @@
 import {fromJS, Map} from "immutable";
 import {THREAD_INFO_RECEIVED, USER_INFO_RECEIVED} from "../App/actions/responses";
 import {LOGOUT} from "../App/actions/requests";
-import {MESSAGE_DECRYPTED, THREAD_LIST_DECRYPTED} from "../MessageInput/actions";
+import {MESSAGE_DECRYPTED, THREAD_INFO_DECRYPTED, THREAD_LIST_DECRYPTED} from "../MessageInput/actions";
 
 function threadsReducer(state = Map(), action) {
   switch (action.type) {
@@ -15,7 +15,7 @@ function threadsReducer(state = Map(), action) {
         })
       );
 
-    case THREAD_INFO_RECEIVED:
+    case THREAD_INFO_DECRYPTED:
       return state.update(action.id, thread => (thread || Map()).mergeDeep(fromJS(action.data)));
 
     case MESSAGE_DECRYPTED:

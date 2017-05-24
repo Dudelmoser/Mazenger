@@ -1,8 +1,9 @@
 export const CHANGE_MESSAGE = "changeMessage";
 export const SEND_PUBLIC_KEY = "sendPublicKey";
-export const DISABLE_ENCRYPTION = "disableEncryption";
 export const ENCRYPT_MESSAGE ="encryptMessage";
+export const DISABLE_ENCRYPTION = "disableEncryption";
 export const MESSAGE_DECRYPTED = "messageDecrypted";
+export const THREAD_INFO_DECRYPTED = "threadInfoDecrypted";
 export const THREAD_LIST_DECRYPTED = "threadListDecrypted";
 export const THREAD_HISTORY_DECRYPTED = "threadHistoryDecrypted";
 export const SAVE_PRIVATE_KEY = "savePrivateKey";
@@ -16,12 +17,31 @@ export function changeMessage(message) {
   };
 }
 
+/* encryption related user actions that are handled by the crypto saga */
+
 export function sendPublicKey(threadID) {
   return {
     type: SEND_PUBLIC_KEY,
     threadID
   }
 }
+
+export function encryptMessage(threadID, message) {
+  return {
+    type: ENCRYPT_MESSAGE,
+    threadID,
+    message
+  }
+}
+
+export function disableEncryption(threadID) {
+  return {
+    type: DISABLE_ENCRYPTION,
+    threadID
+  }
+}
+
+/* encryption related internal actions that are handled by the reducer */
 
 export function savePrivateKey(threadID, key) {
   return {
@@ -47,23 +67,15 @@ export function setEncrypted(threadID, isEncrypted) {
   }
 }
 
-export function disableEncryption(threadID) {
-  return {
-    type: DISABLE_ENCRYPTION,
-    threadID
-  }
-}
-
-export function encryptMessage(threadID, message) {
-  return {
-    type: ENCRYPT_MESSAGE,
-    threadID,
-    message
-  }
-}
+/* renamed actions for incoming data that are triggered after decryption */
 
 export function messageDecrypted(action) {
   action.type = MESSAGE_DECRYPTED;
+  return action;
+}
+
+export function threadInfoDecrypted(action) {
+  action.type = THREAD_INFO_DECRYPTED;
   return action;
 }
 

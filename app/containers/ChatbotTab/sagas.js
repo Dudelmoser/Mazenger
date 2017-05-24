@@ -3,7 +3,7 @@ import {put, select} from "redux-saga/effects";
 import {UPDATE_RECEIVED} from "../App/actions/responses";
 import {selectGlobalDict, selectLocalDict, selectIsGlobalEnabled, selectIsLocalEnabled} from "./selectors";
 import {selectCurrentUserID} from "../LoginModal/selectors";
-import {encryptMessage} from "../MessageInput/actions";
+import {encryptMessage, MESSAGE_DECRYPTED} from "../MessageInput/actions";
 
 function* sendResponse(action) {
   const data = action.data || {}
@@ -31,7 +31,7 @@ function* sendResponse(action) {
 }
 
 function* main() {
-  yield takeEvery(UPDATE_RECEIVED, sendResponse);
+  yield takeEvery(MESSAGE_DECRYPTED, sendResponse);
 }
 
 export default main;
