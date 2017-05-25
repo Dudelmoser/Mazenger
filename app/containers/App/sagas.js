@@ -39,9 +39,15 @@ function subscribe(socket) {
     // Doesn't work with 'var' due to block vs function scope.
     // Alternative: wrap callback into maker function.
     for (let key in responses) {
-      if (typeof responses[key] == "function") {
-        socket.on(responses[key].name, res => {
-          emit(responses[key](res));
+      const actionCreator = responses[key];
+      if (typeof actionCreator === "function") {
+
+        // Use dummy response to get action types from action creators
+        // without causing null pointers.
+        const dummyRes = {data: {}, args: []};
+        const event = actionCreator(dummyRes).type;
+        socket.on(event, res => {
+          emit(actionCreator(res));
         });
       }
     }
@@ -60,11 +66,11 @@ function* receiveEvents(socket) {
 
 function* emitEvents(socket) {
   for (let key in requests) {
-    const req = requests[key];
-    if (typeof req === "string") {
-      yield takeEvery(req, function* (action) {
+    const event = requests[key];
+    if (typeof event === "string") {
+      yield takeEvery(event, function* (action) {
         console.log(action);
-        socket.emit(req, action.args);
+        socket.emit(event, action.args);
       });
     }
   }

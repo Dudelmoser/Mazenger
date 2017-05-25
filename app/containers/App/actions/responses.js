@@ -1,14 +1,14 @@
-export const LOGIN_PASSED = "fb.loginPassed";
-export const LOGIN_FAILED = "fb.loginFailed";
-export const THREAD_LIST_RECEIVED = "fb.threadListReceived";
-export const THREAD_INFO_RECEIVED = "fb.threadInfoReceived";
-export const THREAD_HISTORY_RECEIVED = "fb.threadHistoryReceived";
-export const USER_IDS_RECEIVED = "fb.userIDsReceived";
-export const USER_INFO_RECEIVED = "fb.userInfoReceived";
-export const FRIENDS_LIST_RECEIVED = "fb.friendsListReceived";
-export const PHOTO_URL_RESOLVED = "fb.photoUrlResolved";
-export const UPDATE_RECEIVED = "fb.updateReceived";
-export const MESSAGE_SENT = "fb.messageSent";
+export const LOGIN_PASSED = "loginPassed";
+export const LOGIN_FAILED = "loginFailed";
+export const THREAD_LIST_RECEIVED = "threadListReceived";
+export const THREAD_INFO_RECEIVED = "threadInfoReceived";
+export const THREAD_HISTORY_RECEIVED = "threadHistoryReceived";
+export const USER_IDS_RECEIVED = "userIDsReceived";
+export const USER_INFO_RECEIVED = "userInfoReceived";
+export const FRIENDS_LIST_RECEIVED = "friendsListReceived";
+export const PHOTO_URL_RESOLVED = "photoUrlResolved";
+export const UPDATE_RECEIVED = "updateReceived";
+export const MESSAGE_SENT = "messageSent";
 export const IMAGE_UPLOADED = "imageUploaded";
 export const MEMES_LOADED = "memesLoaded";
 
