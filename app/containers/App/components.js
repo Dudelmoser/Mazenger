@@ -22,7 +22,6 @@ const TitleDiv = muiThemeable()(styled.div`
   z-index: 10;
   position: absolute;
   width: 100%;
-  font-family: Raleway, Roboto;
   font-weight: 400;
   font-size: 24px;
   height: ${titleHeight}px;

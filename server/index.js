@@ -1,7 +1,8 @@
 /* eslint consistent-return:0 */
 
 const path = require("path");
-const app = require("express")();
+const express = require("express");
+const app = express();
 const logger = require("./logger");
 const setup = require("./middleware");
 const isDev = process.env.NODE_ENV !== "production";
@@ -24,8 +25,12 @@ const host = customHost || null; // Let https.Server use its default IPv6/4 host
 const prettyHost = customHost || "localhost";
 const port = argv.port || process.env.PORT || 3000;
 
-// Start your app.
-app.listen(port, host, (err) => {
+const publicDir = "static";
+
+// start your app
+let server = require("http").Server(app);
+const io = require("socket.io")(server);
+server.listen(port, host, (err) => {
   if (err)
     return logger.error(err.message);
 
@@ -41,4 +46,23 @@ app.listen(port, host, (err) => {
   }
 });
 
-proxy(app);
+// app.listen(port, host, (err) => {
+//   if (err)
+//     return logger.error(err.message);
+//
+//   // Connect to ngrok in dev mode
+//   if (ngrok) {
+//     ngrok.connect(port, (innerErr, url) => {
+//       if (innerErr)
+//         return logger.error(innerErr);
+//       logger.appStarted(port, prettyHost, url);
+//     });
+//   } else {
+//     logger.appStarted(port);
+//   }
+// });
+
+// replace with a private URL for a non-local server
+app.use(express.static(path.join(__dirname, publicDir)));
+
+proxy(io);

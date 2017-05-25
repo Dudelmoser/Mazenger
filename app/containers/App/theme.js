@@ -20,6 +20,7 @@ function createTheme(accentColor, backgroundColor) {
 
   // base theme using the previously defined color variations
   return getMuiTheme({
+    fontFamily: "Source Sans Pro",
     palette: {
       primary1Color: accentColor,                           // most focused/selected elements and appbar/tabs
       primary2Color: accentColor,                           // date/time picker selection & header

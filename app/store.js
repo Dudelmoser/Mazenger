@@ -1,20 +1,12 @@
-/**
- * Create the store with asynchronously loaded reducers
- */
-
-import { createStore, applyMiddleware, compose } from 'redux';
-import { fromJS } from 'immutable';
-import { routerMiddleware } from 'react-router-redux';
-import createSagaMiddleware from 'redux-saga';
-import createReducer from './reducers';
+import {fromJS} from "immutable";
+import {createStore, applyMiddleware, compose} from "redux";
+import createSagaMiddleware from "redux-saga";
+import {routerMiddleware} from "react-router-redux";
 import {autoRehydrate, persistStore} from "redux-persist-immutable";
-
-const sagaMiddleware = createSagaMiddleware();
+import createReducer from "./reducers";
 
 export default function configureStore(initialState = {}, history) {
-  // Create the store with two middlewares
-  // 1. sagaMiddleware: Makes redux-sagas work
-  // 2. routerMiddleware: Syncs the location/URL path to the state
+  const sagaMiddleware = createSagaMiddleware();
   const middlewares = [
     sagaMiddleware,
     routerMiddleware(history),
@@ -26,15 +18,15 @@ export default function configureStore(initialState = {}, history) {
     applyMiddleware(...middlewares),
   ];
 
-  // If Redux DevTools Extension is installed use it, otherwise use Redux compose
-  /* eslint-disable no-underscore-dangle */
+  // use the Redux DevTools composer if available or otherwise the native Redux composer
+  // both allow time travelling, but the DevTools visually as a browser extension
   const composeEnhancers =
-    process.env.NODE_ENV !== 'production' &&
-    typeof window === 'object' &&
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
-      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose;
-  /* eslint-enable */
+    process.env.NODE_ENV !== "production"
+    && typeof window === "object"
+    && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+      ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose;
 
+  // create store from reducer
   const store = createStore(
     createReducer(),
     fromJS(initialState),
@@ -44,25 +36,23 @@ export default function configureStore(initialState = {}, history) {
   // begin periodically persisting the store
   persistStore(store);
 
-  // Make store visible for debugging
-  window.store = store;
-
-  // Extensions
+  // register store extensions
   store.runSaga = sagaMiddleware.run;
-  store.asyncReducers = {}; // Async reducer registry
+  store.asyncReducers = {};
 
-  // Make reducers hot reloadable, see http://mxs.is/googmo
-  /* istanbul ignore next */
+  // make reducers hot reloadable
   if (module.hot) {
-    module.hot.accept('./reducers', () => {
-      System.import('./reducers').then((reducerModule) => {
+    module.hot.accept("./reducers", () => {
+      import("./reducers").then((reducerModule) => {
         const createReducers = reducerModule.default;
         const nextReducers = createReducers(store.asyncReducers);
-
         store.replaceReducer(nextReducers);
       });
     });
   }
+
+  // make store visible for debugging
+  window.store = store;
 
   return store;
 }

@@ -14,7 +14,7 @@ import {selectAppState} from "../LoginModal/selectors";
 import {DISCONNECTED} from "./actions/actions";
 
 function connect() {
-  const socket = io("http://localhost:80");
+  const socket = io();
   return new Promise(resolve => {
     socket.on("connect", () => {
       resolve(socket);

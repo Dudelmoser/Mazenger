@@ -8,8 +8,8 @@ injectGlobal`
     height: 100%;
     width: 100%;
     overflow: hidden;
-    font-size: 14px;
-    font-family: Roboto, 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
   
   button, html [type="button"],[type="reset"], [type="submit"] {
