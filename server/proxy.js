@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const express = require("express");
 const login = require("facebook-chat-api");
 const loadMemes = require("./imgflip");
 const publicDir = "static";
@@ -50,7 +51,10 @@ function getMemeURL(userID, filetype = "jpg") {
   return "/" + userID + "/" + new Date().getTime() + "." + filetype;
 }
 
-module.exports = (io) => {
+module.exports = (app, io) => {
+// replace with a private URL for a non-local server
+  app.use(express.static(path.join(__dirname, publicDir)));
+
   io.on("connection", function (socket) {
     console.log(socket.handshake.address + " connected");
     socket.on("login", function (req) {

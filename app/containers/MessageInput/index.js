@@ -15,8 +15,9 @@ import {selectAbbreviations} from "../AbbreviationsTab/selectors";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import {INPUT_ID} from "./constants";
 import {deleteMessages} from "../ThreadHistory/actions";
+import {selectAccentColor} from "../ThemeSettings/selectors";
 
-export class MessageInput extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class MessageInput extends React.PureComponent {
 
   render() {
     const {formatMessage} = this.props.intl;
@@ -32,17 +33,22 @@ export class MessageInput extends React.PureComponent { // eslint-disable-line r
           style={{width: "calc(100% - 144px)"}}
         />
         <IconButton
-          onTouchTap={this.props.sendMessage}>
+          onTouchTap={this.props.sendMessage}
+          iconStyle={{color: this.props.muiTheme.palette.primary1Color}}>
           <SendIcon/>
         </IconButton>
         <IconButton
-          onTouchTap={this.props.isEncrypted ? this.props.disableEncryption : this.props.sendPublicKey}>
+          onTouchTap={this.props.isEncrypted ? this.props.disableEncryption : this.props.sendPublicKey}
+          iconStyle={{color: this.props.muiTheme.palette.primary1Color}}
+        >
           {this.props.isEncrypted ? <LockIcon/> : <KeyIcon/>}
         </IconButton>
         <IconMenu
           iconButtonElement={<IconButton><MenuIcon/></IconButton>}
           anchorOrigin={{horizontal: "right", vertical: "bottom"}}
-          targetOrigin={{horizontal: "right", vertical: "bottom"}}>
+          targetOrigin={{horizontal: "right", vertical: "bottom"}}
+          iconStyle={{color: this.props.muiTheme.palette.primary1Color}}
+        >
           <MenuItem
             primaryText={formatMessage(messages.delete)}
             onTouchTap={this.props.deleteMessages}

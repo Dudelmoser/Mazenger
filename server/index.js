@@ -1,68 +1,38 @@
-/* eslint consistent-return:0 */
-
 const path = require("path");
-const express = require("express");
-const app = express();
+const app = require("express")();
 const logger = require("./logger");
 const setup = require("./middleware");
+const proxy = require("./proxy");
 const isDev = process.env.NODE_ENV !== "production";
 const argv = require("minimist")(process.argv.slice(2));
-const ngrok = (isDev && process.env.ENABLE_TUNNEL) || argv.tunnel ? require("ngrok") : false;
-const proxy = require("./proxy");
+const ngrok = (isDev && process.env.ENABLE_TUNNEL) || argv.tunnel ? require("ngrok") : null;
 
-// If you need a backend, e.g. an API, add your custom backend-specific middleware here
-// app.use('/api', myApi);
-
-// In production we need to pass these values in instead of relying on webpack
+// manually set these paths in production instead of relying on webpack
 setup(app, {
   outputPath: path.resolve(process.cwd(), "build"),
   publicPath: "/",
 });
 
-// get the intended host and port number, use localhost and port 3000 if not provided
-const customHost = argv.host || process.env.HOST;
-const host = customHost || null; // Let https.Server use its default IPv6/4 host
-const prettyHost = customHost || "localhost";
+// get host and port number from args or
+// use localhost and port 3000 if not provided
+const host = argv.host || process.env.HOST || null;
 const port = argv.port || process.env.PORT || 3000;
 
-const publicDir = "static";
-
 // start your app
-let server = require("http").Server(app);
+const server = require("http").Server(app);
 const io = require("socket.io")(server);
 server.listen(port, host, (err) => {
-  if (err)
-    return logger.error(err.message);
-
-  // Connect to ngrok in dev mode
+  if (err) return logger.error(err.message);
+  // connect to ngrok in dev mode
   if (ngrok) {
     ngrok.connect(port, (innerErr, url) => {
       if (innerErr)
         return logger.error(innerErr);
-      logger.appStarted(port, prettyHost, url);
+      logger.appStarted(port, host || "localhost", url);
     });
   } else {
     logger.appStarted(port);
   }
 });
 
-// app.listen(port, host, (err) => {
-//   if (err)
-//     return logger.error(err.message);
-//
-//   // Connect to ngrok in dev mode
-//   if (ngrok) {
-//     ngrok.connect(port, (innerErr, url) => {
-//       if (innerErr)
-//         return logger.error(innerErr);
-//       logger.appStarted(port, prettyHost, url);
-//     });
-//   } else {
-//     logger.appStarted(port);
-//   }
-// });
-
-// replace with a private URL for a non-local server
-app.use(express.static(path.join(__dirname, publicDir)));
-
-proxy(io);
+proxy(app, io);

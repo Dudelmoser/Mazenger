@@ -26,6 +26,8 @@ import {getThreadList, getFriendsList} from "../App/actions/requests";
 // constants
 import messages from "./messages";
 import {leftDrawerWidth, drawerHeight, tabBtnStyle} from "../App/components";
+import {selectActiveTabLeft} from "./selectors";
+import {changeLeftTab} from "./actions";
 
 
 class LeftDrawer extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -40,11 +42,16 @@ class LeftDrawer extends React.Component { // eslint-disable-line react/prefer-s
         zDepth={0}
         openSecondary={false}>
 
-        <Tabs>
+        <Tabs
+          value={this.props.activeTab}
+          onChange={this.props.handleTabChange}
+        >
           <Tab
             data-tooltip={formatMessage(messages.chats)}
             icon={<CommunicationChat/>}
-            onActive={this.props.getThreadList}>
+            onActive={this.props.getThreadList}
+            value={0}
+          >
             <Scrollbars
               autoHide={true}
               style={{height: drawerHeight}}>
@@ -55,7 +62,9 @@ class LeftDrawer extends React.Component { // eslint-disable-line react/prefer-s
           <Tab
             data-tooltip={formatMessage(messages.friends)}
             icon={<SocialPeople/>}
-            onActive={this.props.getFriendsList}>
+            onActive={this.props.getFriendsList}
+            value={1}
+          >
             <Scrollbars
               autoHide={true}
               style={{height: drawerHeight}}>
@@ -65,13 +74,17 @@ class LeftDrawer extends React.Component { // eslint-disable-line react/prefer-s
 
           <Tab
             data-tooltip={formatMessage(messages.abbreviations)}
-            icon={<EditorFormatQuote/>}>
+            icon={<EditorFormatQuote/>}
+            value={2}
+          >
             <AbbreviationsTab />
           </Tab>
 
           <Tab
             data-tooltip={formatMessage(messages.settings)}
-            icon={<ActionSettings/>}>
+            icon={<ActionSettings/>}
+            value={3}
+          >
             <Scrollbars
               autoHide={true}
               style={{height: drawerHeight}}>
@@ -90,11 +103,13 @@ LeftDrawer.propTypes = {
 }
 
 const mapStateToProps = createStructuredSelector({
+  activeTab: selectActiveTabLeft(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getThreadList: () => dispatch(getThreadList()),
   getFriendsList: (tab) => dispatch(getFriendsList()),
+  handleTabChange: (value) => dispatch(changeLeftTab(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(muiThemeable()(injectIntl(LeftDrawer)));

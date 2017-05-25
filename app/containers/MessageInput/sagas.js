@@ -1,4 +1,4 @@
-import {takeEvery} from "redux-saga";
+import {takeEvery, takeLatest} from "redux-saga";
 import {put, select, call} from "redux-saga/effects";
 import forge from "node-forge";
 import {
@@ -187,9 +187,9 @@ function* parseMessage(action) {
 
 function* main() {
   // handle events triggered by user
-  yield takeEvery(SEND_PUBLIC_KEY, sendPublicKey);
-  yield takeEvery(ENCRYPT_MESSAGE, encryptMessage);
-  yield takeEvery(DISABLE_ENCRYPTION, disableEncryption);
+  yield takeLatest(SEND_PUBLIC_KEY, sendPublicKey);
+  yield takeLatest(ENCRYPT_MESSAGE, encryptMessage);
+  yield takeLatest(DISABLE_ENCRYPTION, disableEncryption);
   // decrypt or execute new messages
   yield takeEvery(UPDATE_RECEIVED, parseMessage);
   // decrypt old messages

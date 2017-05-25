@@ -25,8 +25,9 @@ function* getThreadDetails(action) {
 
 function* main() {
   yield takeLatest(THREAD_LIST_RECEIVED, getThreadDetails);
-  yield take(LOGIN_PASSED);
-  yield put(getThreadList());
+  yield takeLatest(LOGIN_PASSED, function* () {
+    yield put(getThreadList());
+  });
 }
 
 export default main;

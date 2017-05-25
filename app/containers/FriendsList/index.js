@@ -27,7 +27,7 @@ FriendsList.propTypes = {
 const mapStateToProps = createStructuredSelector({
   friendsCount: selectFriendsCount(),
   // dirty workaround to force a re-render when changing the global background color
-  bgColor: selectBackgroundColor(),
+  color: selectBackgroundColor(),
 });
 
 export default connect(mapStateToProps)(muiThemeable()(FriendsList));

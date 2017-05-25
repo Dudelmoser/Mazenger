@@ -24,6 +24,8 @@ import ChatbotTab from "../ChatbotTab";
 
 // actions
 import {logout} from "../App/actions/requests";
+import {selectActiveTabRight} from "./selectors";
+import {changeRightTab} from "./actions";
 
 
 class RightDrawer extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -48,10 +50,15 @@ class RightDrawer extends React.Component { // eslint-disable-line react/prefer-
         zDepth={0}
         openSecondary={true}>
 
-        <Tabs>
+        <Tabs
+          value={this.props.activeTab}
+          onChange={this.props.handleTabChange}
+        >
           <Tab
             data-tooltip={formatMessage(messages.emojis)}
-            icon={<SocialMood/>}>
+            icon={<SocialMood/>}
+            value={0}
+          >
             <Scrollbars
               autoHide={true}
               style={{height: drawerHeight}}>
@@ -61,7 +68,9 @@ class RightDrawer extends React.Component { // eslint-disable-line react/prefer-
 
           <Tab
             data-tooltip={formatMessage(messages.memes)}
-            icon={<ImagePortrait/>}>
+            icon={<ImagePortrait/>}
+            value={1}
+          >
             <Scrollbars
               autoHide={true}
               style={{height: drawerHeight}}>
@@ -71,13 +80,16 @@ class RightDrawer extends React.Component { // eslint-disable-line react/prefer-
 
           <Tab
             data-tooltip={formatMessage(messages.chatbot)}
-            icon={<ContentReplyAll/>}>
+            icon={<ContentReplyAll/>}
+            value={2}
+          >
             <ChatbotTab />
           </Tab>
 
           <Tab
             data-tooltip={formatMessage(messages.logout)}
             disabled={true}
+            value={3}
             icon={
               <div id={this.LOGOUT_BTN} className="lifted">
                 <ActionPowerSettingsNew style={tabBtnStyle}/>
@@ -95,10 +107,12 @@ RightDrawer.propTypes = {
 }
 
 const mapStateToProps = createStructuredSelector({
+  activeTab: selectActiveTabRight(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   logout: () => dispatch(logout()),
+  handleTabChange: (value) => dispatch(changeRightTab(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(RightDrawer));

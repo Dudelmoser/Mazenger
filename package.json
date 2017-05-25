@@ -1,14 +1,14 @@
 {
   "name": "mazenger",
-  "version": "0.0.1",
-  "description": "A Facebook messenger alternative with advanced features like a meme generator, chatbot etc.",
+  "version": "0.5.0",
+  "description": "A Facebook messenger alternative with custom memes, auto responses, encryption, themes and more...",
   "repository": {
     "type": "git",
     "url": "git://github.com/Dudelmoser/mazenger.git"
   },
   "engines": {
-    "npm": ">=3",
-    "node": ">=5"
+    "npm": ">=4",
+    "node": ">=6"
   },
   "author": "Jan David Kleiß",
   "license": "MIT",

@@ -158,6 +158,8 @@ const stateExample = {
     settings: {
       accentColor: "rgb(235,255,0)",
       backgroundColor: "rgb(32,35,38)",
+      activeTabLeft: 0,
+      activeTabRight: 0,
     }
   },
 };

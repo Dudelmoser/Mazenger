@@ -104,7 +104,7 @@ const mapStateToProps = (state, props) => createStructuredSelector({
   attachmentsCount: selectAttachmentsCount(props.index, props.threadID),
   isSelected: selectIsSelected(props.index, props.threadID),
   // dirty workaround to force a re-render when changing the global background color
-  bgColor: selectBackgroundColor(),
+  color: selectBackgroundColor(),
 })(state);
 
 const mapDispatchToProps = (dispatch, props) => ({

@@ -9,7 +9,7 @@ import {deleteMessages, selectAllMessages, deselectAllMessages, loadMoreMessages
 import {titleHeight} from "../App/components";
 import muiThemeable from "material-ui/styles/muiThemeable";
 
-export class ThreadHistory extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class ThreadHistory extends React.PureComponent {
 
   state = {
     prevThread: 0,

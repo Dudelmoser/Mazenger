@@ -35,15 +35,8 @@ export default function (state = initState, action) {
         .set(LOGIN_STATE, -1);
 
     case LOGIN_PASSED:
-      let newState = state;
-
-      let newID = action.currentUserID;
-      let curID = state.get(USER_ID);
-      if (curID != newID)
-        newState = initState;
-
-      return newState
-        .set(USER_ID, newID)
+      return state
+        .set(USER_ID, action.currentUserID)
         .set(APP_STATE, action.appState)
         .set(LOGIN_STATE, 1);
 
