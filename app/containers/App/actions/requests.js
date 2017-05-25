@@ -1,15 +1,15 @@
-export const LOGIN = "fb.login";
-export const LISTEN = "fb.listen";
-export const LOGOUT = "fb.logout";
-export const GET_THREAD_LIST = "fb.getThreadList";
-export const GET_THREAD_INFO = "fb.getThreadInfo";
-export const GET_THREAD_HISTORY = "fb.getThreadHistory";
-export const GET_USER_ID = "fb.getUserID";
-export const GET_USER_INFO = "fb.getUserInfo";
-export const GET_FRIENDS_LIST = "fb.getFriendsList";
-export const RESOLVE_PHOTO_URL = "fb.resolvePhotoUrl";
-export const SEND_MESSAGE = "fb.sendMessage";
-export const DELETE_MESSAGE = "fb.deleteMessage";
+export const LOGIN = "login";
+export const LISTEN = "listen";
+export const LOGOUT = "logout";
+export const GET_THREAD_LIST = "getThreadList";
+export const GET_THREAD_INFO = "getThreadInfo";
+export const GET_THREAD_HISTORY = "getThreadHistory";
+export const GET_USER_ID = "getUserID";
+export const GET_USER_INFO = "getUserInfo";
+export const GET_FRIENDS_LIST = "getFriendsList";
+export const RESOLVE_PHOTO_URL = "resolvePhotoUrl";
+export const SEND_MESSAGE = "sendMessage";
+export const DELETE_MESSAGE = "deleteMessage";
 export const UPLOAD_IMAGE = "uploadImage";
 export const LOAD_MEMES = "loadMemes";
 

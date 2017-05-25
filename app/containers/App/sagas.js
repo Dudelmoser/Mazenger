@@ -53,7 +53,6 @@ function* receiveEvents(socket) {
   const channel = yield call(subscribe, socket);
   while (true) {
     let action = yield take(channel);
-    // console.log("Receiving:");
     console.log(action);
     yield put(action);
   }
@@ -62,29 +61,13 @@ function* receiveEvents(socket) {
 function* emitEvents(socket) {
   for (let key in requests) {
     const req = requests[key];
-    if (typeof req == "function") {
-      yield takeEvery(req().type, function*(action) {
-        // console.log("Emitting:");
+    if (typeof req === "string") {
+      yield takeEvery(req, function* (action) {
         console.log(action);
-        socket.emit(req.name, action.args);
+        socket.emit(req, action.args);
       });
     }
   }
-}
-
-function* logEvents(socket) {
-  var onevent = socket.onevent;
-  socket.onevent = function (packet) {
-    var args = packet.data || [];
-    onevent.call (this, packet);      // original call
-    packet.data = ["*"].concat(args);
-    onevent.call(this, packet);       // additional call to catch-all
-  };
-
-  socket.on("*", (event, data) => {
-    console.log(event);
-    console.log(data);
-  });
 }
 
 function* main() {
@@ -92,7 +75,6 @@ function* main() {
     const socket = yield call(connect);
     const emitTask = yield fork(emitEvents, socket);
     const receiveTask = yield fork(receiveEvents, socket);
-    // const logTask = yield fork(logEvents, socket);
     const threadsTask = yield fork(threadsSaga, socket);
     const friendsTask = yield fork(friendsSaga, socket);
     const chatbotTask = yield fork(chatbotSaga);
@@ -111,7 +93,6 @@ function* main() {
     yield take(DISCONNECTED);
     yield cancel(receiveTask);
     yield cancel(emitTask);
-    // yield cancel(logTask);
     yield cancel(threadsTask);
     yield cancel(friendsTask);
     yield cancel(chatbotTask);
