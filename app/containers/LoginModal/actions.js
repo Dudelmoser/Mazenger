@@ -8,9 +8,8 @@ export function changeEmail(email) {
   }
 }
 
-export function changePassword(password) {
+export function changePassword() {
   return {
     type: CHANGE_PASSWORD,
-    password: password
   }
 }

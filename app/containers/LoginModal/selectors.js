@@ -1,7 +1,7 @@
 import {createSelector} from "reselect";
 import {fromJS} from "immutable";
 import {selectRoot, selectSessions} from "../App/selectors";
-import {LOGIN, EMAIL, PASSWORD, APP_STATE, VALID_EMAILS, THREAD_ID, USER_ID} from "./constants";
+import {LOGIN, EMAIL, APP_STATE, THREAD_ID, USER_ID, LOGIN_STATE} from "./constants";
 
 const selectSession = () => createSelector(
   selectSessions(),
@@ -19,19 +19,9 @@ const selectEmail = () => createSelector(
   (login) => login.get(EMAIL) || ""
 );
 
-const selectPassword = () => createSelector(
-  selectLogin(),
-  (login) => login.get(PASSWORD) || ""
-);
-
 const selectAppState = () => createSelector(
   selectLogin(),
   (login) => login.get(APP_STATE) || null
-);
-
-const selectValidEmails = () => createSelector(
-  selectLogin(),
-  (login) => login.get(VALID_EMAILS) || fromJS([])
 );
 
 const selectCurrentUserID = () => createSelector(
@@ -49,13 +39,17 @@ const selectIsLoggedIn = () => createSelector(
   (appState) => appState ? true : false
 );
 
+const selectLoginState = () => createSelector(
+  selectLogin(),
+  (login) => login.get(LOGIN_STATE)
+);
+
 export {
   selectSession,
   selectEmail,
-  selectPassword,
   selectAppState,
-  selectValidEmails,
   selectCurrentUserID,
   selectCurrentThreadID,
   selectIsLoggedIn,
+  selectLoginState,
 }

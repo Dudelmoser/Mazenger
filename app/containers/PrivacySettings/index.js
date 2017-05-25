@@ -41,8 +41,7 @@ export class PrivacySettings extends React.PureComponent { // eslint-disable-lin
           title={formatMessage(messages.clearHeader)}
           actions={actions}
           modal={true}
-          open={this.props.clearConfirmed}
-          actionsContainerStyle={this.actionContainerStyle}>
+          open={this.props.clearConfirmed}>
           <div>
             {formatMessage(messages.clearWarning)}
           </div>

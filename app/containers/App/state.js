@@ -16,9 +16,8 @@ const stateExample = {
     email: "",
     password: "",
     appState: null,
-    validEmails: [],
     userID: null,
-    threadID: null, // needs to be reset
+    threadID: null,
     isConnected: false,
   },
   "userID": {

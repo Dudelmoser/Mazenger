@@ -2,16 +2,15 @@ import {fromJS} from "immutable";
 import {CHANGE_EMAIL, CHANGE_PASSWORD} from "./actions";
 import {CLEAR_CACHE} from "../App/actions/actions";
 import {LOGIN_FAILED, LOGIN_PASSED, THREAD_HISTORY_RECEIVED} from "../App/actions/responses";
-import {LOGOUT} from "../App/actions/requests";
-import {THREAD_ID, EMAIL, PASSWORD, APP_STATE, USER_ID, VALID_EMAILS} from "./constants";
+import {LOGIN, LOGOUT} from "../App/actions/requests";
+import {THREAD_ID, EMAIL, APP_STATE, USER_ID, LOGIN_STATE} from "./constants";
 
 let initState = fromJS({
   email: "",
-  password: "",
   appState: null,
-  validEmails: [],
   userID: null,
   threadID: null,
+  loginState: 0,
 });
 
 export default function (state = initState, action) {
@@ -19,15 +18,21 @@ export default function (state = initState, action) {
 
     case CHANGE_EMAIL:
       return state
-        .set(EMAIL, action.email);
+        .set(EMAIL, action.email)
+        .set(LOGIN_STATE, 0);
 
     case CHANGE_PASSWORD:
       return state
-        .set(PASSWORD, action.password);
+        .set(LOGIN_STATE, 0);
+
+    case LOGIN:
+      return state
+        .set(LOGIN_STATE, 10);
 
     case LOGIN_FAILED:
       return state
-        .set(APP_STATE, null);
+        .set(APP_STATE, null)
+        .set(LOGIN_STATE, -1);
 
     case LOGIN_PASSED:
       let newState = state;
@@ -40,17 +45,14 @@ export default function (state = initState, action) {
       return newState
         .set(USER_ID, newID)
         .set(APP_STATE, action.appState)
-        .update(VALID_EMAILS, arr => {
-          if (arr.includes(state.get(EMAIL)))
-            return arr;
-          return arr.push(state.get(EMAIL))})
-        .set(PASSWORD, "");
+        .set(LOGIN_STATE, 1);
 
     case LOGOUT:
       return state
+        .set(USER_ID, null)
+        .set(THREAD_ID, null)
         .set(APP_STATE, null)
-        .set(USER_ID, 0)
-        .set(THREAD_ID, null);
+        .set(LOGIN_STATE, 0);
 
     case CLEAR_CACHE:
       return initState;

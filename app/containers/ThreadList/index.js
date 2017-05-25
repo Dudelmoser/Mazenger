@@ -21,10 +21,6 @@ export class ThreadList extends React.PureComponent { // eslint-disable-line rea
   }
 }
 
-ThreadList.propTypes = {
-  threadIDs: React.PropTypes.array,
-}
-
 const mapStateToProps = createStructuredSelector({
   threadIDs: selectThreadIDs(),
 });

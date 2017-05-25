@@ -18,4 +18,8 @@ export default defineMessages({
     id: "LoginModal.password",
     defaultMessage: "Password",
   },
+  wrongLogin: {
+    id: "LoginModal.wrongLogin",
+    defaultMessage: "Wrong email or password!"
+  },
 });

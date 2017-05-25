@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import muiThemeable from "material-ui/styles/muiThemeable";
 
-const leftDrawerWidth = 480;
-const rightDrawerWidth = 480;
+const leftDrawerWidth = window.innerWidth * .23;
+const rightDrawerWidth = window.innerWidth * .23;
 const titleHeight = 48;
 
 const threadWidth = window.innerWidth - leftDrawerWidth - rightDrawerWidth;
