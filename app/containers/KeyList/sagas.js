@@ -66,7 +66,12 @@ function* decrypt(message, threadID) {
       decipher.start({iv: ivBytes});
       decipher.update(forge.util.createBuffer(ctBytes));
       decipher.finish();
-      const msg = forge.util.decodeUtf8(decipher.output.getBytes());
+      let msg;
+      try {
+        msg = forge.util.decodeUtf8(decipher.output.getBytes());
+      } catch (e) {
+        msg = decipher.output.getBytes();
+      }
       if (msg.startsWith(CHECK_STR))
         return msg.substr(CHECK_STR.length);
     }

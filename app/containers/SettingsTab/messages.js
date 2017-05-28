@@ -6,7 +6,11 @@ export default defineMessages({
     defaultMessage: "Theme"
   },
   privacy: {
-    id: "PrivacySettings.privacy",
+    id: "SettingsTab.privacy",
     defaultMessage: "Privacy"
+  },
+  keys: {
+    id: "SettingsTab.keys",
+    defaultMessage: "Keys"
   },
 });

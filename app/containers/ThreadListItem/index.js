@@ -11,7 +11,7 @@ import LockIcon from "material-ui/svg-icons/action/lock-outline";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import messages from "./messages";
 import {injectIntl} from "react-intl";
-import {selectIsEncrypted} from "../MessageInput/selectors";
+import {selectIsEncrypted} from "../KeyList/selectors";
 
 export class ThreadListItem extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 

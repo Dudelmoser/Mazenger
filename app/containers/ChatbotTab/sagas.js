@@ -1,9 +1,8 @@
 import {takeEvery} from "redux-saga";
 import {put, select} from "redux-saga/effects";
-import {UPDATE_RECEIVED} from "../App/actions/responses";
 import {selectGlobalDict, selectLocalDict, selectIsGlobalEnabled, selectIsLocalEnabled} from "./selectors";
 import {selectCurrentUserID} from "../LoginModal/selectors";
-import {encryptMessage, MESSAGE_DECRYPTED} from "../MessageInput/actions";
+import {encryptMessage, MESSAGE_DECRYPTED} from "../KeyList/actions";
 
 function* sendResponse(action) {
   const data = action.data || {}

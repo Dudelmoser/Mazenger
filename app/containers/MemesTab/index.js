@@ -18,15 +18,16 @@ import {FAVORITE_MEMES, CUSTOM_MEMES, TOP100_MEMES} from "./constants";
 
 export class MemeGenerator extends React.Component {
 
-  containerStyle = {
-    margin: "0 16px",
-  }
-
-  canvasStyle = {
-    display: "block",
-    maxWidth: "100%",
-    maxHeight: "448px",
-    marginBottom: "16px",
+  styles = {
+    container: {
+      margin: "0 16px",
+    },
+    canvas: {
+      display: "block",
+      maxWidth: "100%",
+      maxHeight: "448px",
+      marginBottom: "16px",
+    },
   }
 
   loadImage(event) {
@@ -40,22 +41,23 @@ export class MemeGenerator extends React.Component {
 
   render() {
 
-    const btnIconStyle = {
-      color: this.props.muiTheme.palette.borderColor,
-    }
-
-    const iconBtnStyle = {
-      marginTop: 28,
-      minWidth: 44,
-      marginBottom: 8,
-      verticalAlign: "middle",
-      borderRadius: 0,
-      borderBottom: "1px solid " + this.props.muiTheme.palette.borderColor,
+    const styles = {
+      button: {
+        marginTop: 28,
+        minWidth: 44,
+        marginBottom: 8,
+        verticalAlign: "middle",
+        borderRadius: 0,
+        borderBottom: "1px solid " + this.props.muiTheme.palette.borderColor,
+      },
+      icon: {
+        color: this.props.muiTheme.palette.borderColor,
+      }
     }
 
     const {formatMessage} = this.props.intl;
     return (
-    <div style={this.containerStyle}>
+    <div style={this.styles.container}>
       <TextField
         value={this.props.topCaption}
         onChange={this.props.setTopCaption.bind(this)}
@@ -90,10 +92,10 @@ export class MemeGenerator extends React.Component {
           )}
         </SelectField>
         <FlatButton
-          style={iconBtnStyle}
+          style={styles.button}
           primary={true}
           containerElement="label">
-          <AddIcon style={btnIconStyle}/>
+          <AddIcon style={styles.icon}/>
           <input
             type="file"
             accept="image/*"
@@ -116,7 +118,7 @@ export class MemeGenerator extends React.Component {
       <div style={{textAlign: "center"}}>
         <canvas
           id="memeCanvas"
-          style={this.canvasStyle}>
+          style={this.styles.canvas}>
         </canvas>
         <RaisedButton
           label="Send meme"

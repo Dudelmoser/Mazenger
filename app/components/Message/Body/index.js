@@ -2,7 +2,7 @@ import React from "react";
 import emoji from "react-easy-emoji";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import Link from "../Link";
-import {CT_ICON, DSBL_ICON, PK_ICON, SK_ICON} from "../../../containers/MessageInput/constants";
+import {CT_ICON, DSBL_ICON, PK_ICON, SK_ICON} from "../../../containers/KeyList/constants";
 
 function Body(props) {
 

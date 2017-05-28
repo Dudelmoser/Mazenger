@@ -7,15 +7,16 @@ import LockIcon from "material-ui/svg-icons/action/lock-open";
 import KeyIcon from "material-ui/svg-icons/communication/vpn-key";
 import MenuIcon from "material-ui/svg-icons/navigation/more-vert";
 import SendIcon from "material-ui/svg-icons/content/send";
-import {changeMessage, encryptMessage, disableEncryption, sendPublicKey} from "./actions";
-import {selectCurrentInput, selectIsCurrentThreadEncrypted} from "./selectors";
+import {changeMessage} from "./actions";
+import {selectCurrentInput} from "./selectors";
 import {createStructuredSelector} from "reselect";
 import {selectCurrentThreadID} from "../LoginModal/selectors";
 import {selectAbbreviations} from "../AbbreviationsTab/selectors";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import {INPUT_ID} from "./constants";
 import {deleteMessages} from "../ThreadHistory/actions";
-import {selectAccentColor} from "../ThemeSettings/selectors";
+import {disableEncryption, encryptMessage, sendPublicKey} from "../KeyList/actions";
+import {selectIsCurrentThreadEncrypted} from "../KeyList/selectors";
 
 export class MessageInput extends React.PureComponent {
 

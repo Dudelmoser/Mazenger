@@ -1,15 +1,15 @@
 import styled from "styled-components";
 import muiThemeable from "material-ui/styles/muiThemeable";
 
-const leftDrawerWidth = window.innerWidth * .23;
-const rightDrawerWidth = window.innerWidth * .23;
-const titleHeight = 48;
+export const leftDrawerWidth = window.innerWidth * .23;
+export const rightDrawerWidth = window.innerWidth * .23;
+export const titleHeight = 48;
 
-const threadWidth = window.innerWidth - leftDrawerWidth - rightDrawerWidth;
-const threadHeight = window.innerHeight;
-const drawerHeight = window.innerHeight - titleHeight;
+export const threadWidth = window.innerWidth - leftDrawerWidth - rightDrawerWidth;
+export const threadHeight = window.innerHeight;
+export const drawerHeight = window.innerHeight - titleHeight;
 
-const ContainerDiv = muiThemeable()(styled.div`
+export const ContainerDiv = muiThemeable()(styled.div`
   position: fixed;
   width: 100%;
   height: 100%;
@@ -18,7 +18,7 @@ const ContainerDiv = muiThemeable()(styled.div`
 `);
 
 // logo must eventually be replaced with svg or pixel graphic
-const TitleDiv = muiThemeable()(styled.div`
+export const TitleDiv = muiThemeable()(styled.div`
   z-index: 10;
   position: absolute;
   width: 100%;
@@ -31,7 +31,7 @@ const TitleDiv = muiThemeable()(styled.div`
   background: ${props => props.muiTheme.palette.semitrans};
 `);
 
-const CenterDiv = muiThemeable()(styled.div`
+export const CenterDiv = muiThemeable()(styled.div`
   position: absolute;
   left: ${leftDrawerWidth}px;
   width: calc(100% - ${leftDrawerWidth + rightDrawerWidth}px);
@@ -41,12 +41,12 @@ const CenterDiv = muiThemeable()(styled.div`
   border-right: 1px solid ${props => props.muiTheme.palette.borderColor};
 `);
 
-const ThreadDiv = styled.div`
+export const ThreadDiv = styled.div`
   width: ${threadWidth}px;
   height: 100%;
 `;
 
-const MessageDiv = muiThemeable()(styled.div`
+export const MessageDiv = muiThemeable()(styled.div`
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -56,14 +56,8 @@ const MessageDiv = muiThemeable()(styled.div`
 `);
 
 // make component instead
-const tabBtnStyle = {
+export const tabBtnStyle = {
   width: "100%",
   cursor: "pointer",
   color: "inherit",
-}
-
-export {
-  CenterDiv, ContainerDiv, TitleDiv, ThreadDiv, MessageDiv,
-  threadWidth, threadHeight, leftDrawerWidth, rightDrawerWidth, drawerHeight, titleHeight,
-  tabBtnStyle,
 }

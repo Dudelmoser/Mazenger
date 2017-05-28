@@ -19,7 +19,23 @@ import LoginModal from "../LoginModal";
 import createTheme from "./theme";
 import {selectAccentColor, selectBackgroundColor} from "../ThemeSettings/selectors";
 
-class Messenger extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class Messenger extends React.Component {
+
+  updateDimensions() {
+    this.setState({width: $(window).width(), height: $(window).height()});
+  }
+
+  componentWillMount() {
+    this.updateDimensions();
+  }
+
+  componentDidMount() {
+    window.addEventListener("resize", this.updateDimensions);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions);
+  }
 
   render() {
     return (

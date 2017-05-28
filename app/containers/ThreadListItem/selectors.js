@@ -2,17 +2,18 @@ import {createSelector} from "reselect";
 import {selectThread, selectUsers} from "../ThreadList/selectors";
 import {selectAllTypers} from "../ThreadHistory/selectors";
 import {fromJS} from "immutable";
+import {selectCurrentUserID} from "../LoginModal/selectors";
 
 const selectThreadTitle = (threadID) => createSelector(
   selectThread(threadID),
   selectUsers(),
-  (thread, users) => {
-    const name = thread.get("name") || "";
-    if (name)
-      return name;
+  selectCurrentUserID(),
+  (thread, users, me) => {
     const userIDs = thread.get("participantIDs") || fromJS([]);
     let title = "";
     userIDs.forEach(userID => {
+      if (userID == me)
+        return;
       if (title)
         title += ", ";
       const user = users.get(userID);

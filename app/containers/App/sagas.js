@@ -9,7 +9,7 @@ import threadsSaga from "../ThreadList/sagas";
 import friendsSaga from "../FriendsList/sagas";
 import chatbotSaga from "../ChatbotTab/sagas";
 import historySaga from "../ThreadHistory/sagas";
-import cryptoSaga from "../MessageInput/sagas";
+import cryptoSaga from "../KeyList/sagas";
 import {selectAppState} from "../LoginModal/selectors";
 import {DISCONNECTED} from "./actions/actions";
 

@@ -6,6 +6,7 @@ import {Stepper, Step, StepButton, StepContent} from "material-ui";
 import {injectGlobal} from "styled-components";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import messages from "./messages";
+import KeyList from "../KeyList";
 
 export class SettingsTab extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -46,6 +47,14 @@ export class SettingsTab extends React.PureComponent { // eslint-disable-line re
            </StepButton>
            <StepContent>
              <PrivacySettings/>
+           </StepContent>
+         </Step>
+         <Step>
+           <StepButton onClick={() => this.setState({stepIndex: 2})} className="stepper">
+             {formatMessage(messages.keys)}
+           </StepButton>
+           <StepContent>
+             <KeyList/>
            </StepContent>
          </Step>
        </Stepper>

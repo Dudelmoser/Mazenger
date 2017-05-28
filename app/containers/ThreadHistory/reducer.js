@@ -4,7 +4,7 @@ import {THREAD_HISTORY_RECEIVED, UPDATE_RECEIVED} from "../App/actions/responses
 import {TOGGLE_MESSAGE_SELECT} from "../MessageFrame/actions";
 import {IS_MSG_SELECT} from "./constants";
 import {SELECT_ALL_MESSAGES, DESELECT_ALL_MESSAGES} from "./actions";
-import {MESSAGE_DECRYPTED, THREAD_HISTORY_DECRYPTED} from "../MessageInput/actions";
+import {MESSAGE_DECRYPTED, THREAD_HISTORY_DECRYPTED} from "../KeyList/actions";
 
 const initState = fromJS({});
 
