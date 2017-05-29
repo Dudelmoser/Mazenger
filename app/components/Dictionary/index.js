@@ -5,11 +5,14 @@ import Scrollbars from "react-custom-scrollbars";
 import {injectIntl, intlShape} from "react-intl";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import {Table, TableHeader, TableHeaderColumn, TableBody, TableRow, TableRowColumn, TextField, FlatButton} from "material-ui";
-import ContentAdd from "material-ui/svg-icons/content/add";
-import ContentRemove from "material-ui/svg-icons/content/remove";
+import AddIcon from "material-ui/svg-icons/content/add";
+import RemoveIcon from "material-ui/svg-icons/content/remove";
 import messages from "./messages";
 
-function Dictionary(props) { // eslint-disable-line react/prefer-stateless-function
+/*
+ A simple key-value table with inputs and buttons to add new entries and delete existing ones.
+ */
+function Dictionary(props) {
 
   const {formatMessage} = props.intl;
 
@@ -42,20 +45,27 @@ function Dictionary(props) { // eslint-disable-line react/prefer-stateless-funct
     },
   };
 
-  function handleKeypress(isKey, evt) {
-    if (evt.keyCode == 13) {
-      props.onAdd();
-      const keyInput = document.getElementById(props.id + "Key");
-      const valInput = document.getElementById(props.id + "Val");
-      keyInput.value = "";
-      valInput.value = "";
-      keyInput.focus();
-    } else if (isKey) {
-      props.onKeyChange(evt, evt.target.value);
-    } else {
-      props.onValueChange(evt, evt.target.value);
-    }
-  }
+  /* Add entry to dictionary and clear inputs. */
+  const addEntry = () => {
+    props.onAdd();
+    const keyInput = document.getElementById(props.id + "Key");
+    const valInput = document.getElementById(props.id + "Val");
+    keyInput.value = "";
+    valInput.value = "";
+    keyInput.focus();
+  };
+
+  const handleKeyChange = (evt) => {
+    if (evt.keyCode === 13)
+      addEntry();
+    props.onKeyChange(evt, evt.target.value);
+  };
+
+  const handleValueChange = (evt) => {
+    if (evt.keyCode === 13)
+      addEntry();
+    props.onValueChange(evt, evt.target.value);
+  };
 
   return (
     <div id="test" style={{height: props.height}}>
@@ -98,7 +108,7 @@ function Dictionary(props) { // eslint-disable-line react/prefer-stateless-funct
             style={styles.delBtn}
             onTouchTap={props.onDelete}
             data-tip={formatMessage(messages.deleteTip)}>
-            <ContentRemove style={styles.delIcon}/>
+            <RemoveIcon style={styles.delIcon}/>
           </FlatButton>
         </div>
         <div>
@@ -106,19 +116,19 @@ function Dictionary(props) { // eslint-disable-line react/prefer-stateless-funct
             style={styles.addBtn}
             onTouchTap={props.onAdd}
             data-tip={formatMessage(messages.addTip)}>
-            <ContentAdd style={styles.addIcon}/>
+            <AddIcon style={styles.addIcon}/>
           </FlatButton>
           <TextField
             id={props.id + "Key"}
             style={styles.input}
             floatingLabelText={props.keyLabel}
-            onKeyUp={handleKeypress.bind(this, true)}
+            onKeyUp={handleKeyChange}
           />
           <TextField
             id={props.id + "Val"}
             style={styles.input}
             floatingLabelText={props.valueLabel}
-            onKeyUp={handleKeypress.bind(this, false)}
+            onKeyUp={handleValueChange}
           />
         </div>
       </div>
@@ -130,14 +140,14 @@ Dictionary.propTypes = {
   id: React.PropTypes.string.isRequired,
   entries: React.PropTypes.object.isRequired,
   onSelect: React.PropTypes.func.isRequired,
+  onAdd: React.PropTypes.func.isRequired,
   onDelete: React.PropTypes.func.isRequired,
   onKeyChange: React.PropTypes.func.isRequired,
   onValueChange: React.PropTypes.func.isRequired,
-  onAdd: React.PropTypes.func.isRequired,
   keyLabel: React.PropTypes.string,
   valueLabel: React.PropTypes.string,
   height: React.PropTypes.number,
   intl: intlShape.isRequired,
-}
+};
 
 export default muiThemeable()(injectIntl(Dictionary));

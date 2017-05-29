@@ -1,5 +1,9 @@
 import React from "react";
 
+/*
+ * An image component specialized on rendering facebook image thumbnails
+ * and cropping them for multi-image grids if necessary.
+ */
 function Image(props) {
 
   const style = {
@@ -25,11 +29,11 @@ function Image(props) {
 Image.propTypes = {
   url: React.PropTypes.string.isRequired,
   name: React.PropTypes.string,
-  onClick: React.PropTypes.func,
   id: React.PropTypes.string,
+  onClick: React.PropTypes.func,
+  alignRight: React.PropTypes.bool,
   width: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
   height: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-  alignRight: React.PropTypes.bool,
 };
 
 export default Image;

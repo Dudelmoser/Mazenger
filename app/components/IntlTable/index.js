@@ -4,6 +4,9 @@ import {Table, TableRow, TableHeader, TableHeaderColumn, TableBody, TableRowColu
 import Scrollbars from "react-custom-scrollbars";
 import muiThemeable from "material-ui/styles/muiThemeable";
 
+/*
+ * An translatable but not editable table that supports footer tips.
+ */
 function IntlTable(props) {
 
   const styles = {
@@ -16,7 +19,7 @@ function IntlTable(props) {
     },
     keyCol: props.keyColStyle || {},
     valueCol: props.valueColStyle || {},
-  }
+  };
 
   const {formatMessage} = props.intl;
 

@@ -2,7 +2,11 @@ import React from "react";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import {RaisedButton} from "material-ui";
 
+/*
+ * A material design wrapper for the default file input.
+ */
 function FileButton(props) {
+
   return (
       <RaisedButton
         primary={true}

@@ -5,17 +5,22 @@ import Image from "../Image";
 import File from "../File";
 import Link from "../Link";
 
+/*
+ * Renders all attachments depending on their types.
+ */
 function Attachments(props) {
 
-// The following measurements are based on two fixed sizes used by Facebook:
-// a) the avatar size, which is always 32x32
-// b) the image thumbnails, which have a shorter side of 280px
-// and the standard display size of 1920x1080,
-// resulting in a thread history width of 1172px.
-// 1 line can contain max. 3 images (including avatar, margins, paddings etc.)
-//
-// maxWidth: 280px * 3 (images) + 8px * 3 (spacing) + 8px * 2 (padding) = 880px
-// maxWidth: 280px * 2 (images) + 8px * 2 (spacing) + 8px * 2 (padding) = 592px
+/*
+ * The following measurements are based on two fixed sizes used by Facebook:
+ * a) the avatar size, which is always 32x32
+ * b) the image thumbnails, which have a shorter side of 280px
+ * and the standard display size of 1920x1080,
+ * resulting in a thread history width of 1172px.
+ * One line can contain max. 3 images (including avatar, margins, paddings etc.)
+ *
+ * maxWidth: 280px * 3 (images) + 8px * 3 (spacing) + 8px * 2 (padding) = 880px
+ * maxWidth: 280px * 2 (images) + 8px * 2 (spacing) + 8px * 2 (padding) = 592px
+ */
 
   const squareImgSize = 280;
 
