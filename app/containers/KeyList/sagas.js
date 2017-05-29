@@ -101,6 +101,7 @@ function* decryptHistory(action) {
 }
 
 function* encryptMessage(action) {
+  console.log(this);
   const isEncrypted = yield select(selectIsEncrypted(action.threadID));
   const key = yield select(selectLatestKey(action.threadID));
   if (isEncrypted && key) {
@@ -196,7 +197,7 @@ function* main() {
   yield takeLatest(ENCRYPT_MESSAGE, encryptMessage);
   yield takeLatest(DISABLE_ENCRYPTION, disableEncryption);
   // decrypt or execute new messages
-  yield takeEvery(UPDATE_RECEIVED, parseMessage);
+  yield takeLatest(UPDATE_RECEIVED, parseMessage);
   // decrypt old messages
   yield takeEvery(THREAD_INFO_RECEIVED, decryptThreadInfo);
   yield takeEvery(THREAD_LIST_RECEIVED, decryptThreadList);

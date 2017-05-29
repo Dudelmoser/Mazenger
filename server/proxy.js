@@ -19,6 +19,7 @@ const evtMap = {
   getThreadHistory: "threadHistoryReceived",
   getThreadInfo: "threadInfoReceived",
   getThreadList: "threadListReceived",
+  getThreadPictures: "threadPicturesReceived",
   deleteThread: "threadDeleted",
   getUserID: "userIDsReceived",
   getUserInfo: "userInfoReceived",

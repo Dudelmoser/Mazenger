@@ -6,8 +6,8 @@ import {selectCurrentThreadID} from "../LoginModal/selectors";
 import {selectCurrentTypersNames, selectCurrentHistory} from "./selectors";
 import {createStructuredSelector} from "reselect";
 import {deleteMessages, selectAllMessages, deselectAllMessages, loadMoreMessages} from "./actions";
-import {titleHeight} from "../App/components";
 import muiThemeable from "material-ui/styles/muiThemeable";
+import {barHeight} from "../App/components";
 
 export class ThreadHistory extends React.PureComponent {
 
@@ -19,8 +19,8 @@ export class ThreadHistory extends React.PureComponent {
 
   styles = {
     wrapper: {
-      paddingTop: titleHeight,
-      paddingBottom: titleHeight * 2,
+      paddingTop: barHeight,
+      paddingBottom: barHeight * 2,
     },
     typers: {
       textAlign: "center",

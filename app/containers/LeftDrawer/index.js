@@ -25,9 +25,9 @@ import {getThreadList, getFriendsList} from "../App/actions/requests";
 
 // constants
 import messages from "./messages";
-import {leftDrawerWidth, drawerHeight, tabBtnStyle} from "../App/components";
 import {selectActiveTabLeft} from "./selectors";
 import {changeLeftTab} from "./actions";
+import {barHeight} from "../App/components";
 
 
 class LeftDrawer extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -38,7 +38,7 @@ class LeftDrawer extends React.Component { // eslint-disable-line react/prefer-s
       <Drawer
         open={true}
         docked={true}
-        width={leftDrawerWidth}
+        width={this.props.width}
         zDepth={0}
         openSecondary={false}>
 
@@ -54,7 +54,7 @@ class LeftDrawer extends React.Component { // eslint-disable-line react/prefer-s
           >
             <Scrollbars
               autoHide={true}
-              style={{height: drawerHeight}}>
+              style={{height: this.props.height - barHeight}}>
               <ThreadList />
             </Scrollbars>
           </Tab>
@@ -67,7 +67,7 @@ class LeftDrawer extends React.Component { // eslint-disable-line react/prefer-s
           >
             <Scrollbars
               autoHide={true}
-              style={{height: drawerHeight}}>
+              style={{height: this.props.height - barHeight}}>
               <FriendsList />
             </Scrollbars>
           </Tab>
@@ -77,7 +77,7 @@ class LeftDrawer extends React.Component { // eslint-disable-line react/prefer-s
             icon={<EditorFormatQuote/>}
             value={2}
           >
-            <AbbreviationsTab />
+            <AbbreviationsTab height={this.props.height - barHeight}/>
           </Tab>
 
           <Tab
@@ -87,7 +87,7 @@ class LeftDrawer extends React.Component { // eslint-disable-line react/prefer-s
           >
             <Scrollbars
               autoHide={true}
-              style={{height: drawerHeight}}>
+              style={{height: this.props.height - barHeight}}>
               <SettingsTab/>
             </Scrollbars>
           </Tab>
@@ -100,6 +100,8 @@ class LeftDrawer extends React.Component { // eslint-disable-line react/prefer-s
 
 LeftDrawer.propTypes = {
   intl: intlShape.isRequired,
+  width: React.PropTypes.number.isRequired,
+  height: React.PropTypes.number.isRequired,
 }
 
 const mapStateToProps = createStructuredSelector({

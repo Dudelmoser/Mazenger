@@ -6,7 +6,6 @@ import messages from "./messages";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import {selectAbbreviationsArray} from "./selectors";
 import {deleteAbbreviations, addAbbreviation} from "./actions";
-import {drawerHeight} from "../App/components";
 import Dictionary from "../../components/Dictionary";
 
 export class AbbreviationTab extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -31,13 +30,14 @@ export class AbbreviationTab extends React.PureComponent { // eslint-disable-lin
         onKeyChange={(evt, val) => this.setState({abbr: val})}
         onValueChange={(evt, val) => this.setState({full: val})}
         onAdd={this.props.addRegex.bind(this, this.state.abbr, this.state.full)}
-        height={drawerHeight}/>
+        height={this.props.height}/>
     );
   }
 }
 
 AbbreviationTab.propTypes = {
   intl: intlShape.isRequired,
+  height: React.PropTypes.number.isRequired,
 }
 
 const mapStateToProps = createStructuredSelector({

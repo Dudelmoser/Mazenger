@@ -1,13 +1,8 @@
 import styled from "styled-components";
 import muiThemeable from "material-ui/styles/muiThemeable";
 
-export const leftDrawerWidth = window.innerWidth * .23;
-export const rightDrawerWidth = window.innerWidth * .23;
-export const titleHeight = 48;
-
-export const threadWidth = window.innerWidth - leftDrawerWidth - rightDrawerWidth;
-export const threadHeight = window.innerHeight;
-export const drawerHeight = window.innerHeight - titleHeight;
+export const barHeight = 48;
+export const drawerWidthPerc = .23;
 
 export const ContainerDiv = muiThemeable()(styled.div`
   position: fixed;
@@ -24,8 +19,8 @@ export const TitleDiv = muiThemeable()(styled.div`
   width: 100%;
   font-weight: 400;
   font-size: 24px;
-  height: ${titleHeight}px;
-  line-height: ${titleHeight}px;
+  height: ${props => props.height}px;
+  line-height: ${props => props.height}px;
   text-align: center;
   color: ${props => props.muiTheme.palette.primary1Color};
   background: ${props => props.muiTheme.palette.semitrans};
@@ -33,8 +28,8 @@ export const TitleDiv = muiThemeable()(styled.div`
 
 export const CenterDiv = muiThemeable()(styled.div`
   position: absolute;
-  left: ${leftDrawerWidth}px;
-  width: calc(100% - ${leftDrawerWidth + rightDrawerWidth}px);
+  left: ${props => props.left}px;
+  width: ${props => props.width}px);
   top: 0;
   height: 100%;
   border-left: 1px solid ${props => props.muiTheme.palette.borderColor};
@@ -42,7 +37,7 @@ export const CenterDiv = muiThemeable()(styled.div`
 `);
 
 export const ThreadDiv = styled.div`
-  width: ${threadWidth}px;
+  width: ${props => props.width}px;
   height: 100%;
 `;
 
@@ -50,7 +45,7 @@ export const MessageDiv = muiThemeable()(styled.div`
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: ${titleHeight}px;
+  height: ${props => props.height}px;
   padding-left: 8px;
   background: ${props => props.muiTheme.palette.semitrans};
 `);

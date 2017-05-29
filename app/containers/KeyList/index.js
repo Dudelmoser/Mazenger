@@ -10,18 +10,29 @@ import KeyIcon from "material-ui/svg-icons/communication/vpn-key";
 import {importKeys} from "./actions";
 import FileButton from "../../components/FileButton";
 import muiThemeable from "material-ui/styles/muiThemeable";
-import * as FileSaver from "file-saver";
+import FileSaver from "file-saver";
 import {KEY_FILE} from "./constants";
+import ExportIcon from "material-ui/svg-icons/content/save";
+import ImportIcon from "material-ui/svg-icons/file/file-upload";
 
 export class KeyList extends React.PureComponent {
 
   state = {
     newKey: "",
     selected: [],
-  }
+  };
+
+  styles = {
+    btn: {
+      margin: 12,
+    },
+    btnDiv: {
+      textAlign: "center",
+    },
+  };
 
   saveKeysToFile() {
-    var file = new File([JSON.stringify(this.props.allKeys.toMap())], KEY_FILE, {type: "text/plain;charset=utf-8"});
+    const file = new File([JSON.stringify(this.props.allKeys.toMap())], KEY_FILE, {type: "text/plain;charset=utf-8"});
     FileSaver.saveAs(file);
   }
 
@@ -49,16 +60,23 @@ export class KeyList extends React.PureComponent {
             />
           )}
         </List>
-        <FileButton
-          onSelect={this.loadKeysFromFile.bind(this)}
-          label={formatMessage(messages.import)}
-          accept="text/*"
-        />
-        <RaisedButton
-          label={formatMessage(messages.export)}
-          onTouchTap={this.saveKeysToFile.bind(this)}
-        />
 
+        <div style={this.styles.btnDiv}>
+          <FileButton
+            onSelect={this.loadKeysFromFile.bind(this)}
+            label={formatMessage(messages.import)}
+            icon={<ImportIcon/>}
+            accept="text/*"
+            style={this.styles.btn}
+          />
+          <RaisedButton
+            primary={true}
+            label={formatMessage(messages.export)}
+            icon={<ExportIcon/>}
+            onTouchTap={this.saveKeysToFile.bind(this)}
+            style={this.styles.btn}
+          />
+        </div>
       </div>
     );
   }
@@ -66,7 +84,7 @@ export class KeyList extends React.PureComponent {
 
 KeyList.propTypes = {
   intl: intlShape.isRequired,
-}
+};
 
 const mapStateToProps = createStructuredSelector({
   keys: selectCurrentSymmetricKeys(),

@@ -23,7 +23,7 @@ function Attachments(props) {
   const Spacer2 = styled.div`height: 6px;`;
 
   const attachments = props.attachments.sortBy(attach => attach.get("type"));
-  const imgCount = attachments.filter(attach => attach.get("type") == "photo").count();
+  const imgCount = attachments.filter(attach => attach.get("type") === "photo").count();
   let curImg = 0;
 
   let components = [];
@@ -47,7 +47,7 @@ function Attachments(props) {
         break;
       case "photo":
         curImg++;
-        if (curImg == 1)
+        if (curImg === 1)
           components.push(<Spacer key={i + "a"}/>);
 
         components.push(<Image
@@ -56,11 +56,11 @@ function Attachments(props) {
           url={attachment.get("previewUrl")}
           onClick={props.onClick}
           name={attachment.get("name")}
-          width={imgCount == 1 ? attachment.get("previewWidth") : squareImgSize}
-          height={imgCount == 1 ? attachment.get("previewHeight") : squareImgSize}
-          alignRight={props.alignRight ? true : false}
+          width={imgCount === 1 ? attachment.get("previewWidth") : squareImgSize}
+          height={imgCount === 1 ? attachment.get("previewHeight") : squareImgSize}
+          alignRight={props.alignRight}
         />);
-        if (curImg == imgCount) {
+        if (curImg === imgCount) {
           components.push(<Spacer2 key={i + "b"}/>)
         }
         break;
@@ -75,6 +75,6 @@ function Attachments(props) {
 Attachments.propTypes = {
   attachments: React.PropTypes.object.isRequired,
   alignRight: React.PropTypes.bool,
-}
+};
 
 export default muiThemeable()(Attachments);

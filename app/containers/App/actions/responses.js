@@ -3,6 +3,7 @@ export const LOGIN_FAILED = "loginFailed";
 export const THREAD_LIST_RECEIVED = "threadListReceived";
 export const THREAD_INFO_RECEIVED = "threadInfoReceived";
 export const THREAD_HISTORY_RECEIVED = "threadHistoryReceived";
+export const THREAD_PICTURES_RECEIVED = "threadPicturesReceived";
 export const USER_IDS_RECEIVED = "userIDsReceived";
 export const USER_INFO_RECEIVED = "userInfoReceived";
 export const FRIENDS_LIST_RECEIVED = "friendsListReceived";
@@ -48,6 +49,13 @@ export function threadHistoryReceived(res) {
     type: THREAD_HISTORY_RECEIVED,
     data: res.data,
     args: res.args
+  }
+}
+
+export function threadPicturesReceived(res) {
+  return {
+    type: THREAD_PICTURES_RECEIVED,
+    photos: res.data
   }
 }
 

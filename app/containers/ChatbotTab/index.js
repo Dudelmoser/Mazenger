@@ -8,14 +8,10 @@ import {Tabs, Tab, Toggle, Snackbar} from "material-ui";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import {selectLocalDict, selectGlobalDict, selectIsLocalEnabled, selectIsGlobalEnabled} from "./selectors";
 import {addRegex, deleteRegex, setChatbotState} from "./actions";
-import {drawerHeight} from "../App/components";
 import Dictionary from "../../components/Dictionary";
 import IntlTable from "../../components/IntlTable";
 
 export class ChatbotTab extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-
-  dictHeight = drawerHeight - 120;
-  tableHeight = drawerHeight - 48;
 
   state = {
     gRegex: "",
@@ -69,6 +65,9 @@ export class ChatbotTab extends React.PureComponent { // eslint-disable-line rea
 
   render() {
     const {formatMessage} = this.props.intl;
+
+    const dictHeight = this.props.height - 120;
+    const tableHeight = this.props.height - 48;
     const globalMsg = formatMessage(this.props.isGlobalEnabled ? messages.enabled : messages.disabled);
     const localMsg = formatMessage(this.props.isLocalEnabled ? messages.enabled : messages.disabled);
 
@@ -108,7 +107,7 @@ export class ChatbotTab extends React.PureComponent { // eslint-disable-line rea
               onKeyChange={(evt, val) => this.setState({regex: val})}
               onValueChange={(evt, val) => this.setState({res: val})}
               onAdd={this.props.addRegex.bind(this, false, this.state.regex, this.state.res)}
-              height={this.dictHeight}
+              height={dictHeight}
             /> : null}
           </Tab>
           <Tab
@@ -130,7 +129,7 @@ export class ChatbotTab extends React.PureComponent { // eslint-disable-line rea
                 onKeyChange={(evt, val) => this.setState({gRegex: val})}
                 onValueChange={(evt, val) => this.setState({gRes: val})}
                 onAdd={this.props.addRegex.bind(this, true, this.state.gRegex, this.state.gRes)}
-                height={this.dictHeight}
+                height={dictHeight}
               /> : null}
           </Tab>
           <Tab
@@ -141,7 +140,7 @@ export class ChatbotTab extends React.PureComponent { // eslint-disable-line rea
               valueHeader={formatMessage(messages.explanation)}
               onSelectRow={this.copyToClipboard.bind(this)}
               footer={formatMessage(messages.copyHint)}
-              height={this.tableHeight}
+              height={tableHeight}
             />
           </Tab>
           <Tab
@@ -152,7 +151,7 @@ export class ChatbotTab extends React.PureComponent { // eslint-disable-line rea
               valueHeader={formatMessage(messages.explanation)}
               onSelectRow={this.copyToClipboard.bind(this)}
               footer={formatMessage(messages.caseHint)}
-              height={this.tableHeight}
+              height={tableHeight}
               keyColStyle={{width: "10rem"}}
             />
           </Tab>
@@ -164,6 +163,7 @@ export class ChatbotTab extends React.PureComponent { // eslint-disable-line rea
 
 ChatbotTab.propTypes = {
   intl: intlShape.isRequired,
+  height: React.PropTypes.number.isRequired,
 }
 
 const mapStateToProps = createStructuredSelector({

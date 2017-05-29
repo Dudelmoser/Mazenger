@@ -4,6 +4,7 @@ export const LOGOUT = "logout";
 export const GET_THREAD_LIST = "getThreadList";
 export const GET_THREAD_INFO = "getThreadInfo";
 export const GET_THREAD_HISTORY = "getThreadHistory";
+export const GET_THREAD_PICTURES = "getThreadPictures";
 export const GET_USER_ID = "getUserID";
 export const GET_USER_INFO = "getUserInfo";
 export const GET_FRIENDS_LIST = "getFriendsList";
@@ -58,6 +59,13 @@ export function getThreadHistory(threadID, startAt, count = 20) {
   return {
     type: GET_THREAD_HISTORY,
     args: [threadID, count, startAt || Date.now()]
+  }
+}
+
+export function getThreadPictures(threadID, limit = 8, offset = 0) {
+  return {
+    type: GET_THREAD_PICTURES,
+    args: [threadID, offset, limit]
   }
 }
 

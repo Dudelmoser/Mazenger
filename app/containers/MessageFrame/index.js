@@ -13,7 +13,7 @@ import Tooltip from "react-tooltip";
 import {selectBackgroundColor} from "../ThemeSettings/selectors";
 import {createStructuredSelector} from "reselect";
 
-export class MessageFrame extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class MessageFrame extends React.PureComponent {
 
   maxTimeSpan = 5; // in minutes
 

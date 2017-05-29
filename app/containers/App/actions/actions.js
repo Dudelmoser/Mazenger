@@ -1,6 +1,7 @@
-export const CONNECTED = "fb.connected";
-export const DISCONNECTED = "fb.disconnected";
-export const CLEAR_CACHE = "fb.clearCache";
+export const CONNECTED = "connected";
+export const DISCONNECTED = "disconnected";
+export const CLEAR_CACHE = "clearCache";
+export const CLOSE_PHOTO = "closePhoto";
 
 export function connected() {
   return {
@@ -14,8 +15,8 @@ export function disconnected() {
   };
 }
 
-export function clearCache() {
+export function closePhoto() {
   return {
-    type: CLEAR_CACHE
-  }
+    type: CLOSE_PHOTO
+  };
 }

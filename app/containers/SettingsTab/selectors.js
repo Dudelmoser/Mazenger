@@ -1,13 +1,26 @@
 import {selectSession} from "../LoginModal/selectors";
 import {createSelector} from "reselect";
-import {Map} from "immutable";
-import {SETTINGS} from "./constants";
+import {fromJS, Map, List} from "immutable";
+import {IS_PHOTO_VISIBLE, PHOTO_URLS, SETTINGS} from "./constants";
 
-const selectSettings = () => createSelector(
+export const selectSettings = () => createSelector(
   selectSession(),
   (session) => session.get(SETTINGS) || Map()
 );
 
-export {
-  selectSettings,
-}
+export const selectPhotoURLs = () => createSelector(
+  selectSettings(),
+  (settings) => settings.get(PHOTO_URLS) || List()
+);
+
+export const selectPhotoArray = () => createSelector(
+  selectPhotoURLs(),
+  (urls) => urls.map(url =>
+    ({src: url, alt: ""})
+  ).toArray()
+);
+
+export const selectIsPhotoVisible = () => createSelector(
+  selectSettings(),
+  (settings) => settings.get(IS_PHOTO_VISIBLE)
+);

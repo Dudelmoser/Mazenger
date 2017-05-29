@@ -7,6 +7,7 @@ import {RaisedButton, FlatButton, Dialog} from "material-ui";
 import messages from "./messages";
 import {selectClearConfirmed} from "./selectors";
 import {logout} from "../App/actions/requests";
+import DeleteIcon from "material-ui/svg-icons/action/delete";
 
 export class PrivacySettings extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -32,11 +33,14 @@ export class PrivacySettings extends React.PureComponent { // eslint-disable-lin
       <div>
         <p>{formatMessage(messages.clearHint)}</p>
         <p>{formatMessage(messages.clearHint2)}</p>
-        <RaisedButton
-          secondary={true}
-          label={formatMessage(messages.clearSettings)}
-          onClick={this.props.confirmClearSettings}
-        />
+        <div style={{textAlign: "center"}}>
+          <RaisedButton
+            secondary={true}
+            label={formatMessage(messages.clearSettings)}
+            icon={<DeleteIcon/>}
+            onClick={this.props.confirmClearSettings}
+          />
+        </div>
         <Dialog
           title={formatMessage(messages.clearHeader)}
           actions={actions}
@@ -53,7 +57,7 @@ export class PrivacySettings extends React.PureComponent { // eslint-disable-lin
 
 PrivacySettings.propTypes = {
   intl: intlShape.isRequired,
-}
+};
 
 const mapStateToProps = createStructuredSelector({
   clearConfirmed: selectClearConfirmed(),

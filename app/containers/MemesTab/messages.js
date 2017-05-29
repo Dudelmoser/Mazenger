@@ -25,4 +25,8 @@ export default defineMessages({
     id: "MemesTab.customPrefix",
     defaultMessage: "My Meme "
   },
+  send: {
+    id: "MemesTab.sendMeme",
+    defaultMessage: "Send meme"
+  },
 });

@@ -9,7 +9,7 @@ import {Scrollbars} from "react-custom-scrollbars";
 
 // constants
 import messages from "./messages";
-import {rightDrawerWidth, drawerHeight, tabBtnStyle} from "../App/components";
+import {barHeight, tabBtnStyle} from "../App/components";
 
 // icons
 import SocialMood from "material-ui/svg-icons/social/mood";
@@ -46,7 +46,7 @@ class RightDrawer extends React.Component { // eslint-disable-line react/prefer-
       <Drawer
         open={true}
         docked={true}
-        width={rightDrawerWidth}
+        width={this.props.width}
         zDepth={0}
         openSecondary={true}>
 
@@ -61,7 +61,7 @@ class RightDrawer extends React.Component { // eslint-disable-line react/prefer-
           >
             <Scrollbars
               autoHide={true}
-              style={{height: drawerHeight}}>
+              style={{height: this.props.height - barHeight}}>
               <EmojisTab/>
             </Scrollbars>
           </Tab>
@@ -73,7 +73,7 @@ class RightDrawer extends React.Component { // eslint-disable-line react/prefer-
           >
             <Scrollbars
               autoHide={true}
-              style={{height: drawerHeight}}>
+              style={{height: this.props.height - barHeight}}>
               <MemesTab/>
             </Scrollbars>
           </Tab>
@@ -83,7 +83,7 @@ class RightDrawer extends React.Component { // eslint-disable-line react/prefer-
             icon={<ContentReplyAll/>}
             value={2}
           >
-            <ChatbotTab />
+            <ChatbotTab height={this.props.height - barHeight}/>
           </Tab>
 
           <Tab
@@ -104,6 +104,8 @@ class RightDrawer extends React.Component { // eslint-disable-line react/prefer-
 
 RightDrawer.propTypes = {
   intl: intlShape.isRequired,
+  width: React.PropTypes.number.isRequired,
+  height: React.PropTypes.number.isRequired,
 }
 
 const mapStateToProps = createStructuredSelector({

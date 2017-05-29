@@ -63,6 +63,7 @@ function createTheme(accentColor, backgroundColor) {
       boxColor: distinctDeltaColor,
     },
     raisedButton: {
+      fontWeight: 600,
       secondaryColor: warningColor,
     },
     flatButton: {

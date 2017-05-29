@@ -11,14 +11,14 @@ function Image(props) {
     backgroundImage: `url(${props.url})`,
     backgroundSize: "cover",
     margin: "0 4px 0 4px",
-  }
+  };
 
   return (
     <div
-      style={style}
-      title={props.name}
-      onClick={props.onClick ? props.onClick.bind(this, props.id) : ""}
-    ></div>
+     style={style}
+     title={props.name}
+     onClick={props.onClick ? props.onClick.bind(this, props.id) : ""}
+    />
   );
 }
 

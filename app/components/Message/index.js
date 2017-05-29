@@ -50,6 +50,7 @@ function Message(props) { // eslint-disable-line react/prefer-stateless-function
       <Attachments
         attachments={props.message.get("attachments")}
         alignRight={props.isOwn}
+        onClick={props.onClick}
       />
     </div>
   );
