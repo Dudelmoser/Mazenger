@@ -57,7 +57,7 @@ export class MessageFrame extends React.PureComponent {
           condition={this.props.timePassed > this.maxTimeSpan * 60000}/>
         <div
           style={divStyle}
-          onClick={this.props.toggleMessageSelect}>
+          onContextMenu={this.props.toggleMessageSelect}>
           <Message
             message={this.props.message}
             tooltip={this.props.senderName}
@@ -110,8 +110,9 @@ const mapStateToProps = (state, props) => createStructuredSelector({
 const mapDispatchToProps = (dispatch, props) => ({
   resolvePhotoUrl: (photoID) => dispatch(resolvePhotoUrl(photoID)),
   toggleMessageSelect: (evt) => {
+    evt.preventDefault();
     dispatch(toggleMessageSelect(props.index, props.threadID));
-    evt.stopPropagation();
+    return false;
   },
 });
 

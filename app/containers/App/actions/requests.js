@@ -62,7 +62,8 @@ export function getThreadHistory(threadID, startAt, count = 20) {
   }
 }
 
-export function getThreadPictures(threadID, limit = 8, offset = 0) {
+// TODO: dynamically load more images if last image is reached
+export function getThreadPictures(threadID, limit = 20, offset = 0) {
   return {
     type: GET_THREAD_PICTURES,
     args: [threadID, offset, limit]
