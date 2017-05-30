@@ -43,6 +43,14 @@ function Attachments(props) {
           source={attachment.get("source")}
         />);
         break;
+      case "video":
+        components.push(<File
+          key={i}
+          url={attachment.get("url")}
+          name={attachment.get("filename")}
+          type="video"
+        />);
+        break;
       case "file":
         components.push(<File
           key={i}

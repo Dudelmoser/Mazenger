@@ -2,30 +2,30 @@ import React from "react";
 import Body from "./Body";
 import Attachments from "./Attachments";
 
-// const entityMap = {
-//   '&': '&amp;',
-//   '<': '&lt;',
-//   '>': '&gt;',
-//   '"': '&quot;',
-//   "'": '&#39;',
-//   '/': '&#x2F;',
-//   '`': '&#x60;',
-//   '=': '&#x3D;'
-// };
-//
-// function escapeHtml(str) {
-//   return String(str).replace(/[&<>"'`=\/]/g, (s) => entityMap[s]);
-// }
+/*
+ * A message composed of a textual body and a list of attachments rendered according to their type
+ * (e.g. links with description, media player objects, ...)
+ */
+function Message(props) {
 
-function Message(props) { // eslint-disable-line react/prefer-stateless-function
-
-  const style = {
-    whiteSpace: "pre-line",
-    wordBreak: "break-word",
-    borderRadius: "4px",
-    display: "inline-block",
-    maxWidth: "592px",
-  };
+  /*
+   * Discarded: show software-generated messages (e.g. key exchange messages) as plaintext
+   * when the user hovers over the simplified versions.
+   */
+  // const entityMap = {
+  //   '&': '&amp;',
+  //   '<': '&lt;',
+  //   '>': '&gt;',
+  //   '"': '&quot;',
+  //   "'": '&#39;',
+  //   '/': '&#x2F;',
+  //   '`': '&#x60;',
+  //   '=': '&#x3D;'
+  // };
+  //
+  // function escapeHtml(str) {
+  //   return String(str).replace(/[&<>"'`=\/]/g, (s) => entityMap[s]);
+  // }
 
   // function onMouseEnter(e) {
   //   if (props.message.get("raw"))
@@ -36,6 +36,14 @@ function Message(props) { // eslint-disable-line react/prefer-stateless-function
   //   if (props.message.get("raw"))
   //     return e.target.innerHTML = html;
   // }
+
+  const style = {
+    whiteSpace: "pre-line",
+    wordBreak: "break-word",
+    borderRadius: "4px",
+    display: "inline-block",
+    maxWidth: "592px",
+  };
 
   return (
     <div

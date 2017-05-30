@@ -23,12 +23,12 @@ function Body(props) {
   };
 
   /* Extract links using a URL regex. */
-  const urlRegex = /@^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$@iS/i;
+  const urlRegex = /^(https?|ftp):\/\/[a-z0-9.]*\.\w{2,}.*/i;
   let attachments = [];
   if (msg) {
     const parts = msg.split(/\s+/g);
     for (let i = 0; i < parts.length; i++) {
-      if (parts[i].match(urlRegex))
+      if (urlRegex.test(parts[i]))
         attachments.push(<Link key={i} url={parts[i]}/>);
     }
   }
@@ -47,7 +47,7 @@ function Body(props) {
 }
 
 Body.propTypes = {
-  body: React.PropTypes.string,
+  body: React.PropTypes.string
 };
 
 export default muiThemeable()(Body);

@@ -57,6 +57,8 @@ function* decrypt(message, threadID) {
     return DSBL_ICON;
   if (message.startsWith(TAG_PREFIX + CT_TAG)) {
     const parts = message.split(VAL_PREFIX);
+    if (!parts[1] || !parts[2])
+      return message;
     const ctBytes = forge.util.decode64(parts[1]);
     const ivBytes = forge.util.decode64(parts[2]);
 
