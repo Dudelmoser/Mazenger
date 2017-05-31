@@ -1,14 +1,18 @@
 import {fromJS, Map, List} from "immutable";
 import {LOGOUT, DELETE_MESSAGE} from "../App/actions/requests";
-import {THREAD_HISTORY_RECEIVED, UPDATE_RECEIVED} from "../App/actions/responses";
-import {TOGGLE_MESSAGE_SELECT} from "../MessageFrame/actions";
-import {IS_MSG_SELECT} from "./constants";
+import {
+  PHOTO_URL_RESOLVED, THREAD_HISTORY_RECEIVED, THREAD_PICTURES_RECEIVED,
+  UPDATE_RECEIVED
+} from "../App/actions/responses";
+import {TOGGLE_MESSAGE_SELECT} from "../MessageContainer/actions";
+import {IS_MSG_SELECT, PHOTOS, SHOW_PHOTO_VIEWER} from "./constants";
 import {SELECT_ALL_MESSAGES, DESELECT_ALL_MESSAGES} from "./actions";
 import {MESSAGE_DECRYPTED, THREAD_HISTORY_DECRYPTED} from "../KeyList/actions";
+import {CLOSE_PHOTO_VIEWER} from "./actions";
 
 const initState = fromJS({});
 
-function historiesReducer(state = initState, action, threadID) {
+export function historiesReducer(state = initState, action, threadID) {
   switch (action.type) {
     case THREAD_HISTORY_DECRYPTED:
       const threadId = action.args[0];
@@ -83,7 +87,7 @@ function historiesReducer(state = initState, action, threadID) {
   }
 }
 
-function typersReducer (state = initState, action, threadID, userID) {
+export function typersReducer(state = initState, action, threadID, userID) {
   switch (action.type) {
     case UPDATE_RECEIVED:
       const data = action.data;
@@ -112,7 +116,17 @@ function typersReducer (state = initState, action, threadID, userID) {
   }
 }
 
-export {
-  historiesReducer,
-  typersReducer,
+const emptyList = List();
+export function photosReducer(state = emptyList, action) {
+  switch (action.type) {
+
+    case PHOTO_URL_RESOLVED:
+      return fromJS([action.url]).concat(state).toOrderedSet().toList();
+
+    case THREAD_PICTURES_RECEIVED:
+      return fromJS(action.photos).map(photo => photo.get("uri"));
+
+    case LOGOUT:
+      return emptyList;
+  }
 }

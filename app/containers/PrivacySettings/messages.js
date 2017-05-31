@@ -1,8 +1,8 @@
 import {defineMessages} from "react-intl";
 
 export default defineMessages({
-  clearSettings: {
-    id: "PrivacySettings.confirmClearSettings",
+  clearUserData: {
+    id: "PrivacySettings.openClearDialog",
     defaultMessage: "Clear cache",
   },
   clearHint: {

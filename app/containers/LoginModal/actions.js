@@ -1,5 +1,5 @@
-export const CHANGE_EMAIL = "fb.changeEmail";
-export const CHANGE_PASSWORD = "fb.changePassword";
+export const CHANGE_EMAIL = "LoginModal.changeEmail";
+export const CHANGE_PASSWORD = "LoginModal.changePassword";
 
 export function changeEmail(email) {
   return {

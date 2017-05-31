@@ -1,15 +1,15 @@
-export const CLEAR_SETTINGS = "clearSettings";
-export const CONFIRM_CLEAR_SETTINGS = "confirmClearSettings";
+export const CLEAR_USER_DATA = "PrivacySettings.clearUserData";
+export const SET_CLEAR_DIALOG = "PrivacySettings.setClearDialog";
 
-export function clearSettings() {
+export function clearUserData() {
   return {
-    type: CLEAR_SETTINGS
+    type: CLEAR_USER_DATA
   }
 }
 
-export function confirmClearSettings(cancel) {
+export function setClearDialog(visible) {
   return {
-    type: CONFIRM_CLEAR_SETTINGS,
-    cancel
+    type: SET_CLEAR_DIALOG,
+    visible
   }
 }

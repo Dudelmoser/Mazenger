@@ -1,15 +1,12 @@
 // Modules:
 // socket.io, socket.io-client, redux-persist-immutable, facebook-chat-api,
-// material-ui, react-tap-event-plugin, react-easy-emoji, react-custom-scrollbars
+// material-ui, react-tap-event-plugin, react-easy-emoji, react-custom-scrollbars, react-player, react-viewer
 //
 // Dependencies:
-// FriendsList: users (getFriendsList)
-// ThreadList: threadID, threads (getThreadList), users (getUserInfo), typing
-// ThreadHistory: threadID, history (getThreadHistory), users (getUserInfo), typing
+// FriendsList: users,
+// ThreadList: threadID, threads, users, typing
+// ThreadHistory: threadID, history, users, typing
 // MessageInput: threadID, dictionary, outbox
-// EmojiList: emojis
-// MemeGenerator: memes
-// Chatbot: chatbot
 
 const stateExample = {
   global: {
@@ -32,7 +29,7 @@ const stateExample = {
     ],
 
     users: {
-      "userID": {
+      "userID": {                                                     // getUserInfo()
         fullName: "Zanger Janus",
         firstName: "Zanger",
         profileUrl: "https://www.facebook.com/zanger.janus",
@@ -77,6 +74,8 @@ const stateExample = {
       },
     },
 
+    photos: [],
+
     histories: {
       "threadID": [{
         messageID: "mid.1466685572194:30d37fc836dd59e621",
@@ -96,7 +95,7 @@ const stateExample = {
           url: "https://cdn.fbsbx.com/...",
         }, {
           type: "share",
-          title: "How to Disable Windows 10 Data Collection - BestVPN.com",
+          title: "How to Disable Windows 10 Data Collection",
           description: "Since its release on July 29,...",
           facebookUrl: "https://l.facebook.com/l.php?...",
           image: "https://external.ftxl1-1.fna.fbcdn.net/...",
@@ -134,7 +133,7 @@ const stateExample = {
       activeCat: 0,
     },
 
-    chatbot: {
+    autoreply: {
       global: {
         enabled: false,
         dict: {
@@ -151,15 +150,20 @@ const stateExample = {
       },
     },
 
-    abbreviations: {
-      "abbr": "abbreviation",
+    autotext: {
+      "abbr": "abbreviated text",
     },
 
-    settings: {
+    theme: {
       accentColor: "rgb(235,255,0)",
       backgroundColor: "rgb(32,35,38)",
-      activeTabLeft: 0,
-      activeTabRight: 0,
-    }
+    },
+  },
+
+  gui: {
+    leftTab: 0,
+    rightTab: 0,
+    viewer: false,
+    clearDialog: false,
   },
 };

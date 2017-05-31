@@ -1,13 +1,18 @@
 import React from "react";
 import {connect} from "react-redux";
-import MessageFrame from "../MessageFrame";
+import MessageFrame from "../MessageContainer";
 import {Scrollbars} from "react-custom-scrollbars";
 import {selectCurrentThreadID} from "../LoginModal/selectors";
-import {selectCurrentTypersNames, selectCurrentHistory} from "./selectors";
+import {selectCurrentTypersNames, selectCurrentHistory, selectIsViewerVisible, selectViewerArray} from "./selectors";
 import {createStructuredSelector} from "reselect";
 import {deleteMessages, selectAllMessages, deselectAllMessages, loadMoreMessages} from "./actions";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import {barHeight} from "../App/components";
+import Viewer from "react-viewer";
+import "react-viewer/dist/index.css";
+import {injectGlobal} from "styled-components";
+import {closePhotoViewer} from "./actions";
+import {selectBackgroundColor} from "../ThemeSettings/selectors";
 
 export class ThreadHistory extends React.PureComponent {
 
@@ -30,6 +35,9 @@ export class ThreadHistory extends React.PureComponent {
   };
 
   render() {
+    /* CSS background blur, not supported by older browsers */
+    document.getElementById("app").style.filter = this.props.isPhotoVisible ? "blur(5px)" : "none";
+
     return (
       <Scrollbars
         ref="scrollbar"
@@ -41,6 +49,11 @@ export class ThreadHistory extends React.PureComponent {
           }
           this.setState({prevScrollTop: values.top});
         }}>
+        <Viewer
+          visible={this.props.isPhotoVisible}
+          onClose={this.props.closeViewer}
+          images={this.props.photoArray}
+        />
         <div
           tabIndex="0"
           onClick={this.props.deselectAll}
@@ -59,7 +72,7 @@ export class ThreadHistory extends React.PureComponent {
     );
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const top = this.refs.scrollbar.getScrollHeight() - this.state.prevHeight;
     // scroll to bottom if thread changed or message arrived
     if (this.props.threadID !== this.state.prevThread || this.state.prevScrollTop === 1) {
@@ -70,11 +83,43 @@ export class ThreadHistory extends React.PureComponent {
     if (this.state.prevScrollTop === 0) {
       this.refs.scrollbar.scrollTop(top);
     }
+
+    if (this.props.bgColor !== prevProps.bgColor)
+      this.injectViewerStyles();
   }
 
   componentDidMount() {
     if (this.refs) this.refs.scrollbar.scrollToBottom();
+    this.injectViewerStyles();
   }
+
+  injectViewerStyles = () => {
+    injectGlobal`
+    .react-viewer-close, .react-viewer-navbar {
+      background-color: transparent;
+    }
+    .react-viewer-btn, .react-viewer-toolbar li, .react-viewer-toolbar li:hover {
+      margin-left: 3px;
+      background-color: transparent;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .react-viewer-toolbar li:hover {
+      opacity: 0.5;
+    }
+    .react-viewer-mask {
+      background-color: ${this.props.muiTheme.overlay.backgroundColor};
+    }
+    .react-viewer-icon {
+      color: ${this.props.muiTheme.palette.textColor};
+    }
+    .react-viewer-icon:hover {
+      color: ${this.props.muiTheme.palette.textColor};
+    }
+    `;
+  };
 
   // add intl support
   getUsersTyping() {
@@ -102,6 +147,9 @@ const mapStateToProps = createStructuredSelector({
   threadID: selectCurrentThreadID(),
   typing: selectCurrentTypersNames(),
   history: selectCurrentHistory(),
+  photoArray: selectViewerArray(),
+  isPhotoVisible: selectIsViewerVisible(),
+  bgColor: selectBackgroundColor(),
 });
 
 const mapDispatchToProps = (dispatch, props) => ({
@@ -116,6 +164,7 @@ const mapDispatchToProps = (dispatch, props) => ({
   },
   deselectAll: () => dispatch(deselectAllMessages()),
   loadMore: () => dispatch(loadMoreMessages()),
+  closeViewer: () => dispatch(closePhotoViewer())
 });
 
 // muiThemeable needed for nested message components to receive theme updates - reason?

@@ -11,14 +11,25 @@ import {changeMessage} from "./actions";
 import {selectCurrentInput} from "./selectors";
 import {createStructuredSelector} from "reselect";
 import {selectCurrentThreadID} from "../LoginModal/selectors";
-import {selectAbbreviations} from "../AbbreviationsTab/selectors";
+import {selectAutoText} from "../AutoText/selectors";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import {INPUT_ID} from "./constants";
 import {deleteMessages} from "../ThreadHistory/actions";
 import {disableEncryption, encryptMessage, sendPublicKey} from "../KeyList/actions";
 import {selectIsCurrentThreadEncrypted} from "../KeyList/selectors";
 
+/*
+A toolbar to send messages aswell as enable/disable encryption.
+Also includes a menu button for actions related to the current conversation,
+e.g. deleting selected messages or uploading/recording audio/video/image files (yet to come).
+*/
 export class MessageInput extends React.PureComponent {
+
+  styles = {
+    input: {
+      width: "calc(100% - 144px)",
+    },
+  };
 
   render() {
     const {formatMessage} = this.props.intl;
@@ -31,7 +42,7 @@ export class MessageInput extends React.PureComponent {
           onKeyUp={this.props.handleKeyUp}
           onChange={this.props.handleChange}
           hintText={formatMessage(messages.hint)}
-          style={{width: "calc(100% - 144px)"}}
+          style={this.styles.input}
         />
         <IconButton
           onTouchTap={this.props.sendMessage}
@@ -62,19 +73,18 @@ export class MessageInput extends React.PureComponent {
 
 MessageInput.propTypes = {
   intl: intlShape.isRequired,
+  message: React.PropTypes.string,
   threadID: React.PropTypes.oneOfType(
     [React.PropTypes.number, React.PropTypes.string]),
-  message: React.PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
   threadID: selectCurrentThreadID(),
   message: selectCurrentInput(),
-  abbrs: selectAbbreviations(),
+  abbrs: selectAutoText(),
   isEncrypted: selectIsCurrentThreadEncrypted(),
 });
 
-// to get access to stateProps filled by selectors
 const mergeProps = (stateProps, {dispatch}) => {
   const {threadID, message, abbrs, isEncrypted} = stateProps;
 
@@ -82,7 +92,7 @@ const mergeProps = (stateProps, {dispatch}) => {
     threadID,
     message,
     isEncrypted,
-    // replace abbreviations with their full forms
+    /* Replaces abbreviations with their full forms. */
     handleChange: (event) => {
       let str = event.target.value;
       abbrs.forEach((text, abbr) => {
@@ -90,9 +100,9 @@ const mergeProps = (stateProps, {dispatch}) => {
       });
       dispatch(changeMessage(str));
     },
-    // send message with return key
+    /* Send messages using the return key. */
     handleKeyUp: (event) => {
-      if (event.keyCode == 13) {
+      if (event.keyCode === 13) {
         dispatch(encryptMessage(threadID, event.target.value))
       }
     },

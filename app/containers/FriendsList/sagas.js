@@ -4,6 +4,7 @@ import {getUserInfo} from "../App/actions/requests"
 import {FRIENDS_LIST_RECEIVED} from "../App/actions/responses";
 import {selectUser} from "../ThreadList/selectors";
 
+/* Fetch additional user info as soon as the friends list is received. */
 function* getFriendDetails(action) {
   for (let friend of action.data) {
     const user = yield select(selectUser(friend.currentUserID));

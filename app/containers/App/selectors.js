@@ -1,25 +1,30 @@
-import {ROOT, SOCKET, SESSIONS} from "./constants";
-import {fromJS} from "immutable";
+import {ROOT, SOCKET, SESSIONS, GUI} from "./constants";
+import {Map} from "immutable";
 import {createSelector} from "reselect";
 
-const selectRoot = () => state => state ? state.get(ROOT) : fromJS({})
+export const selectRoot = () => state => state ? state.get(ROOT) : Map();
 
-const selectIsConnected = () => createSelector(
-  selectRoot(),
-  (root) => root.get(SOCKET)
-);
-
-const selectSessions = () => createSelector(
+export const selectSessions = () => createSelector(
   selectRoot(),
   (root) => root.get(SESSIONS)
 );
 
-const selectLocationState = () => {
+export const selectIsConnected = () => createSelector(
+  selectRoot(),
+  (root) => root.get(SOCKET)
+);
+
+export const selectGUI = () => createSelector(
+  selectRoot(),
+  (root) => root.get(GUI) || Map()
+);
+
+export const selectLocationState = () => {
   let prevRoutingState;
   let prevRoutingStateJS;
 
   return (state) => {
-    const routingState = state.get('route'); // or state.route
+    const routingState = state.get("route");
 
     if (!routingState.equals(prevRoutingState)) {
       prevRoutingState = routingState;
@@ -28,11 +33,4 @@ const selectLocationState = () => {
 
     return prevRoutingStateJS;
   };
-};
-
-export {
-  selectRoot,
-  selectSessions,
-  selectIsConnected,
-  selectLocationState
 };

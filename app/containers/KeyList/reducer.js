@@ -1,7 +1,7 @@
 import {fromJS, Map, List} from "immutable";
 import {SYMMETRIC_KEYS, PRIVATE_KEY, IS_ENCRYPTED} from "./constants";
 import {SAVE_SYMMETRIC_KEY, SAVE_PRIVATE_KEY, SET_ENCRYPTED, IMPORT_KEYS} from "./actions";
-import {CLEAR_SETTINGS} from "../PrivacySettings/actions";
+import {CLEAR_USER_DATA} from "../PrivacySettings/actions";
 
 const initState = fromJS({});
 
@@ -24,6 +24,7 @@ export default function (state = initState, action) {
       return state
         .setIn([action.threadID, IS_ENCRYPTED], action.isEncrypted);
 
+    /* Partly checks for invalid threadIDs or empty keys to avoid corrupting the state. */
     case IMPORT_KEYS:
       return state
         .withMutations(state => {
@@ -32,13 +33,14 @@ export default function (state = initState, action) {
               return;
             if (!state.get(threadID))
               return state.set(threadID, new Map().set(SYMMETRIC_KEYS, keys));
+            /* Convert the new and old key list to sets to avoid duplicates after merging. */
             state.updateIn([threadID, SYMMETRIC_KEYS], oldKeys => {
               return (oldKeys || List()).toSet().union(keys.toSet()).toList();
             });
           });
         });
 
-    case CLEAR_SETTINGS:
+    case CLEAR_USER_DATA:
       return initState;
   }
 }

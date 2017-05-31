@@ -1,37 +1,38 @@
 import {createSelector} from "reselect";
 import {fromJS, List, Map} from "immutable";
-import {HISTORIES, TYPERS} from "./constants";
+import {HISTORIES, PHOTOS, SHOW_PHOTO_VIEWER, TYPERS} from "./constants";
 import {selectCurrentThreadID, selectSession} from "../LoginModal/selectors";
 import {selectUsers} from "../ThreadList/selectors";
+import {selectGUI} from "../App/selectors";
 
 const selectHistories = () => createSelector(
   selectSession(),
   (session) => session.get(HISTORIES) || fromJS([])
 );
 
-const selectHistory = (threadID) => createSelector(
+export const selectHistory = (threadID) => createSelector(
   selectHistories(),
   (histories) => histories.get(threadID) || List()
 );
 
-const selectCurrentHistory = () => createSelector(
+export const selectCurrentHistory = () => createSelector(
   selectHistories(),
   selectCurrentThreadID(),
   (histories, threadID) => histories.get(threadID) || List()
 );
 
-const selectAllTypers = () => createSelector(
+export const selectAllTypers = () => createSelector(
   selectSession(),
   (session) => session.get(TYPERS) || Map()
 );
 
-const selectCurrentTypers = () => createSelector(
+export const selectCurrentTypers = () => createSelector(
   selectAllTypers(),
   selectCurrentThreadID(),
   (typers, threadID) => typers.get(threadID) || Map()
 );
 
-const selectCurrentTypersNames = () => createSelector(
+export const selectCurrentTypersNames = () => createSelector(
   selectCurrentTypers(),
   selectUsers(),
   (typers, users) => {
@@ -42,12 +43,12 @@ const selectCurrentTypersNames = () => createSelector(
   }
 );
 
-const selectMessageCount = () => createSelector(
+export const selectMessageCount = () => createSelector(
   selectCurrentHistory(),
   (history) => history.count() || 0
 );
 
-const selectOldestTimestamp = () => createSelector(
+export const selectOldestTimestamp = () => createSelector(
   selectCurrentHistory(),
   (history) => {
     const first = history.first();
@@ -61,11 +62,19 @@ const selectOldestTimestamp = () => createSelector(
   }
 );
 
-export {
-  selectHistory,
-  selectCurrentHistory,
-  selectAllTypers,
-  selectCurrentTypersNames,
-  selectMessageCount,
-  selectOldestTimestamp,
-};
+export const selectPhotoURLs = () => createSelector(
+  selectSession(),
+  (session) => session.get(PHOTOS) || List()
+);
+
+export const selectViewerArray = () => createSelector(
+  selectPhotoURLs(),
+  (urls) => urls.map(url =>
+    ({src: url, alt: ""})
+  ).toArray()
+);
+
+export const selectIsViewerVisible = () => createSelector(
+  selectGUI(),
+  (gui) => gui.get(SHOW_PHOTO_VIEWER)
+);

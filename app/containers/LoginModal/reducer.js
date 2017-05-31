@@ -1,17 +1,24 @@
-import {fromJS} from "immutable";
+import {Map} from "immutable";
 import {CHANGE_EMAIL, CHANGE_PASSWORD} from "./actions";
 import {CLEAR_CACHE} from "../App/actions/actions";
 import {LOGIN_FAILED, LOGIN_PASSED, THREAD_HISTORY_RECEIVED} from "../App/actions/responses";
 import {LOGIN, LOGOUT} from "../App/actions/requests";
 import {THREAD_ID, EMAIL, APP_STATE, USER_ID, LOGIN_STATE} from "./constants";
 
-let initState = fromJS({
-  email: "",
-  appState: null,
-  userID: null,
-  threadID: null,
-  loginState: 0,
-});
+const initState = Map()
+  .set(EMAIL, "")
+  .set(APP_STATE, null)
+  .set(USER_ID, null)
+  .set(THREAD_ID, null)
+  .set(LOGIN_STATE, 0);
+
+/*
+Login state explanation:
+-1: wrong credentials
+ 0: logged out
+ 1: logged in
+10: logging in..
+*/
 
 export default function (state = initState, action) {
   switch (action.type) {

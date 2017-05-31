@@ -1,7 +1,7 @@
 import {createSelector} from "reselect";
-import {ACCENT_COLOR, BACKGROUND_COLOR} from "./constants";
-import {fromJS} from "immutable";
-import {selectSettings} from "../SettingsTab/selectors";
+import {ACCENT_COLOR_KEY, BACKGROUND_COLOR_KEY, THEME} from "./constants";
+import {fromJS, Map} from "immutable";
+import {selectSession} from "../LoginModal/selectors";
 
 export const backgroundColors = fromJS([
   ["#212326", 0],
@@ -9,7 +9,7 @@ export const backgroundColors = fromJS([
   ["#303840", 0],
   ["#515b66", 0],
   ["#ffffff", 1],
-])
+]);
 
 export const accentColors = fromJS([
   [
@@ -27,27 +27,32 @@ export const accentColors = fromJS([
   ]
 ]);
 
-const selectBackgroundKey = () => createSelector(
-  selectSettings(),
-  (settings) => {
-    const color = settings.get(BACKGROUND_COLOR);
-    return color != undefined ? color : 0
+export const selectTheme = () => createSelector(
+  selectSession(),
+  (session) => session.get(THEME) || Map()
+);
+
+export const selectBackgroundKey = () => createSelector(
+  selectTheme(),
+  (theme) => {
+    const color = theme.get(BACKGROUND_COLOR_KEY);
+    return color !== undefined ? color : 0
   }
 );
 
-const selectAccentKey = () => createSelector(
-  selectSettings(),
+export const selectAccentKey = () => createSelector(
+  selectTheme(),
   (settings) => {
-    const color = settings.get(ACCENT_COLOR);
-    return color != undefined ? color : 2
+    const color = settings.get(ACCENT_COLOR_KEY);
+    return color !== undefined ? color : 2
   }
 );
 
-const selectBackgroundColors = () => createSelector(
+export const selectBackgroundColors = () => createSelector(
   () => backgroundColors.map(color => color.get(0))
 );
 
-const selectBackgroundColor = () => createSelector(
+export const selectBackgroundColor = () => createSelector(
   selectBackgroundColors(),
   selectBackgroundKey(),
   (colors, idx) => colors.get(idx) || "rgb(32, 35, 38)"
@@ -63,22 +68,13 @@ const selectPaletteKey = () => createSelector(
   }
 );
 
-const selectAccentColors = () => createSelector(
+export const selectAccentColors = () => createSelector(
   selectPaletteKey(),
   (palette) => accentColors.get(palette) || fromJS([])
 );
 
-const selectAccentColor = () => createSelector(
+export const selectAccentColor = () => createSelector(
   selectAccentColors(),
   selectAccentKey(),
   (colors, idx) => colors.get(idx) || colors.get(0) || "rgb(225, 255, 0)"
 );
-
-export {
-  selectAccentColor,
-  selectBackgroundColor,
-  selectAccentColors,
-  selectBackgroundColors,
-  selectAccentKey,
-  selectBackgroundKey,
-}

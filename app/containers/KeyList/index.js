@@ -15,12 +15,11 @@ import {KEY_FILE} from "./constants";
 import ExportIcon from "material-ui/svg-icons/content/save";
 import ImportIcon from "material-ui/svg-icons/file/file-upload";
 
+/*
+A list of the symmetric keys belong to the current thread aswell as
+options to import or export keys in general (not thread specific).
+*/
 export class KeyList extends React.PureComponent {
-
-  state = {
-    newKey: "",
-    selected: [],
-  };
 
   styles = {
     btn: {
@@ -31,11 +30,16 @@ export class KeyList extends React.PureComponent {
     },
   };
 
+  /* Use FileSaver to comfortably save the stringified key map to a text file. */
   saveKeysToFile() {
     const file = new File([JSON.stringify(this.props.allKeys.toMap())], KEY_FILE, {type: "text/plain;charset=utf-8"});
     FileSaver.saveAs(file);
   }
 
+  /*
+  Use the general FileReader API to read a key file and
+  pass it asynchronously to the dispatcher.
+  */
   loadKeysFromFile(event) {
     const input = event.target;
     const reader = new FileReader();

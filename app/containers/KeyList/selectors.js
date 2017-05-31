@@ -13,7 +13,7 @@ export const selectCurrentKeys = () => createSelector(
 export const selectCurrentSymmetricKeys = () => createSelector(
   selectCurrentKeys(),
   (keys) => (keys.get(SYMMETRIC_KEYS) || List())
-    .map(key => forge.util.encode64(key)) || List()
+    .map(key => forge.util.encode64(key)) || List() // Encode the keys with Base64 for better readability
 );
 
 export const selectAllKeys = () => createSelector(

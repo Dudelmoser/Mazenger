@@ -1,15 +1,17 @@
-import {ACCENT_COLOR, BACKGROUND_COLOR} from "./constants";
+import {ACCENT_COLOR_KEY, BACKGROUND_COLOR_KEY} from "./constants";
 import {CHANGE_ACCENT_COLOR, CHANGE_BACKGROUND_COLOR} from "./actions";
+import {Map} from "immutable";
 
-export default function (state, action) {
+const initState = Map();
+export default function (state = initState, action) {
   switch (action.type) {
 
     case CHANGE_ACCENT_COLOR:
       return state
-        .set(ACCENT_COLOR, action.key);
+        .set(ACCENT_COLOR_KEY, action.key);
 
     case CHANGE_BACKGROUND_COLOR:
       return state
-        .set(BACKGROUND_COLOR, action.key);
+        .set(BACKGROUND_COLOR_KEY, action.key);
   }
 }

@@ -3,11 +3,15 @@ import {connect} from "react-redux";
 import {List} from "material-ui";
 import {selectFriendsCount} from "./selectors";
 import {createStructuredSelector} from "reselect";
-import FriendsListItem from "../FriendsListItem";
+import FriendsListItem from "./Item";
 import {selectBackgroundColor} from "../ThemeSettings/selectors";
 import muiThemeable from "material-ui/styles/muiThemeable";
 
-export class FriendsList extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+/*
+A friends list skeleton which simply maps the array indices to the actual list items.
+This allows hiding the property names determined by the facebook API from the view.
+*/
+export class FriendsList extends React.PureComponent {
 
   render() {
     return (
@@ -22,11 +26,11 @@ export class FriendsList extends React.PureComponent { // eslint-disable-line re
 
 FriendsList.propTypes = {
   friendsCount: React.PropTypes.number
-}
+};
 
 const mapStateToProps = createStructuredSelector({
   friendsCount: selectFriendsCount(),
-  // dirty workaround to force a re-render when changing the global background color
+  /* Dirty workaround to force a re-render when changing the theme. */
   color: selectBackgroundColor(),
 });
 

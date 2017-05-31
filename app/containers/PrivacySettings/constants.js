@@ -1,1 +1,1 @@
-export const CLEAR_CONFIRMED = "clearConfirmed";
+export const SHOW_CLEAR_DIALOG = "clearDialog";

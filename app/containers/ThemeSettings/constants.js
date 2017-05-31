@@ -1,2 +1,3 @@
-export const ACCENT_COLOR = "accentColor";
-export const BACKGROUND_COLOR = "backgroundColor";
+export const THEME = "theme";
+export const ACCENT_COLOR_KEY = "accentColor";
+export const BACKGROUND_COLOR_KEY = "backgroundColor";

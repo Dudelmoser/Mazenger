@@ -10,6 +10,9 @@ import {injectIntl} from "react-intl";
 import messages from "./messages";
 import {PWD_INPUT, EMAIL_INPUT} from "./constants";
 
+/*
+A simple login overlay.
+ */
 export class LoginModal extends React.Component {
 
   styles = {
@@ -19,28 +22,28 @@ export class LoginModal extends React.Component {
     actionContainer: {
       textAlign: "center"
     },
-  }
+  };
 
   render() {
-    // class properties won't change on re-render
+    /* Paints the login inputs and their labels red if the login data was wrong. */
     const styles = {
       underline: {
-        borderColor: this.props.loginState == -1
+        borderColor: this.props.loginState === -1
           ? this.props.muiTheme.raisedButton.secondaryColor
           : this.props.muiTheme.palette.borderColor,
       },
       underlineFocus: {
-        borderColor: this.props.loginState == -1
+        borderColor: this.props.loginState === -1
           ? this.props.muiTheme.raisedButton.secondaryColor
           : this.props.muiTheme.palette.primary1Color,
       },
       floatingLabel: {
-        color: this.props.loginState == -1
+        color: this.props.loginState === -1
             ? this.props.muiTheme.raisedButton.secondaryColor
             : this.props.muiTheme.palette.secondaryTextColor,
       },
       floatingLabelFocus: {
-        color: this.props.loginState == -1
+        color: this.props.loginState === -1
           ? this.props.muiTheme.raisedButton.secondaryColor
           : this.props.muiTheme.palette.secondaryTextColor,
       },
@@ -49,20 +52,21 @@ export class LoginModal extends React.Component {
     const {formatMessage} = this.props.intl;
 
     const actions = [
-      this.props.loginState != 10 ? <FlatButton
-        label={formatMessage(messages.login)}
-        primary={true}
-        disabled={false}
-        onTouchTap={this.props.login}
-      /> : <CircularProgress size={37}/>
+      this.props.loginState !== 10 ?
+        <FlatButton
+          label={formatMessage(messages.login)}
+          primary={true}
+          disabled={false}
+          onTouchTap={this.props.login}
+        /> : <CircularProgress size={37}/>
     ];
 
-    // css background blur, not supported by older browsers
+    /* CSS background blur, not supported by older browsers */
     document.getElementById("app").style.filter = this.props.loggedIn ? "none" : "blur(5px)";
 
     return (
         <Dialog
-          title={this.props.loginState == -1 ? formatMessage(messages.wrongLogin) : formatMessage(messages.login)}
+          title={this.props.loginState === -1 ? formatMessage(messages.wrongLogin) : formatMessage(messages.login)}
           actions={actions}
           modal={true}
           open={!this.props.loggedIn}
@@ -77,7 +81,7 @@ export class LoginModal extends React.Component {
               spellCheck={false}
               value={this.props.email}
               onChange={this.props.changeEmail}
-              onKeyUp={this.props.handleKeyUp.bind(this, 0)}
+              onKeyUp={this.props.onEmailChange}
               floatingLabelFixed={true}
               floatingLabelText={formatMessage(messages.email)}
               floatingLabelStyle={styles.floatingLabel}
@@ -90,7 +94,7 @@ export class LoginModal extends React.Component {
               id={PWD_INPUT}
               type="password"
               onChange={this.props.changePassword}
-              onKeyUp={this.props.handleKeyUp.bind(this, 1)}
+              onKeyUp={this.props.onPasswordChange}
               floatingLabelFixed={true}
               floatingLabelText={formatMessage(messages.password)}
               floatingLabelStyle={styles.floatingLabel}
@@ -104,12 +108,12 @@ export class LoginModal extends React.Component {
     );
   }
 
-  // focus email input on website (re)load
+  /* Focus email input on (re)load. */
   componentDidMount() {
     this.focusInput(EMAIL_INPUT);
   }
 
-  // focus password input after logout with a small delay
+  /* Focus password input after logout. The delay ensures the password input is actually focusable. */
   componentDidUpdate(prevProps) {
     if (prevProps.loggedIn && !this.props.loggedIn) {
       setTimeout(this.focusInput.bind(this, PWD_INPUT), 500);
@@ -138,38 +142,36 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = (dispatch) => ({
   changeEmail: (event) => dispatch(changeEmail(event.target.value)),
-  changePassword: (event) => dispatch(changePassword()),
+  changePassword: () => dispatch(changePassword()),
+  /* Pass the dispatcher to the mergeProps */
   dispatch,
 });
 
-// mergeProps instead of dispatchProps to pass the email stateProp to the login action
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const {email, loggedIn, loginState} = stateProps;
-  const {dispatch, changeEmail, changePassword} = dispatchProps;
+/* Use mergeProps instead of dispatchProps to pass stateProps (e.g. email) to the login action creator. */
+const mergeProps = (stateProps, dispatchProps) => {
+  const {changeEmail, changePassword, dispatch} = dispatchProps;
   return {
-    email,
-    loggedIn,
-    loginState,
+    ...stateProps,
     changeEmail,
     changePassword,
     login: () => {
-      // password is loaded from DOM to avoid leaking it via persisted state
+      /* Loads the password from the DOM to avoid leaking it via persisted state. */
       const pwd = document.getElementById(PWD_INPUT).value;
       dispatch(login({email: stateProps.email, password: pwd}));
     },
-    handleKeyUp: (inputID, event) => {
-      // handle return key event
-      if (event.keyCode == 13) {
-        // jump from email to password input
-        if (inputID == 0) {
-          document.getElementById(PWD_INPUT).focus();
-        // login if password input focused
-        } else if (inputID == 1) {
-          const pwd = document.getElementById(PWD_INPUT).value;
-          dispatch(login({email: stateProps.email, password: pwd}));
-        }
+    onEmailChange: (event) => {
+      /* Jump to the password input using the return key. */
+      if (event.keyCode === 13) {
+        document.getElementById(PWD_INPUT).focus();
       }
-    }
+    },
+    onPasswordChange: (event) => {
+      /* Log in using the return key. */
+      if (event.keyCode === 13) {
+        const pwd = document.getElementById(PWD_INPUT).value;
+        dispatch(login({email: stateProps.email, password: pwd}));
+      }
+    },
   }
 };
 

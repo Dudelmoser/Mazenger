@@ -2,14 +2,18 @@ import React from "react";
 import {connect} from "react-redux";
 import {createStructuredSelector} from "reselect";
 import {injectIntl, intlShape} from "react-intl";
-import {confirmClearSettings, clearSettings} from "./actions";
+import {setClearDialog, clearUserData} from "./actions";
 import {RaisedButton, FlatButton, Dialog} from "material-ui";
 import messages from "./messages";
-import {selectClearConfirmed} from "./selectors";
+import {selectShowClearDialog} from "./selectors";
 import {logout} from "../App/actions/requests";
 import DeleteIcon from "material-ui/svg-icons/action/delete";
 
-export class PrivacySettings extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+/*
+Describes how the app treats private data and allows removing the current users complete data
+including autotext, autoreplies etc.
+*/
+export class PrivacySettings extends React.PureComponent {
 
   render() {
     const {formatMessage} = this.props.intl;
@@ -18,16 +22,16 @@ export class PrivacySettings extends React.PureComponent { // eslint-disable-lin
       <FlatButton
         secondary={true}
         label={formatMessage(messages.confirm)}
-        onTouchTap={this.props.clearSettings}
+        onTouchTap={this.props.clearUserData}
       />,
       <FlatButton
         label={formatMessage(messages.cancel)}
-        onTouchTap={this.props.cancelClearSettings}
+        onTouchTap={this.props.closeClearDialog}
       />
     ];
 
-    // css background blur, not supported by older browsers
-    document.getElementById("app").style.filter = this.props.clearConfirmed ? "blur(5px)" : "none";
+    /* CSS background blur, not supported by older browsers */
+    document.getElementById("app").style.filter = this.props.showClearDialog ? "blur(5px)" : "none";
 
     return (
       <div>
@@ -36,16 +40,16 @@ export class PrivacySettings extends React.PureComponent { // eslint-disable-lin
         <div style={{textAlign: "center"}}>
           <RaisedButton
             secondary={true}
-            label={formatMessage(messages.clearSettings)}
+            label={formatMessage(messages.clearUserData)}
             icon={<DeleteIcon/>}
-            onClick={this.props.confirmClearSettings}
+            onClick={this.props.openClearDialog}
           />
         </div>
         <Dialog
           title={formatMessage(messages.clearHeader)}
           actions={actions}
           modal={true}
-          open={this.props.clearConfirmed}>
+          open={this.props.showClearDialog}>
           <div>
             {formatMessage(messages.clearWarning)}
           </div>
@@ -60,16 +64,16 @@ PrivacySettings.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  clearConfirmed: selectClearConfirmed(),
+  showClearDialog: selectShowClearDialog(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  clearSettings: () => {
-    dispatch(clearSettings());
+  clearUserData: () => {
+    dispatch(clearUserData());
     dispatch(logout());
   },
-  confirmClearSettings: () => dispatch(confirmClearSettings(true)),
-  cancelClearSettings: () => dispatch(confirmClearSettings(false)),
+  openClearDialog: () => dispatch(setClearDialog(true)),
+  closeClearDialog: () => dispatch(setClearDialog(false)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(PrivacySettings));
