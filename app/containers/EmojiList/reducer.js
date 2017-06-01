@@ -1,7 +1,7 @@
 import {fromJS, Map} from "immutable";
 import {INSERT_EMOJI, OPEN_EMOJI_GROUP} from "./actions";
 import {FAVORITES, OPEN_GROUPS} from "./constants";
-import {CLEAR_USER_DATA} from "../PrivacySettings/actions";
+import {CLEAR_USER_DATA} from "../PrivacyManager/actions";
 
 const initState = Map()
   .set(OPEN_GROUPS, fromJS([true, true]));

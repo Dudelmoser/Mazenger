@@ -14,8 +14,12 @@ import {injectGlobal} from "styled-components";
 import {closePhotoViewer} from "./actions";
 import {selectBackgroundColor} from "../ThemeSettings/selectors";
 
+/*
+ The chat history including the photo viewer and message selection state.
+ */
 export class ThreadHistory extends React.PureComponent {
 
+  /* Avoids cluttering the persistent state with temporary UI stuff. */
   state = {
     prevThread: 0,
     prevHeight: 0,
@@ -74,12 +78,12 @@ export class ThreadHistory extends React.PureComponent {
 
   componentDidUpdate(prevProps) {
     const top = this.refs.scrollbar.getScrollHeight() - this.state.prevHeight;
-    // scroll to bottom if thread changed or message arrived
+    /* Scroll to bottom if thread changed or message arrived */
     if (this.props.threadID !== this.state.prevThread || this.state.prevScrollTop === 1) {
       this.refs.scrollbar.scrollToBottom();
       this.setState({prevThread: this.props.threadID});
     }
-    // keep scroll position when more history is loaded
+    /* Keep scroll position when more history is loaded */
     if (this.state.prevScrollTop === 0) {
       this.refs.scrollbar.scrollTop(top);
     }
@@ -94,34 +98,32 @@ export class ThreadHistory extends React.PureComponent {
   }
 
   injectViewerStyles = () => {
+    //language=SCSS
     injectGlobal`
-    .react-viewer-close, .react-viewer-navbar {
-      background-color: transparent;
-    }
-    .react-viewer-btn, .react-viewer-toolbar li, .react-viewer-toolbar li:hover {
-      margin-left: 3px;
-      background-color: transparent;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-    .react-viewer-toolbar li:hover {
-      opacity: 0.5;
-    }
-    .react-viewer-mask {
-      background-color: ${this.props.muiTheme.overlay.backgroundColor};
-    }
-    .react-viewer-icon {
-      color: ${this.props.muiTheme.palette.textColor};
-    }
-    .react-viewer-icon:hover {
-      color: ${this.props.muiTheme.palette.textColor};
-    }
+      .react-viewer-close, .react-viewer-navbar, .react-viewer-close:hover {
+        background-color: transparent;
+      }
+      .react-viewer-btn, .react-viewer-toolbar li, .react-viewer-toolbar li:hover {
+        margin-left: 3px;
+        background-color: transparent;
+        border-radius: 0;
+      }
+      .react-viewer-toolbar li:hover {
+        opacity: 0.5;
+      }
+      .react-viewer-mask {
+        background-color: ${this.props.muiTheme.overlay.backgroundColor};
+      }
+      .react-viewer-icon {
+        color: ${this.props.muiTheme.palette.textColor};
+      }
+      .react-viewer-icon:hover, .react-viewer-icon-close:hover {
+        color: ${this.props.muiTheme.palette.textColor};
+      }
     `;
   };
 
-  // add intl support
+  /* TODO: Add i18n support to the users typing indicator. */
   getUsersTyping() {
     if (!this.props.typing || this.props.typing.length < 1)
       return;
@@ -154,7 +156,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = (dispatch, props) => ({
   handleKeypress: (evt) => {
-    // delete messages with DELETE and BACKSPACE
+    /* Delete messages with DELETE and BACKSPACE. */
     if (evt.keyCode === 46 || evt.keyCode === 8) {
       dispatch(deleteMessages());
     } else if (evt.ctrlKey && evt.keyCode === 65) {
@@ -167,5 +169,4 @@ const mapDispatchToProps = (dispatch, props) => ({
   closeViewer: () => dispatch(closePhotoViewer())
 });
 
-// muiThemeable needed for nested message components to receive theme updates - reason?
 export default connect(mapStateToProps, mapDispatchToProps)(muiThemeable()(ThreadHistory));

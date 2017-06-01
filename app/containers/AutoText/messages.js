@@ -11,6 +11,6 @@ export default defineMessages({
   },
   deleteTip: {
     id: "AutoText.deleteTip",
-    defaultMessage: "Delete selected abbreviations"
+    defaultMessage: "Delete selected autotext"
   }
 });

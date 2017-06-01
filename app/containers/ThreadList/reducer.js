@@ -1,7 +1,7 @@
 import {fromJS, Map} from "immutable";
 import {USER_INFO_RECEIVED} from "../App/actions/responses";
 import {LOGOUT} from "../App/actions/requests";
-import {MESSAGE_DECRYPTED, THREAD_INFO_DECRYPTED, THREAD_LIST_DECRYPTED} from "../KeyList/actions";
+import {MESSAGE_DECRYPTED, THREAD_INFO_DECRYPTED, THREAD_LIST_DECRYPTED} from "../KeyManager/actions";
 
 function threadsReducer(state = Map(), action) {
   switch (action.type) {

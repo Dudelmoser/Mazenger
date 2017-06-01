@@ -16,10 +16,9 @@ import ExportIcon from "material-ui/svg-icons/content/save";
 import ImportIcon from "material-ui/svg-icons/file/file-upload";
 
 /*
-A list of the symmetric keys belong to the current thread aswell as
-options to import or export keys in general (not thread specific).
+Options to import or export keys and a list of the symmetric keys used in the current thread.
 */
-export class KeyList extends React.PureComponent {
+export class KeyManager extends React.PureComponent {
 
   styles = {
     btn: {
@@ -86,7 +85,7 @@ export class KeyList extends React.PureComponent {
   }
 }
 
-KeyList.propTypes = {
+KeyManager.propTypes = {
   intl: intlShape.isRequired,
 };
 
@@ -99,4 +98,4 @@ const mapDispatchToProps = (dispatch) => ({
   importKeys: (str) => dispatch(importKeys(str)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(muiThemeable()(KeyList)));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(muiThemeable()(KeyManager)));

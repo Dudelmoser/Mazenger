@@ -3,6 +3,7 @@ import {ACCENT_COLOR_KEY, BACKGROUND_COLOR_KEY, THEME} from "./constants";
 import {fromJS, Map} from "immutable";
 import {selectSession} from "../LoginModal/selectors";
 
+/* Background colors marked as dark (0) or light (1). */
 export const backgroundColors = fromJS([
   ["#212326", 0],
   ["#292933", 0],
@@ -11,6 +12,7 @@ export const backgroundColors = fromJS([
   ["#ffffff", 1],
 ]);
 
+/* Bright accent colors for dark backgrounds and their dark counterparts for light backgrounds. */
 export const accentColors = fromJS([
   [
     "#66ffff",
@@ -36,7 +38,7 @@ export const selectBackgroundKey = () => createSelector(
   selectTheme(),
   (theme) => {
     const color = theme.get(BACKGROUND_COLOR_KEY);
-    return color !== undefined ? color : 0
+    return color !== undefined ? color : 0            // No pipe operator cause 0 would be falsey
   }
 );
 
@@ -44,7 +46,7 @@ export const selectAccentKey = () => createSelector(
   selectTheme(),
   (settings) => {
     const color = settings.get(ACCENT_COLOR_KEY);
-    return color !== undefined ? color : 2
+    return color !== undefined ? color : 2           // No pipe operator cause 0 would be falsey
   }
 );
 

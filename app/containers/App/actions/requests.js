@@ -1,3 +1,8 @@
+/*
+This file contains all actions that are passed to the node server using socket.io.
+Most of them are handled by the facebook chat api.
+*/
+
 export const LOGIN = "login";
 export const LISTEN = "listen";
 export const LOGOUT = "logout";
@@ -62,7 +67,6 @@ export function getThreadHistory(threadID, startAt, count = 20) {
   }
 }
 
-// TODO: dynamically load more images if last image is reached
 export function getThreadPictures(threadID, limit = 20, offset = 0) {
   return {
     type: GET_THREAD_PICTURES,
@@ -104,7 +108,7 @@ export function sendMessage(threadID, message, attachment) {
     args: [{
       body: message
     }, threadID]
-  }
+  };
   if (attachment)
     action.args[0].attachment = attachment;
   return action;

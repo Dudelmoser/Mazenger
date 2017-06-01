@@ -1,5 +1,5 @@
 import {fromJS, Map, OrderedMap} from "immutable";
-import {CLEAR_USER_DATA} from "../PrivacySettings/actions";
+import {CLEAR_USER_DATA} from "../PrivacyManager/actions";
 import {ADD_REGEX, DELETE_REGEX, SET_RESPONDER_STATE} from "./actions";
 import {GLOBAL, DICT, ENABLED} from "./constants";
 

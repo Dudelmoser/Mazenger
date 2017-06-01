@@ -13,7 +13,7 @@ import DeleteIcon from "material-ui/svg-icons/action/delete";
 Describes how the app treats private data and allows removing the current users complete data
 including autotext, autoreplies etc.
 */
-export class PrivacySettings extends React.PureComponent {
+export class PrivacyManager extends React.PureComponent {
 
   render() {
     const {formatMessage} = this.props.intl;
@@ -59,7 +59,7 @@ export class PrivacySettings extends React.PureComponent {
   }
 }
 
-PrivacySettings.propTypes = {
+PrivacyManager.propTypes = {
   intl: intlShape.isRequired,
 };
 
@@ -76,4 +76,4 @@ const mapDispatchToProps = (dispatch) => ({
   closeClearDialog: () => dispatch(setClearDialog(false)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(PrivacySettings));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(PrivacyManager));

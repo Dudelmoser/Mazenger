@@ -7,14 +7,16 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import {
   CenterDiv, ContainerDiv, TitleDiv, ThreadDiv, MessageDiv, drawerWidthPerc, barHeight
 } from "./components";
-import LeftDrawer from "../SidebarLeft";
-import RightDrawer from "../SidebarRight";
+import LeftDrawer from "../Sidebars";
 import ThreadHistory from "../ThreadHistory";
 import MessageInput from "../MessageInput";
 import LoginModal from "../LoginModal";
 import createTheme from "./theme";
 import {selectAccentColor, selectBackgroundColor} from "../ThemeSettings/selectors";
 
+/*
+The main application wrapper.
+*/
 class Messenger extends React.Component {
 
   updateDimensions() {
@@ -59,7 +61,6 @@ class Messenger extends React.Component {
                 <MessageInput/>
               </MessageDiv>
             </CenterDiv>
-            <RightDrawer height={this.state.height} width={drawerWidth}/>
 
         </ContainerDiv>
       </MuiThemeProvider>

@@ -5,7 +5,7 @@ import {
   CURRENT_MEME, TOP_CAPTION, BOTTOM_CAPTION, TOP100_MEMES, CUSTOM_MEMES, ACTIVE_CAT, FAVORITE_MEMES
 } from "./constants";
 import {IMAGE_UPLOADED, MEMES_LOADED} from "../App/actions/responses";
-import {CLEAR_USER_DATA} from "../PrivacySettings/actions";
+import {CLEAR_USER_DATA} from "../PrivacyManager/actions";
 
 const initState = Map();
 /* Doesn't work if imported for some reason !?*/

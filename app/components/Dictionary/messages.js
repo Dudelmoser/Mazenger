@@ -2,11 +2,11 @@ import {defineMessages} from "react-intl";
 
 export default defineMessages({
   deleteTip: {
-    id: "AbbreviationsTab.deleteTip",
+    id: "AutoText.deleteTip",
     defaultMessage: "Delete selected entries"
   },
   addTip: {
-    id: "AbbreviationsTab.addTip",
+    id: "AutoText.addTip",
     defaultMessage: "Add new entry"
   }
 });

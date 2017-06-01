@@ -1,5 +1,5 @@
-export const CLEAR_USER_DATA = "PrivacySettings.clearUserData";
-export const SET_CLEAR_DIALOG = "PrivacySettings.setClearDialog";
+export const CLEAR_USER_DATA = "PrivacyManager.clearUserData";
+export const SET_CLEAR_DIALOG = "PrivacyManager.setClearDialog";
 
 export function clearUserData() {
   return {

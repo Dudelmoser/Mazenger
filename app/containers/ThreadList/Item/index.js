@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {getThreadHistory} from "../App/actions/requests";
+import {getThreadHistory} from "../../App/actions/requests";
 import {selectThreadSnippet, selectThreadTitle, selectThreadImageURL, selectHasAttachment, selectTypersNamesStr,
   selectTypersCount
 } from "./selectors";
@@ -11,14 +11,20 @@ import LockIcon from "material-ui/svg-icons/action/lock-outline";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import messages from "./messages";
 import {injectIntl} from "react-intl";
-import {selectIsEncrypted} from "../KeyList/selectors";
+import {selectIsEncrypted} from "../../KeyManager/selectors";
 
-export class ThreadListItem extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+/*
+A thread list item showing the name and photo of the participant(s), a short text snippet and the encryption status.
+*/
+export class ThreadListItem extends React.PureComponent {
 
   render() {
     const {formatMessage} = this.props.intl;
 
-    // can be simplified cause API reveils no typers in group chats
+    /*
+    Can be simplified cause API reveils no typers in group chats.
+    TODO: Recognize if someone's typing for too long to be true and wait for reconfirmation of his status.
+    */
     const typing = this.props.typersCount == 1
       ? formatMessage(messages.isTyping)
       : formatMessage(messages.areTyping);
@@ -32,6 +38,7 @@ export class ThreadListItem extends React.PureComponent { // eslint-disable-line
       : snippet;
 
     try {
+      /* TODO: Give group chats a special avatar. */
       return (
         <div style={{position: "relative"}}>
           <ListItem
@@ -59,7 +66,7 @@ ThreadListItem.propTypes = {
   threadID: React.PropTypes.oneOfType(
     [React.PropTypes.number, React.PropTypes.string]).isRequired,
   onTouch: React.PropTypes.func,
-}
+};
 
 const mapStateToProps = (state, props) => ({
   title: selectThreadTitle(props.threadID)(state),

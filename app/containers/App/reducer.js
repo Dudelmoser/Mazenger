@@ -4,7 +4,7 @@ import friendsReducer from "../FriendsList/reducer";
 import {threadsReducer, usersReducer} from "../ThreadList/reducer";
 import {historiesReducer, photosReducer, typersReducer} from "../ThreadHistory/reducer";
 import inputsReducer from "../MessageInput/reducer";
-import keysReducer from "../KeyList/reducer";
+import keysReducer from "../KeyManager/reducer";
 import emojisReducer from "../EmojiList/reducer";
 import memesReducer from "../MemeGenerator/reducer";
 import autoreplyReducer from "../AutoResponder/reducer";
@@ -15,7 +15,7 @@ import {FRIENDS} from "../FriendsList/constants";
 import {THREADS, USERS} from "../ThreadList/constants";
 import {HISTORIES, PHOTOS, SHOW_PHOTO_VIEWER, TYPERS} from "../ThreadHistory/constants";
 import {INPUTS} from "../MessageInput/constants";
-import {KEYS} from "../KeyList/constants";
+import {KEYS} from "../KeyManager/constants";
 import {EMOJIS} from "../EmojiList/constants";
 import {MEMES} from "../MemeGenerator/constants";
 import {AUTOREPLY} from "../AutoResponder/constants";
@@ -24,16 +24,17 @@ import {THEME} from "../ThemeSettings/constants";
 import {SOCKET, SESSIONS, GUI} from "./constants";
 import {CONNECTED, DISCONNECTED} from "./actions/actions";
 import {combineReducers} from "redux-immutable";
-import {CHANGE_LEFT_TAB} from "../SidebarLeft/actions";
-import {CHANGE_RIGHT_TAB} from "../SidebarRight/actions";
-import {RIGHT_TAB} from "../SidebarRight/constants";
-import {LEFT_TAB} from "../SidebarLeft/constants";
+import {CHANGE_LEFT_TAB} from "../Sidebars/actions";
+import {CHANGE_RIGHT_TAB} from "../Sidebars/actions";
+import {RIGHT_TAB} from "../Sidebars/constants";
+import {LEFT_TAB} from "../Sidebars/constants";
 import {CLOSE_PHOTO_VIEWER} from "../ThreadHistory/actions";
-import {CLEAR_USER_DATA, SET_CLEAR_DIALOG} from "../PrivacySettings/actions";
-import {SHOW_CLEAR_DIALOG} from "../PrivacySettings/constants";
+import {SET_CLEAR_DIALOG} from "../PrivacyManager/actions";
+import {SHOW_CLEAR_DIALOG} from "../PrivacyManager/constants";
 import {LOGOUT} from "./actions/requests";
 import {PHOTO_URL_RESOLVED} from "./actions/responses";
 
+/* Reducers concerned with data that exists for each user separately. */
 let sessionReducers = {};
 sessionReducers[FRIENDS] = friendsReducer;
 sessionReducers[THREADS] = threadsReducer;
@@ -49,6 +50,11 @@ sessionReducers[AUTOTEXT] = autotextReducer;
 sessionReducers[THEME] = themeReducer;
 sessionReducers[PHOTOS] = photosReducer;
 
+/*
+Merges all session reducers into one. Passes only the current user's data to the reducers.
+The userID and threadID are also passed to reducers to allow contextual actions on the current thread
+and to distinguish foreign from own messages.
+*/
 function mergeSessionReducers(reducers, userID, threadID) {
   const keys = Object.keys(reducers);
 
@@ -67,6 +73,7 @@ function mergeSessionReducers(reducers, userID, threadID) {
     });
 }
 
+/* The socket.io connection state - not used yet. */
 function socketReducer(state = false, action) {
   switch (action.type) {
     case CONNECTED:
@@ -80,6 +87,8 @@ function socketReducer(state = false, action) {
   }
 }
 
+/* Manages which tabs or modals are visible.
+Contains no private data and is therefore global. */
 const initGuiState = Map()
   .set(LEFT_TAB, 0)
   .set(RIGHT_TAB, 0)
@@ -119,6 +128,7 @@ function guiReducer(state = initGuiState, action) {
   }
 }
 
+/* Combines session and global reducers into one big root reducer. */
 export default function (state = Map(), action) {
   const userID = state.getIn([LOGIN, USER_ID]);
   const threadID = state.getIn([LOGIN, THREAD_ID]);

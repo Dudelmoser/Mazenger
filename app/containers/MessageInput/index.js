@@ -15,8 +15,8 @@ import {selectAutoText} from "../AutoText/selectors";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import {INPUT_ID} from "./constants";
 import {deleteMessages} from "../ThreadHistory/actions";
-import {disableEncryption, encryptMessage, sendPublicKey} from "../KeyList/actions";
-import {selectIsCurrentThreadEncrypted} from "../KeyList/selectors";
+import {disableEncryption, encryptMessage, sendPublicKey} from "../KeyManager/actions";
+import {selectIsCurrentThreadEncrypted} from "../KeyManager/selectors";
 
 /*
 A toolbar to send messages aswell as enable/disable encryption.
@@ -92,7 +92,7 @@ const mergeProps = (stateProps, {dispatch}) => {
     threadID,
     message,
     isEncrypted,
-    /* Replaces abbreviations with their full forms. */
+    /* Replaces autotext with their full forms. */
     handleChange: (event) => {
       let str = event.target.value;
       abbrs.forEach((text, abbr) => {

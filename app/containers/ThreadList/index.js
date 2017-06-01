@@ -3,10 +3,16 @@ import {connect} from "react-redux";
 import {createStructuredSelector} from "reselect";
 import {selectThreadIDs} from "./selectors";
 import {List} from "material-ui";
-import Thread from "../ThreadListItem";
+import Thread from "./Item";
 import {selectCurrentUserID} from "../LoginModal/selectors";
 
-export class ThreadList extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+/*
+ A thread list skeleton which simply maps the array indices to the actual list items.
+ This allows hiding the property names determined by the facebook API from the view
+ and increases performance cause of the ability to re-render specific messages
+ instead of the whole thread history.
+ */
+export class ThreadList extends React.PureComponent {
 
   render() {
     return (

@@ -9,7 +9,7 @@ import {deleteAbbreviations, addAbbreviation} from "./actions";
 import Dictionary from "../../components/Dictionary";
 
 /*
-An editable dictionary of abbreviations and their full form.
+An editable dictionary of autotext and their full form.
 */
 export class AutoText extends React.PureComponent {
 

@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import muiThemeable from "material-ui/styles/muiThemeable";
 
+/*
+This file contains simple wrapper components without any logic.
+*/
+
 export const barHeight = 48;
 export const drawerWidthPerc = .23;
 

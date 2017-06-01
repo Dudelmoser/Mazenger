@@ -2,15 +2,15 @@ import {defineMessages} from "react-intl";
 
 export default defineMessages({
   theme: {
-    id: "Settings.theme",
+    id: "Extras.theme",
     defaultMessage: "Theme"
   },
   privacy: {
-    id: "Settings.privacy",
+    id: "Extras.privacy",
     defaultMessage: "Privacy"
   },
   keys: {
-    id: "Settings.keys",
+    id: "Extras.keys",
     defaultMessage: "Keys"
   },
 });

@@ -62,8 +62,8 @@ export class MediaPlayer extends React.PureComponent {
     this.setState({playing: !this.state.playing});
   };
 
-  setVolume = (evt) => {
-    this.setState({volume: parseFloat(evt.target.value)});
+  setVolume = (evt, value) => {
+    this.setState({volume: parseFloat(value)});
   };
 
   mute = () => {
@@ -88,7 +88,7 @@ export class MediaPlayer extends React.PureComponent {
   };
 
   onProgress = (state) => {
-    /* Update time slider only if the user is not currently seeking */
+    /* Update time slider only if the user is not currently seeking. */
     if (!this.state.seeking) {
       this.setState(state)
     }

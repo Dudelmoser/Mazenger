@@ -1,8 +1,8 @@
 import {fromJS, OrderedMap} from "immutable";
-import {CLEAR_USER_DATA} from "../PrivacySettings/actions";
+import {CLEAR_USER_DATA} from "../PrivacyManager/actions";
 import {DELETE_ABBREVIATIONS, ADD_ABBREVIATION} from "./actions";
 
-/* Some standard emoji abbreviations. */
+/* Some standard emoji autotext. */
 export const initState = OrderedMap({
   ";)": "😉",
   ":D": "😀",

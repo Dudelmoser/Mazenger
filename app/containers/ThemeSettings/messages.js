@@ -2,11 +2,11 @@ import {defineMessages} from "react-intl";
 
 export default defineMessages({
   bgColors: {
-    id: "ColorPicker.bgColors",
+    id: "ThemeManager.bgColors",
     defaultMessage: "Background colors",
   },
   accentColors: {
-    id: "ColorPicker.accentColors",
+    id: "ThemeManager.accentColors",
     defaultMessage: "Accent colors",
   },
 });

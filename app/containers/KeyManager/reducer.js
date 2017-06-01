@@ -1,7 +1,7 @@
 import {fromJS, Map, List} from "immutable";
 import {SYMMETRIC_KEYS, PRIVATE_KEY, IS_ENCRYPTED} from "./constants";
 import {SAVE_SYMMETRIC_KEY, SAVE_PRIVATE_KEY, SET_ENCRYPTED, IMPORT_KEYS} from "./actions";
-import {CLEAR_USER_DATA} from "../PrivacySettings/actions";
+import {CLEAR_USER_DATA} from "../PrivacyManager/actions";
 
 const initState = fromJS({});
 

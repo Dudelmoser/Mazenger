@@ -2,15 +2,15 @@ import {defineMessages} from "react-intl";
 
 export default defineMessages({
   isTyping: {
-    id: "app.containers.FriendsList.isTyping",
+    id: "ThreadListItem.isTyping",
     defaultMessage: "is typing...",
   },
   areTyping: {
-    id: "app.containers.FriendsList.areTyping",
+    id: "ThreadListItem.areTyping",
     defaultMessage: "are typing...",
   },
   attachment: {
-    id: "app.containers.FriendsList.attachment",
+    id: "ThreadListItem.attachment",
     defaultMessage: "[Attachment]",
   },
 });

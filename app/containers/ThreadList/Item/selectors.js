@@ -1,8 +1,8 @@
 import {createSelector} from "reselect";
-import {selectThread, selectUsers} from "../ThreadList/selectors";
-import {selectAllTypers} from "../ThreadHistory/selectors";
+import {selectThread, selectUsers} from "../selectors";
+import {selectAllTypers} from "../../ThreadHistory/selectors";
 import {fromJS} from "immutable";
-import {selectCurrentUserID} from "../LoginModal/selectors";
+import {selectCurrentUserID} from "../../LoginModal/selectors";
 
 const selectThreadTitle = (threadID) => createSelector(
   selectThread(threadID),

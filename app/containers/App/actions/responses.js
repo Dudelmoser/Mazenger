@@ -1,3 +1,8 @@
+/*
+ This file contains all actions that are received as socket.io events.
+ Most of them are the parameters passed to the dynamically created chat-api callback functions.
+ */
+
 export const LOGIN_PASSED = "loginPassed";
 export const LOGIN_FAILED = "loginFailed";
 export const THREAD_LIST_RECEIVED = "threadListReceived";

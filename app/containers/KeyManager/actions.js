@@ -1,15 +1,15 @@
-export const IMPORT_KEYS = "importKeys";
-export const EXPORT_KEYS = "exportKeys";
-export const SEND_PUBLIC_KEY = "sendPublicKey";
-export const ENCRYPT_MESSAGE ="encryptMessage";
-export const DISABLE_ENCRYPTION = "disableEncryption";
-export const MESSAGE_DECRYPTED = "messageDecrypted";
-export const THREAD_INFO_DECRYPTED = "threadInfoDecrypted";
-export const THREAD_LIST_DECRYPTED = "threadListDecrypted";
-export const THREAD_HISTORY_DECRYPTED = "threadHistoryDecrypted";
-export const SAVE_PRIVATE_KEY = "savePrivateKey";
-export const SAVE_SYMMETRIC_KEY = "saveSymmetricKey";
-export const SET_ENCRYPTED = "setEncrypted";
+export const IMPORT_KEYS = "KeyManager.importKeys";
+export const EXPORT_KEYS = "KeyManager.exportKeys";
+export const SEND_PUBLIC_KEY = "KeyManager.sendPublicKey";
+export const ENCRYPT_MESSAGE ="KeyManager.encryptMessage";
+export const DISABLE_ENCRYPTION = "KeyManager.disableEncryption";
+export const MESSAGE_DECRYPTED = "KeyManager.messageDecrypted";
+export const THREAD_INFO_DECRYPTED = "KeyManager.threadInfoDecrypted";
+export const THREAD_LIST_DECRYPTED = "KeyManager.threadListDecrypted";
+export const THREAD_HISTORY_DECRYPTED = "KeyManager.threadHistoryDecrypted";
+export const SAVE_PRIVATE_KEY = "KeyManager.savePrivateKey";
+export const SAVE_SYMMETRIC_KEY = "KeyManager.saveSymmetricKey";
+export const SET_ENCRYPTED = "KeyManager.setEncrypted";
 
 export function exportKeys() {
   return {

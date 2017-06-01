@@ -1,17 +1,17 @@
 import React from "react";
 import {injectIntl, intlShape} from "react-intl";
 import ThemeSettings from "../ThemeSettings";
-import PrivacySettings from "../PrivacySettings";
+import PrivacySettings from "../PrivacyManager";
 import {Stepper, Step, StepButton, StepContent} from "material-ui";
 import {injectGlobal} from "styled-components";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import messages from "./messages";
-import KeyList from "../KeyList";
+import KeyList from "../KeyManager";
 
 /*
-A wrapper that packs all settings listed under 'categories' into one stepper.
+A wrapper that packs all tools and settings listed under 'categories' into one stepper.
 */
-export class Settings extends React.PureComponent {
+export class Extras extends React.PureComponent {
 
   /* Add new categories here and their title inside the messages file. */
   categories = [{
@@ -66,8 +66,8 @@ export class Settings extends React.PureComponent {
   }
 }
 
-Settings.propTypes = {
+Extras.propTypes = {
   intl: intlShape.isRequired,
 };
 
-export default injectIntl(muiThemeable()(Settings));
+export default injectIntl(muiThemeable()(Extras));

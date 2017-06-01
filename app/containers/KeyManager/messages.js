@@ -2,23 +2,23 @@ import {defineMessages} from "react-intl";
 
 export default defineMessages({
   import: {
-    id: "KeyList.import",
+    id: "KeyManager.import",
     defaultMessage: "Import"
   },
   export: {
-    id: "KeyList.export",
+    id: "KeyManager.export",
     defaultMessage: "Export"
   },
   addKey: {
-    id: "KeyList.addKey",
+    id: "KeyManager.addKey",
     defaultMessage: "Add key"
   },
   deleteKey: {
-    id: "KeyList.deleteKey",
+    id: "KeyManager.deleteKey",
     defaultMessage: "Delete key"
   },
   keys: {
-    id: "KeyList.keys",
+    id: "KeyManager.keys",
     defaultMessage: "Keys"
   },
 });

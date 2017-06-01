@@ -1,5 +1,5 @@
-export const CHANGE_ACCENT_COLOR = "changeAccentColor";
-export const CHANGE_BACKGROUND_COLOR = "changeBackgroundColor";
+export const CHANGE_ACCENT_COLOR = "ThemeManager.changeAccentColor";
+export const CHANGE_BACKGROUND_COLOR = "ThemeManager.changeBackgroundColor";
 
 export function changeAccentColor(key) {
   return {

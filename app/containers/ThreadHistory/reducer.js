@@ -5,18 +5,18 @@ import {
   UPDATE_RECEIVED
 } from "../App/actions/responses";
 import {TOGGLE_MESSAGE_SELECT} from "../MessageContainer/actions";
-import {IS_MSG_SELECT, PHOTOS, SHOW_PHOTO_VIEWER} from "./constants";
+import {IS_MSG_SELECT} from "./constants";
 import {SELECT_ALL_MESSAGES, DESELECT_ALL_MESSAGES} from "./actions";
-import {MESSAGE_DECRYPTED, THREAD_HISTORY_DECRYPTED} from "../KeyList/actions";
-import {CLOSE_PHOTO_VIEWER} from "./actions";
+import {MESSAGE_DECRYPTED, THREAD_HISTORY_DECRYPTED} from "../KeyManager/actions";
 
-const initState = fromJS({});
+const initState = Map();
 
 export function historiesReducer(state = initState, action, threadID) {
   switch (action.type) {
     case THREAD_HISTORY_DECRYPTED:
+      /* Timestamps needed to integrate the new thread history properly. */
       const threadId = action.args[0];
-      const newHistory = fromJS(action.data); // assume history to be sorted
+      const newHistory = fromJS(action.data); // Assume history to be sorted
       const firstStamp = (newHistory.first() || Map()).get("timestamp");
       const lastStamp = (newHistory.last() || Map()).get("timestamp");
       const oldHistory = state.get(threadId) || List();
@@ -25,14 +25,15 @@ export function historiesReducer(state = initState, action, threadID) {
 
       return state
         .withMutations(state => {
+          /* Prepend older history after scrolling. */
           if (lastStamp < oldestStamp) {
             state.set(threadId, newHistory.concat(oldHistory));
+          /* Add all messages complete history newer than existing one. */
           } else if (firstStamp > latestStamp) {
             state.set(threadId, oldHistory.concat(newHistory));
+          /* Add newer messages only if history starts within the extisting history. */
           } else if (firstStamp <= latestStamp && firstStamp >= oldestStamp) {
             state.set(threadId, oldHistory.concat(newHistory.skipUntil(msg => msg.get("timestamp") > latestStamp)));
-          } else if (lastStamp >= oldestStamp && lastStamp <= latestStamp) {
-            // should not occur, therefore not handled
           }
         });
 
@@ -40,13 +41,13 @@ export function historiesReducer(state = initState, action, threadID) {
       const data = action.data;
       switch (data.type) {
 
-        // never triggered ?
+        /* Received when someone read a message. */
         case "read_receipt":
           return state.updateIn([data.threadID, -1, "readers"], readers => {
             return (readers || List()).push(data.reader);
           });
 
-        // not implemented yet
+        /* TODO: implement online status inside the thread and friends list. */
         case "presence":
           return state;
 
@@ -94,9 +95,7 @@ export function typersReducer(state = initState, action, threadID, userID) {
       switch (data.type) {
         case "typ":
           let threadID = data.threadID;
-
-          // threadID equals the clients ID in non-group-chats
-
+          /* ThreadID equals the userID in non-group-chats. */
           if (userID == data.threadID)
             threadID = data.from;
           if (data.isTyping)
@@ -116,8 +115,8 @@ export function typersReducer(state = initState, action, threadID, userID) {
   }
 }
 
-const emptyList = List();
-export function photosReducer(state = emptyList, action) {
+const initPhotoList = List();
+export function photosReducer(state = initPhotoList, action) {
   switch (action.type) {
 
     case PHOTO_URL_RESOLVED:
@@ -127,6 +126,6 @@ export function photosReducer(state = emptyList, action) {
       return fromJS(action.photos).map(photo => photo.get("uri"));
 
     case LOGOUT:
-      return emptyList;
+      return initPhotoList;
   }
 }
