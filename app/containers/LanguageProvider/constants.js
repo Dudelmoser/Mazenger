@@ -1,8 +1,5 @@
 /*
- *
- * LanguageProvider constants
- *
+ Change the language here.
+ TODO: Create a language toggle inside the settings.
  */
-
-export const CHANGE_LOCALE = 'app/LanguageToggle/CHANGE_LOCALE';
-export const DEFAULT_LOCALE = 'en';
+export const DEFAULT_LOCALE = "en";

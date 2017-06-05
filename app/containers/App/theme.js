@@ -2,23 +2,23 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 import {lighten, darken, emphasize, fade} from "material-ui/utils/colorManipulator";
 import {transparent, fullBlack} from "material-ui/styles/colors";
 
-function createTheme(accentColor, backgroundColor) {
+export default function createTheme(accentColor, backgroundColor) {
   const warningColor = "#D64541";
 
-  // minimum color difference
+  /* Minimum color difference */
   const minDelta = .03;
   const darkerBg = darken(backgroundColor, minDelta);
   const lighterBg = lighten(backgroundColor, minDelta);
   const minDeltaColor = emphasize(backgroundColor, minDelta);
 
-  // other differences to the bg color
+  /* Other differences to the bg color */
   const subtleDeltaColor = emphasize(backgroundColor, .1);
   const distinctDeltaColor = emphasize(backgroundColor, .3);
   const mediumDeltaColor = emphasize(backgroundColor, .6);
   const strongDeltaColor = emphasize(backgroundColor, .9);
   const overlayColor = fade(darken(backgroundColor, 0.1), 0.9);
 
-  // base theme using the previously defined color variations
+  /* Base theme using the previously defined color variations */
   return getMuiTheme({
     fontFamily: "Source Sans Pro",
     palette: {
@@ -74,5 +74,3 @@ function createTheme(accentColor, backgroundColor) {
     },
   });
 }
-
-export default createTheme;

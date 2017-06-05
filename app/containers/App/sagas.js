@@ -1,7 +1,6 @@
 import io from "socket.io-client";
 import {takeEvery, eventChannel} from "redux-saga";
 import {call, fork, put, take, cancel, select} from "redux-saga/effects";
-
 import {connected, disconnected} from "./actions/actions";
 import * as requests from "./actions/requests";
 import * as responses from "./actions/responses";
@@ -24,11 +23,10 @@ function connect() {
 
 function subscribe(socket) {
   return eventChannel(emit => {
-    // Set the current user to 'connected'.
-    // Timeout is somehow necessary for the reducer to be ready.
+    /* Set the current user to 'connected'. A timeout is somehow necessary for the reducer to be ready. */
     setTimeout(() => emit(connected()), 100);
 
-    // Keep the connection state updated
+    /* Keep the connection state updated. */
     socket.on("disconnect", res => {
       emit(disconnected());
     });
@@ -36,14 +34,12 @@ function subscribe(socket) {
       emit(connected());
     });
 
-    // Doesn't work with 'var' due to block vs function scope.
-    // Alternative: wrap callback into maker function.
+    /* Doesn't work with 'var' due to block vs function scope. Alternative: wrap callback into maker function. */
     for (let key in responses) {
       const actionCreator = responses[key];
       if (typeof actionCreator === "function") {
 
-        // Use dummy response to get action types from action creators
-        // without causing null pointers.
+        /* Use dummy response to get action types from action creators without causing null pointers. */
         const dummyRes = {data: {}, args: []};
         const event = actionCreator(dummyRes).type;
         socket.on(event, res => {

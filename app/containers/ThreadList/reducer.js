@@ -16,7 +16,7 @@ function threadsReducer(state = Map(), action) {
       );
 
     case THREAD_INFO_DECRYPTED:
-      return state.update(action.id, thread => (thread || Map()).mergeDeep(fromJS(action.data)));
+      return state.update(action.id, thread => thread.set("name", action.name));
 
     case MESSAGE_DECRYPTED:
       const data = action.data;

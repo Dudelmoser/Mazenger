@@ -16,7 +16,7 @@ export const ContainerDiv = muiThemeable()(styled.div`
   background: ${props => props.muiTheme.palette.canvasColor};
 `);
 
-// logo must eventually be replaced with svg or pixel graphic
+/* Logo must eventually be replaced with svg or pixel graphic. */
 export const TitleDiv = muiThemeable()(styled.div`
   z-index: 10;
   position: absolute;
@@ -54,9 +54,9 @@ export const MessageDiv = muiThemeable()(styled.div`
   background: ${props => props.muiTheme.palette.semitrans};
 `);
 
-// make component instead
+/* TODO: Make component instead of style. */
 export const tabBtnStyle = {
   width: "100%",
   cursor: "pointer",
   color: "inherit",
-}
+};

@@ -1,20 +1,8 @@
-import { createSelector } from 'reselect';
+import { createSelector } from "reselect";
 
-/**
- * Direct selector to the languageToggle state domain
- */
-const selectLanguage = (state) => state.get('language');
+export const selectLanguage = (state) => state.get("language");
 
-/**
- * Select the language locale
- */
-
-const makeSelectLocale = () => createSelector(
+export const selectLocale = () => createSelector(
   selectLanguage,
-  (languageState) => languageState.get('locale')
+  (language) => language.get("locale")
 );
-
-export {
-  selectLanguage,
-  makeSelectLocale,
-};

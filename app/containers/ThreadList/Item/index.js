@@ -25,7 +25,7 @@ export class ThreadListItem extends React.PureComponent {
     Can be simplified cause API reveils no typers in group chats.
     TODO: Recognize if someone's typing for too long to be true and wait for reconfirmation of his status.
     */
-    const typing = this.props.typersCount == 1
+    const typing = this.props.typersCount === 1
       ? formatMessage(messages.isTyping)
       : formatMessage(messages.areTyping);
 

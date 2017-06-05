@@ -1,12 +1,14 @@
-// Modules:
-// socket.io, socket.io-client, redux-persist-immutable, facebook-chat-api,
-// material-ui, react-tap-event-plugin, react-easy-emoji, react-custom-scrollbars, react-player, react-viewer
-//
-// Dependencies:
-// FriendsList: users,
-// ThreadList: threadID, threads, users, typing
-// ThreadHistory: threadID, history, users, typing
-// MessageInput: threadID, dictionary, outbox
+/*
+Modules:
+socket.io, socket.io-client, redux-persist-immutable, facebook-chat-api,
+material-ui, react-tap-event-plugin, react-easy-emoji, react-custom-scrollbars, react-player, react-viewer
+
+Dependencies:
+FriendsList: users
+ThreadList: threadID, threads, users, typing
+ThreadHistory: threadID, history, users, typing
+MessageInput: threadID, dictionary, outbox
+*/
 
 const stateExample = {
   global: {

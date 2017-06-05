@@ -2,35 +2,35 @@ import {defineMessages} from "react-intl";
 
 export default defineMessages({
   chats: {
-    id: "Sidebar.chats",
+    id: "Sidebars.chats",
     defaultMessage: "Chats"
   },
   friends: {
-    id: "Sidebar.friends",
+    id: "Sidebars.friends",
     defaultMessage: "Friends"
   },
   settings: {
-    id: "Sidebar.settings",
+    id: "Sidebars.settings",
     defaultMessage: "Extras"
   },
   logout: {
-    id: "Sidebar.logout",
+    id: "Sidebars.logout",
     defaultMessage: "Logout",
   },
   emojis: {
-    id: "Sidebar.emojis",
+    id: "Sidebars.emojis",
     defaultMessage: "Emojis",
   },
   memes: {
-    id: "Sidebar.memes",
+    id: "Sidebars.memes",
     defaultMessage: "Memes",
   },
   autotext: {
-    id: "Sidebar.autotext",
+    id: "Sidebars.autotext",
     defaultMessage: "Autotext"
   },
   autoreply: {
-    id: "Sidebar.autoreply",
+    id: "Sidebars.autoreply",
     defaultMessage: "Autoreply",
   },
 });

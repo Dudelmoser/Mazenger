@@ -1,10 +1,10 @@
-/**
- * This file will setup the i18n language files and locale data
- */
+/*
+This file will setup the i18n language files and locale data
+*/
 import {addLocaleData} from "react-intl";
 import deLocaleData from "react-intl/locale-data/de";
 
-import {DEFAULT_LOCALE} from "./containers/App/constants";
+import {DEFAULT_LOCALE} from "./containers/LanguageProvider/constants";
 import deTranslationMessages from "./translations/de.json";
 
 export const appLocales = [

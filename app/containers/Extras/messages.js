@@ -13,4 +13,16 @@ export default defineMessages({
     id: "Extras.keys",
     defaultMessage: "Keys"
   },
+  language: {
+    id: "Extras.language",
+    defaultMessage: "Language"
+  },
+  english: {
+    id: "Extras.english",
+    defaultMessage: "English"
+  },
+  german: {
+    id: "Extras.german",
+    defaultMessage: "German"
+  },
 });

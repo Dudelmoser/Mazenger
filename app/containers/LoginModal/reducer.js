@@ -1,9 +1,9 @@
 import {Map} from "immutable";
 import {CHANGE_EMAIL, CHANGE_PASSWORD} from "./actions";
-import {CLEAR_CACHE} from "../App/actions/actions";
 import {LOGIN_FAILED, LOGIN_PASSED, THREAD_HISTORY_RECEIVED} from "../App/actions/responses";
 import {LOGIN, LOGOUT} from "../App/actions/requests";
 import {THREAD_ID, EMAIL, APP_STATE, USER_ID, LOGIN_STATE} from "./constants";
+import {CLEAR_USER_DATA} from "../PrivacyManager/actions";
 
 const initState = Map()
   .set(EMAIL, "")
@@ -54,7 +54,7 @@ export default function (state = initState, action) {
         .set(APP_STATE, null)
         .set(LOGIN_STATE, 0);
 
-    case CLEAR_CACHE:
+    case CLEAR_USER_DATA:
       return initState;
 
     case THREAD_HISTORY_RECEIVED:

@@ -1,16 +1,8 @@
-/*
- *
- * LanguageProvider actions
- *
- */
+export const CHANGE_LOCALE = "LanguageProvider.changeLocale";
 
-import {
-  CHANGE_LOCALE,
-} from './constants';
-
-export function changeLocale(languageLocale) {
+export function changeLocale(locale) {
   return {
     type: CHANGE_LOCALE,
-    locale: languageLocale,
+    locale
   };
 }

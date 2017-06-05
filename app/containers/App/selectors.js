@@ -9,11 +9,6 @@ export const selectSessions = () => createSelector(
   (root) => root.get(SESSIONS)
 );
 
-export const selectIsConnected = () => createSelector(
-  selectRoot(),
-  (root) => root.get(SOCKET)
-);
-
 export const selectGUI = () => createSelector(
   selectRoot(),
   (root) => root.get(GUI) || Map()
@@ -34,3 +29,8 @@ export const selectLocationState = () => {
     return prevRoutingStateJS;
   };
 };
+
+export const selectIsConnected = () => createSelector(
+  selectRoot(),
+  (root) => root.get(SOCKET)
+);

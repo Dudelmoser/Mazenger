@@ -4,7 +4,7 @@ import {selectAllTypers} from "../../ThreadHistory/selectors";
 import {fromJS} from "immutable";
 import {selectCurrentUserID} from "../../LoginModal/selectors";
 
-const selectThreadTitle = (threadID) => createSelector(
+export const selectThreadTitle = (threadID) => createSelector(
   selectThread(threadID),
   selectUsers(),
   selectCurrentUserID(),
@@ -23,40 +23,39 @@ const selectThreadTitle = (threadID) => createSelector(
   }
 );
 
-const selectThreadSnippet = (threadID) => createSelector(
+export const selectThreadSnippet = (threadID) => createSelector(
   selectThread(threadID),
   (thread) => thread.get("snippet") || ""
 );
 
-const selectThreadImageURL = (threadID) => createSelector(
+export const selectThreadImageURL = (threadID) => createSelector(
   selectThread(threadID),
   selectUsers(),
   (thread, users) => {
     const participants = thread.get("participantIDs");
     const userID = participants ? participants.get(0) : "";
     const user = users.get(userID);
-    const imageURL = user ? user.get("thumbSrc") : "";
-    return imageURL;
+    return user ? user.get("thumbSrc") : "";
   }
 );
 
-const selectSnippetAttachments = (threadID) => createSelector(
+export const selectSnippetAttachments = (threadID) => createSelector(
   selectThread(threadID),
   (thread) => thread.get("snippetAttachments") || fromJS([])
 );
 
-const selectHasAttachment = (threadID) => createSelector(
+export const selectHasAttachment = (threadID) => createSelector(
   selectSnippetAttachments(threadID),
   (attachments) => attachments.count() > 0
 );
 
-const selectTypers = (threadID) => createSelector(
+export const selectTypers = (threadID) => createSelector(
   selectAllTypers(),
   (typers) => typers.get(threadID) || fromJS({})
 );
 
-// can be simplified cause API doesn't reveil data for group chats
-const selectTypersNames = (threadID) => createSelector(
+/* Can be simplified cause API doesn't reveil data for group chats. */
+export const selectTypersNames = (threadID) => createSelector(
   selectTypers(threadID),
   selectUsers(),
   (typers, users) => {
@@ -67,7 +66,7 @@ const selectTypersNames = (threadID) => createSelector(
   }
 );
 
-const selectTypersNamesStr = (threadID) => createSelector(
+export const selectTypersNamesStr = (threadID) => createSelector(
   selectTypersNames(threadID),
   (typers) => {
     let result = "";
@@ -78,17 +77,8 @@ const selectTypersNamesStr = (threadID) => createSelector(
   }
 );
 
-// bad performance compared to array.length should be insignificant
-const selectTypersCount = (threadID) => createSelector(
+/* Bad performance compared to array.length should be insignificant. */
+export const selectTypersCount = (threadID) => createSelector(
   selectTypersNames(threadID),
   (names) => names.length
 );
-
-export {
-  selectThreadTitle,
-  selectThreadSnippet,
-  selectThreadImageURL,
-  selectHasAttachment,
-  selectTypersNamesStr,
-  selectTypersCount,
-}
