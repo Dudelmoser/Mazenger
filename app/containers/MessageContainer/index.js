@@ -9,7 +9,7 @@ import Message from "../../components/Message";
 import Timestamp from "../../components/Timestamp";
 import {resolvePhotoUrl} from "../App/actions/requests";
 import Tooltip from "react-tooltip";
-import {selectBackgroundColor} from "../ThemeManager/selectors";
+import {selectAccentColor, selectBackgroundColor} from "../ThemeManager/selectors";
 import {createStructuredSelector} from "reselect";
 
 /*
@@ -95,7 +95,8 @@ const mapStateToProps = (state, props) => createStructuredSelector({
   attachmentsCount: selectAttachmentsCount(props.index, props.threadID),
   isSelected: selectIsSelected(props.index, props.threadID),
   /* dirty workaround to force a re-render when changing the theme */
-  color: selectBackgroundColor(),
+  bgColor: selectBackgroundColor(),
+  accentColor: selectAccentColor(),
 })(state);
 
 const mapDispatchToProps = (dispatch, props) => ({

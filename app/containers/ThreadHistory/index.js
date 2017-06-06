@@ -13,6 +13,8 @@ import "react-viewer/dist/index.css";
 import {injectGlobal} from "styled-components";
 import {closePhotoViewer} from "./actions";
 import {selectBackgroundColor} from "../ThemeManager/selectors";
+import ReactDOM from "react-dom";
+import {sendMessage} from "../App/actions/requests";
 
 /*
  The chat history including the photo viewer and message selection state.
@@ -95,6 +97,32 @@ export class ThreadHistory extends React.PureComponent {
   componentDidMount() {
     if (this.refs) this.refs.scrollbar.scrollToBottom();
     this.injectViewerStyles();
+    this.addDragAndDrop();
+  }
+
+  addDragAndDrop = () => {
+    const node = ReactDOM.findDOMNode(this);
+
+    node.ondragover = function () {
+      // $("#uploader").addClass('dragover');
+      console.log("Dragover");
+      return false;
+    };
+
+    node.ondragend = function () {
+      return false;
+    };
+
+    node.ondrop = (e) => {
+      e.preventDefault();
+      let file = e.dataTransfer.files[0];
+      let reader = new FileReader();
+      reader.onload = (evt) => {
+        this.props.sendMessage(this.props.threadID, evt.target.result);
+      };
+      reader.readAsDataURL(file);
+      return false;
+    };
   }
 
   injectViewerStyles = () => {
@@ -164,7 +192,8 @@ const mapDispatchToProps = (dispatch, props) => ({
   },
   deselectAll: () => dispatch(deselectAllMessages()),
   loadMore: () => dispatch(loadMoreMessages()),
-  closeViewer: () => dispatch(closePhotoViewer())
+  closeViewer: () => dispatch(closePhotoViewer()),
+  sendMessage: (threadID, dataURL) => dispatch(sendMessage(threadID, "", dataURL)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(muiThemeable()(ThreadHistory));
