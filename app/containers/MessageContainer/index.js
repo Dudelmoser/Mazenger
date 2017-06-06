@@ -9,7 +9,7 @@ import Message from "../../components/Message";
 import Timestamp from "../../components/Timestamp";
 import {resolvePhotoUrl} from "../App/actions/requests";
 import Tooltip from "react-tooltip";
-import {selectBackgroundColor} from "../ThemeSettings/selectors";
+import {selectBackgroundColor} from "../ThemeManager/selectors";
 import {createStructuredSelector} from "reselect";
 
 /*
@@ -58,7 +58,6 @@ export class MessageContainer extends React.PureComponent {
             isOwn={this.props.isOwn}
             onClick={this.props.resolvePhotoUrl}
           />
-          {/*{this.getReaders()}*/}
         </div>
       </div>
     );

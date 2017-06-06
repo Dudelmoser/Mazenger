@@ -16,7 +16,7 @@ function threadsReducer(state = Map(), action) {
       );
 
     case THREAD_INFO_DECRYPTED:
-      return state.update(action.id, thread => thread.set("name", action.name));
+      return state.setIn([action.id, "name"], action.name);
 
     case MESSAGE_DECRYPTED:
       const data = action.data;
@@ -24,6 +24,7 @@ function threadsReducer(state = Map(), action) {
 
         case "message":
           return state
+            .setIn([data.threadID, "threadID"], data.threadID)
             .setIn([data.threadID, "snippet"], data.body)
             .setIn([data.threadID, "timestamp"], data.timestamp);
         default:

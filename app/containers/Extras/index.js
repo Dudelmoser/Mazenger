@@ -1,6 +1,6 @@
 import React from "react";
 import {injectIntl, intlShape} from "react-intl";
-import ThemeSettings from "../ThemeSettings";
+import ThemeSettings from "../ThemeManager";
 import PrivacySettings from "../PrivacyManager";
 import {Stepper, Step, StepButton, StepContent, SelectField, MenuItem} from "material-ui";
 import {injectGlobal} from "styled-components";

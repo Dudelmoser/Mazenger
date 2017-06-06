@@ -4,7 +4,7 @@ import {List} from "material-ui";
 import {selectFriendsCount} from "./selectors";
 import {createStructuredSelector} from "reselect";
 import FriendsListItem from "./Item";
-import {selectBackgroundColor} from "../ThemeSettings/selectors";
+import {selectBackgroundColor} from "../ThemeManager/selectors";
 import muiThemeable from "material-ui/styles/muiThemeable";
 
 /*

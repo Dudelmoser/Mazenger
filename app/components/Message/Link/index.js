@@ -1,6 +1,6 @@
 import React from "react";
 import muiThemeable from "material-ui/styles/muiThemeable";
-import {createMediaPlayer} from "../../MediaPlayer/factory";
+import {createMediaPlayer} from "../../utils";
 
 /*
  * Minimalist link component.
@@ -25,7 +25,7 @@ function Link(props) {
       style={style}>
       <strong>{props.title ? props.title : props.url}</strong>
       {props.description ? <p>{props.description}</p> : null}
-      <aside>{props.source}</aside>
+      {props.source != props.title ? <aside>{props.source}</aside> : null}
     </a>
   );
 }

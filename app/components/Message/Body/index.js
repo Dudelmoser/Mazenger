@@ -1,8 +1,9 @@
 import React from "react";
 import emoji from "react-easy-emoji";
 import muiThemeable from "material-ui/styles/muiThemeable";
-import Link from "../Link";
 import {CT_ICON, DSBL_ICON, PK_ICON, SK_ICON} from "../../../containers/KeyManager/constants";
+import {URL_REGEX, IMAGE_REGEX, VIDEO_REGEX, AUDIO_REGEX} from "../../utils";
+import Link from "../Link";
 
 /*
  * A smart message body component that treats links and computer generated content appropriately.
@@ -22,26 +23,54 @@ function Body(props) {
     color: isMeta ? props.muiTheme.palette.secondaryTextColor : props.muiTheme.palette.textColor
   };
 
-  /* Extract links using a URL regex. */
-  const urlRegex = /^(https?|ftp):\/\/[a-z0-9.]*\.\w{2,}.*/i;
+  /*
+  File links get removed from the body and added as attachments instead.
+  Other links are removed without compensation cause facebook already adds them as attachments.
+  Images are wrapped into an image object cause facebook doesn't treat image links like uploaded images.
+  */
+  let content = [];
   let attachments = [];
   if (msg) {
     const parts = msg.split(/\s+/g);
     for (let i = 0; i < parts.length; i++) {
-      if (urlRegex.test(parts[i]))
-        attachments.push(<Link key={i} url={parts[i]}/>);
+      if (VIDEO_REGEX.test(parts[i]) || AUDIO_REGEX.test(parts[i])) {
+        attachments.push(
+          <Link
+            key={i}
+            url={parts[i]}
+          />
+        );
+      } else if (IMAGE_REGEX.test(parts[i])) {
+        attachments.push(
+          <a
+            key={i}
+            href={parts[i]}
+            target="_blank"
+          >
+            <img
+              src={parts[i]}
+              width="100%"
+              height="auto"
+            />
+          </a>
+        );
+      } else if (URL_REGEX.test(parts[i])) {
+        continue;
+      } else {
+        content.push(parts[i]);
+      }
+      content.push(" ");
     }
   }
 
-  /* Split message into single line blocks to render linebreaks properly. */
   return (
     <div>
-      <span style={style}>{
-        msg.length === 0 ? <div/> : msg.split("\n").map((line, key) =>
-          <div key={key}>{line.length > 0 ? emoji(line) : <br/>}</div>
-        )
-      }</span>
-      {attachments}
+      <div style={style}>
+        {content.length ? emoji(content) : null}
+      </div>
+      <div>
+        {attachments}
+      </div>
     </div>
   );
 }

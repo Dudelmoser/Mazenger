@@ -12,7 +12,7 @@ import Viewer from "react-viewer";
 import "react-viewer/dist/index.css";
 import {injectGlobal} from "styled-components";
 import {closePhotoViewer} from "./actions";
-import {selectBackgroundColor} from "../ThemeSettings/selectors";
+import {selectBackgroundColor} from "../ThemeManager/selectors";
 
 /*
  The chat history including the photo viewer and message selection state.
@@ -100,16 +100,14 @@ export class ThreadHistory extends React.PureComponent {
   injectViewerStyles = () => {
     //language=SCSS
     injectGlobal`
-      .react-viewer-close, .react-viewer-navbar, .react-viewer-close:hover {
-        background-color: transparent;
+      .react-viewer-close, .react-viewer-close:hover, .react-viewer-btn, .react-viewer-btn:hover, 
+      .react-viewer-toolbar li, .react-viewer-toolbar li:hover, .react-viewer-navbar {
+        background-color: transparent !important;
+        margin-left: 3px !important;
+        border-radius: 0 !important;
       }
-      .react-viewer-btn, .react-viewer-toolbar li, .react-viewer-toolbar li:hover {
-        margin-left: 3px;
-        background-color: transparent;
-        border-radius: 0;
-      }
-      .react-viewer-toolbar li:hover {
-        opacity: 0.5;
+      .react.viewer-btn:hover {
+        opacity: 0.5 !important;
       }
       .react-viewer-mask {
         background-color: ${this.props.muiTheme.overlay.backgroundColor};

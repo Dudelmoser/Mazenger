@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import Image from "../Image";
-import File from "../File";
 import Link from "../Link";
+import {IMAGE_REGEX, unwrapFacebookProxyURL} from "../../utils";
 
 /*
  * Renders all attachments depending on their types.
@@ -35,16 +35,20 @@ function Attachments(props) {
   attachments.forEach((attachment, i) => {
     switch (attachment.get("type")) {
       case "share":
-        components.push(<Link
-          key={i}
-          url={attachment.get("facebookUrl")}
-          title={attachment.get("title")}
-          description={attachment.get("description")}
-          source={attachment.get("source")}
-        />);
+        const url = unwrapFacebookProxyURL(attachment.get("facebookUrl"));
+        if (!IMAGE_REGEX.test(url))
+          components.push(
+            <Link
+              key={i}
+              url={attachment.get("facebookUrl")}
+              title={attachment.get("title")}
+              description={attachment.get("description")}
+              source={attachment.get("source")}
+            />
+          );
         break;
       case "video":
-        components.push(<File
+        components.push(<Link
           key={i}
           url={attachment.get("url")}
           name={attachment.get("filename")}
@@ -52,7 +56,7 @@ function Attachments(props) {
         />);
         break;
       case "file":
-        components.push(<File
+        components.push(<Link
           key={i}
           url={attachment.get("url")}
           name={attachment.get("name")}

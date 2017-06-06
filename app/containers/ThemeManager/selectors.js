@@ -5,10 +5,11 @@ import {selectSession} from "../LoginModal/selectors";
 
 /* Background colors marked as dark (0) or light (1). */
 export const backgroundColors = fromJS([
+  ["#000000", 0],
   ["#212326", 0],
   ["#292933", 0],
   ["#303840", 0],
-  ["#515b66", 0],
+  // ["#515b66", 0],
   ["#ffffff", 1],
 ]);
 
@@ -38,7 +39,7 @@ export const selectBackgroundKey = () => createSelector(
   selectTheme(),
   (theme) => {
     const color = theme.get(BACKGROUND_COLOR_KEY);
-    return color !== undefined ? color : 0            // No pipe operator cause 0 would be falsey
+    return color !== undefined ? color : 1            // No pipe operator cause 0 would be falsey
   }
 );
 
@@ -57,7 +58,7 @@ export const selectBackgroundColors = () => createSelector(
 export const selectBackgroundColor = () => createSelector(
   selectBackgroundColors(),
   selectBackgroundKey(),
-  (colors, idx) => colors.get(idx) || "rgb(32, 35, 38)"
+  (colors, idx) => colors.get(idx) || colors.get(0)
 );
 
 const selectPaletteKey = () => createSelector(
@@ -78,5 +79,5 @@ export const selectAccentColors = () => createSelector(
 export const selectAccentColor = () => createSelector(
   selectAccentColors(),
   selectAccentKey(),
-  (colors, idx) => colors.get(idx) || colors.get(0) || "rgb(225, 255, 0)"
+  (colors, idx) => colors.get(idx) || colors.get(0) || "rgb(225, 255, 0)" // Should be redundant
 );

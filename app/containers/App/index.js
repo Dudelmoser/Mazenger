@@ -12,7 +12,7 @@ import ThreadHistory from "../ThreadHistory";
 import MessageInput from "../MessageInput";
 import LoginModal from "../LoginModal";
 import createTheme from "./theme";
-import {selectAccentColor, selectBackgroundColor} from "../ThemeSettings/selectors";
+import {selectAccentColor, selectBackgroundColor} from "../ThemeManager/selectors";
 
 /*
 The main application wrapper.
