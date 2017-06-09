@@ -13,4 +13,8 @@ export default defineMessages({
     id: "MessageInput.delete",
     defaultMessage: "Delete selected"
   },
+  sendImage: {
+    id: "MessageInput.sendImage",
+    defaultMessage: "Send image"
+  },
 });

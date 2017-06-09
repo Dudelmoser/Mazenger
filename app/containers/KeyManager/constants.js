@@ -5,8 +5,8 @@ export const SYMMETRIC_KEYS = "symKeys";
 export const IS_ENCRYPTED = "isEncrypted";
 
 /* Encryption parameters */
-export const AES_KEY_BYTES = 32;
-export const RSA_KEY_BITS = 1024;
+export const AES_KEY_BYTES = 16;
+export const RSA_KEY_BITS = 2048;
 export const RSA_EXPONENT = 0x10001;
 
 /* General tags used for parsing computer generated messages */

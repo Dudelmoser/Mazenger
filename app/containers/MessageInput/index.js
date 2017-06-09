@@ -7,6 +7,7 @@ import LockIcon from "material-ui/svg-icons/action/lock-open";
 import KeyIcon from "material-ui/svg-icons/communication/vpn-key";
 import MenuIcon from "material-ui/svg-icons/navigation/more-vert";
 import SendIcon from "material-ui/svg-icons/content/send";
+import ImageIcon from "material-ui/svg-icons/image/photo";
 import {changeMessage} from "./actions";
 import {selectCurrentInput} from "./selectors";
 import {createStructuredSelector} from "reselect";
@@ -17,6 +18,7 @@ import {INPUT_ID} from "./constants";
 import {deleteMessages} from "../ThreadHistory/actions";
 import {disableEncryption, encryptMessage, sendPublicKey} from "../KeyManager/actions";
 import {selectIsCurrentThreadEncrypted} from "../KeyManager/selectors";
+import {sendMessage} from "../App/actions/requests";
 
 /*
 A toolbar to send messages aswell as enable/disable encryption.
@@ -25,11 +27,22 @@ e.g. deleting selected messages or uploading/recording audio/video/image files (
 */
 export class MessageInput extends React.PureComponent {
 
+  BTN_COUNT = 4;
+
   styles = {
     input: {
-      width: "calc(100% - 144px)",
+      width: `calc(100% - ${this.BTN_COUNT * 48}px)`,
     },
   };
+
+  /* Load an image from the local drive. */
+  loadImage = (event) => {
+    let reader = new FileReader();
+    reader.onload = (evt) => {
+      this.props.sendImage(evt.target.result);
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  }
 
   render() {
     const {formatMessage} = this.props.intl;
@@ -44,23 +57,34 @@ export class MessageInput extends React.PureComponent {
           hintText={formatMessage(messages.hint)}
           style={this.styles.input}
         />
-        <IconButton
-          onTouchTap={this.props.sendMessage}
-          iconStyle={{color: this.props.muiTheme.palette.primary1Color}}>
+        <IconButton onTouchTap={this.props.sendMessage}>
           <SendIcon/>
         </IconButton>
-        <IconButton
-          onTouchTap={this.props.isEncrypted ? this.props.disableEncryption : this.props.sendPublicKey}
-          iconStyle={{color: this.props.muiTheme.palette.primary1Color}}
-        >
+        <IconButton onTouchTap={this.props.isEncrypted ? this.props.disableEncryption : this.props.sendPublicKey}>
           {this.props.isEncrypted ? <LockIcon/> : <KeyIcon/>}
+        </IconButton>
+
+        <IconButton>
+          <label>
+            <ImageIcon style={{cursor: "pointer"}}/>
+            <input
+              id="imageInput"
+              type="file"
+              accept="image/*"
+              style={{display: "none"}}
+              onChange={this.loadImage}
+            />
+          </label>
         </IconButton>
         <IconMenu
           iconButtonElement={<IconButton><MenuIcon/></IconButton>}
           anchorOrigin={{horizontal: "right", vertical: "bottom"}}
           targetOrigin={{horizontal: "right", vertical: "bottom"}}
-          iconStyle={{color: this.props.muiTheme.palette.primary1Color}}
         >
+          <MenuItem
+            primaryText={formatMessage(messages.sendImage)}
+          >
+          </MenuItem>
           <MenuItem
             primaryText={formatMessage(messages.delete)}
             onTouchTap={this.props.deleteMessages}
@@ -107,6 +131,7 @@ const mergeProps = (stateProps, {dispatch}) => {
       }
     },
     sendMessage: () => dispatch(encryptMessage(threadID, document.getElementById(INPUT_ID).value)),
+    sendImage: (dataURL) => dispatch(sendMessage(threadID, "", dataURL)),
     deleteMessages: () => dispatch(deleteMessages()),
     sendPublicKey: () => dispatch(sendPublicKey(threadID)),
     disableEncryption: () => dispatch(disableEncryption(threadID)),

@@ -12,6 +12,7 @@ import muiThemeable from "material-ui/styles/muiThemeable";
 import messages from "./messages";
 import {injectIntl} from "react-intl";
 import {selectIsEncrypted} from "../../KeyManager/selectors";
+import {selectCurrentThreadID} from "../../LoginModal/selectors";
 
 /*
 A thread list item showing the name and photo of the participant(s), a short text snippet and the encryption status.
@@ -49,11 +50,14 @@ export class ThreadListItem extends React.PureComponent {
               <p style={{width: "90%"}}>{secondaryText}</p>
             }
             secondaryTextLines={1}
+            style={{color: this.props.threadID == this.props.currentThread
+              ? this.props.muiTheme.palette.primary1Color
+              : this.props.muiTheme.palette.textColor}}
             onTouchTap={this.props.onTouch.bind(this, this.props.threadID)}
           />
           <Divider
             inset={false}
-            style={{backgroundColor: "rgba(127,127,127,0.2)"}}/>
+            style={{backgroundColor: this.props.muiTheme.palette.borderColor}}/>
         </div>
       );
     } catch (err) {
@@ -76,6 +80,7 @@ const mapStateToProps = (state, props) => ({
   typersNames: selectTypersNamesStr(props.threadID)(state),
   typersCount: selectTypersCount(props.threadID)(state),
   isEncrypted: selectIsEncrypted(props.threadID)(state),
+  currentThread: selectCurrentThreadID()(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

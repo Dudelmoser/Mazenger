@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import MessageFrame from "../MessageContainer";
+import MessageContainer from "../MessageContainer";
 import {Scrollbars} from "react-custom-scrollbars";
 import {selectCurrentThreadID} from "../LoginModal/selectors";
 import {selectCurrentTypersNames, selectCurrentHistory, selectIsViewerVisible, selectViewerArray} from "./selectors";
@@ -26,6 +26,7 @@ export class ThreadHistory extends React.PureComponent {
     prevThread: 0,
     prevHeight: 0,
     prevScrollTop: 0,
+    dragOver: false,
   };
 
   styles = {
@@ -46,6 +47,7 @@ export class ThreadHistory extends React.PureComponent {
 
     return (
       <Scrollbars
+        style={{filter: this.state.dragOver ? "blur(5px)" : "none"}}
         ref="scrollbar"
         autoHide={true}
         onScrollFrame={(values) => {
@@ -66,7 +68,7 @@ export class ThreadHistory extends React.PureComponent {
           onKeyDown={this.props.handleKeypress}
           style={this.styles.wrapper}>
           {this.props.history.map((message, index) =>
-            <MessageFrame
+            <MessageContainer
               key={index}
               index={index}
               threadID={this.props.threadID}
@@ -103,18 +105,23 @@ export class ThreadHistory extends React.PureComponent {
   addDragAndDrop = () => {
     const node = ReactDOM.findDOMNode(this);
 
-    node.ondragover = function () {
-      // $("#uploader").addClass('dragover');
-      console.log("Dragover");
+    node.ondragend = node.ondragover = () => {
+      return false;
+    }
+
+    node.ondragenter = () => {
+      this.setState({dragOver: true});
       return false;
     };
 
-    node.ondragend = function () {
+    node.ondragleave = () => {
+      this.setState({dragOver: false});
       return false;
     };
 
     node.ondrop = (e) => {
       e.preventDefault();
+      this.setState({dragOver: false});
       let file = e.dataTransfer.files[0];
       let reader = new FileReader();
       reader.onload = (evt) => {
