@@ -105,16 +105,12 @@ export class ThreadHistory extends React.PureComponent {
   addDragAndDrop = () => {
     const node = ReactDOM.findDOMNode(this);
 
-    node.ondragend = node.ondragover = () => {
-      return false;
-    }
-
-    node.ondragenter = () => {
+    node.ondragenter = node.ondragover = () => {
       this.setState({dragOver: true});
       return false;
     };
 
-    node.ondragleave = () => {
+    node.ondragleave = node.ondragend = () => {
       this.setState({dragOver: false});
       return false;
     };
