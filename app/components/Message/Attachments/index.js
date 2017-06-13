@@ -1,13 +1,14 @@
 import React from "react";
-import styled, {injectGlobal} from "styled-components";
+import styled from "styled-components";
 import muiThemeable from "material-ui/styles/muiThemeable";
 import Image from "../Image";
 import Link from "../Link";
 import {IMAGE_REGEX, unwrapFacebookProxyURL} from "../../utils";
-import SpriteAnimator from "react-sprite-animator";
+import ErrorIcon from "material-ui/svg-icons/alert/error-outline";
+import Sticker from "../Sticker";
 
 /*
- * Renders all attachments depending on their types.
+ * Renders attachments according to their type with fitting components.
  */
 function Attachments(props) {
 
@@ -35,6 +36,7 @@ function Attachments(props) {
   let components = [];
   attachments.forEach((attachment, i) => {
     switch (attachment.get("type")) {
+
       case "share":
         const url = unwrapFacebookProxyURL(attachment.get("facebookUrl"));
         if (!IMAGE_REGEX.test(url))
@@ -48,21 +50,56 @@ function Attachments(props) {
             />
           );
         break;
+
       case "video":
-        components.push(<Link
-          key={i}
-          url={attachment.get("url")}
-          name={attachment.get("filename")}
-          type="video"
-        />);
+        components.push(
+          <Link
+            key={i}
+            url={attachment.get("url")}
+            name={attachment.get("filename")}
+            type="video"
+          />
+        );
         break;
+
       case "file":
-        components.push(<Link
-          key={i}
-          url={attachment.get("url")}
-          name={attachment.get("name")}
-        />);
+        components.push(
+          <Link
+            key={i}
+            url={attachment.get("url")}
+            name={attachment.get("name")}
+          />
+        );
         break;
+
+      case "error":
+        components.push(
+          <ErrorIcon
+            key={i}
+            color={props.muiTheme.palette.warningColor}
+          />
+        );
+        break;
+
+      case "sticker":
+        components.push(
+          <Sticker
+            key={i}
+            sticker={attachment}
+          />
+        );
+        break;
+
+      /* GIFs */
+      case "animated_image":
+        components.push(
+          <img
+            key={i}
+            src={attachment.get("previewUrl")}
+          />
+        );
+        break;
+
       case "photo":
         curImg++;
         if (curImg === 1)
@@ -81,54 +118,6 @@ function Attachments(props) {
         if (curImg === imgCount) {
           components.push(<Spacer2 key={i + "b"}/>)
         }
-        break;
-
-      /* GIFs */
-      case "animated_image":
-        components.push(<img src={attachment.get("previewUrl")} />);
-        break;
-
-      case "sticker":
-        const uri = attachment.get("spriteURI");
-        const cols = attachment.get("framesPerRow");
-        const frames = attachment.get("frameCount");
-        const fps = attachment.get("frameRate");
-
-        /* Extract the image width and height from the URL. */
-        const width = attachment.get("width");
-        const height = attachment.get("height");
-
-        const widthRegex = /https:\/\/scontent.*fbcdn.net\/v\/.*\/.(.*)x.*/g;
-        const widthMatches = widthRegex.exec(uri);
-        const widthTotal = widthMatches && widthMatches.length === 2 ? widthMatches[1] : 0;
-
-        const heightRegex = /https:\/\/scontent.*fbcdn.net\/v\/.*\/.*x(.*)\/.*/g;
-        const heightMatches = heightRegex.exec(uri);
-        const heightTotal = heightMatches && heightMatches.length === 2 ? heightMatches[1] : 0;
-
-        /*
-        Show stickers without or with a uneven sprite URI as static images.
-        Those have bugged dimensions inside the URL and the API response for some reason.
-        */
-        if (!uri || (width % 120 && height % 120) || (widthTotal % 2 || heightTotal % 2)) {
-          components.push(<img src={attachment.get("url")}/>);
-          console.log(uri, width, height, widthTotal, heightTotal);
-          break;
-        }
-
-        components.push(
-          <SpriteAnimator
-            key={i}
-            sprite={uri}
-            width={width}
-            height={height}
-            frameCount={frames}
-            fps={fps / 10}
-            wrapAfter={cols}
-          />
-        );
-        break;
-      case "error":
         break;
     }
   });

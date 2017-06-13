@@ -23,16 +23,13 @@ function Body(props) {
     color: isMeta ? props.muiTheme.palette.secondaryTextColor : props.muiTheme.palette.textColor
   };
 
-  /*
-  File links get removed from the body and added as attachments instead.
-  Other links are removed without compensation cause facebook already adds them as attachments.
-  Images are wrapped into an image object cause facebook doesn't treat image links like uploaded images.
-  */
   let content = "";
   let attachments = [];
   if (msg) {
     const parts = msg.split(/\s+/g);
     for (let i = 0; i < parts.length; i++) {
+
+      /* Adds external video and audio files as attachments. */
       if (VIDEO_REGEX.test(parts[i]) || AUDIO_REGEX.test(parts[i])) {
         attachments.push(
           <Link
@@ -40,6 +37,8 @@ function Body(props) {
             url={parts[i]}
           />
         );
+
+      /* Adds external images as standard images that open inside a new tab. */
       } else if (IMAGE_REGEX.test(parts[i])) {
         attachments.push(
           <a
@@ -54,6 +53,8 @@ function Body(props) {
             />
           </a>
         );
+
+      /* Removes standard URLs cause facebook already puts them as attachments. */
       } else if (URL_REGEX.test(parts[i])) {
         continue;
       } else {

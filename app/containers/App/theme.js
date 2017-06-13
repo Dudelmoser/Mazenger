@@ -37,6 +37,7 @@ export default function createTheme(accentColor, backgroundColor) {
       disabledColor: distinctDeltaColor,
       clockCircleColor: minDeltaColor,
       semitrans: fade(darkerBg, 0.95),
+      warningColor: warningColor,
     },
     tabs: {
       backgroundColor: transparent,

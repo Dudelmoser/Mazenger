@@ -25,7 +25,7 @@ function Link(props) {
       style={style}>
       <strong>{props.title ? props.title : props.url}</strong>
       {props.description ? <p>{props.description}</p> : null}
-      {props.source != props.title ? <aside>{props.source}</aside> : null}
+      {props.source !== props.title ? <aside>{props.source}</aside> : null}
     </a>
   );
 }
