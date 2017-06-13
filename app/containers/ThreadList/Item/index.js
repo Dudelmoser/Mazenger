@@ -13,11 +13,26 @@ import messages from "./messages";
 import {injectIntl} from "react-intl";
 import {selectIsEncrypted} from "../../KeyManager/selectors";
 import {selectCurrentThreadID} from "../../LoginModal/selectors";
-
 /*
 A thread list item showing the name and photo of the participant(s), a short text snippet and the encryption status.
 */
-export class ThreadListItem extends React.PureComponent {
+export class ThreadListItem extends React.Component {
+
+  /* Add Alt+{1-9} shortcuts to the thread list items. */
+  handleKeyUp = (evt) => {
+    if (evt.altKey && evt.keyCode - this.props.id === 49) {
+      this.props.onTouch(this.props.threadID);
+    }
+    return false;
+  };
+
+  componentDidMount() {
+    window.addEventListener("keyup", this.handleKeyUp);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("keyup", this.handleKeyUp);
+  }
 
   render() {
     const {formatMessage} = this.props.intl;
@@ -32,7 +47,10 @@ export class ThreadListItem extends React.PureComponent {
 
     const snippet = this.props.snippet
       ? emoji(this.props.snippet)
-      : <ClipIcon style={{height: 20}}/>;
+      : <ClipIcon
+          style={{height: 20}}
+          color={this.props.muiTheme.palette.secondaryTextColor}
+        />;
 
     const secondaryText = this.props.typersCount
       ? this.props.typersNames + typing
@@ -84,7 +102,10 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onTouch: (threadID) => dispatch(getThreadHistory(threadID))
+  onTouch: (threadID) => {
+    dispatch(getThreadHistory(threadID));
+    document.getElementById("input").focus();
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(muiThemeable()(injectIntl(ThreadListItem)));

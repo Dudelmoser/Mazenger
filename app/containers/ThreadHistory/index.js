@@ -186,11 +186,17 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = (dispatch, props) => ({
   handleKeypress: (evt) => {
     /* Delete messages with DELETE and BACKSPACE. */
-    if (evt.keyCode === 46 || evt.keyCode === 8) {
+    if (evt.ctrlKey) {
+      if (evt.keyCode === 65) {
+        dispatch(selectAllMessages());
+        evt.preventDefault();
+      }
+    } else if (evt.altKey) {
+      if (evt.keyCode === 48)
+        document.getElementById("input").focus();
+
+    } else if (evt.keyCode === 46 || evt.keyCode === 8) {
       dispatch(deleteMessages());
-    } else if (evt.ctrlKey && evt.keyCode === 65) {
-      dispatch(selectAllMessages());
-      evt.preventDefault();
     }
   },
   deselectAll: () => dispatch(deselectAllMessages()),

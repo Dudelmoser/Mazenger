@@ -7,7 +7,6 @@ function Timestamp(props) {
   const style = {
     marginTop: "1em",
     textAlign: "center",
-    opacity: 0.5,
   };
 
   function getDay(date) {
@@ -38,7 +37,7 @@ function Timestamp(props) {
       if (dayDiff < 0)
         dayDiff += 7;
 
-      if (dayDiff == 1) {
+      if (dayDiff === 1) {
         str = props.intl.formatMessage(messages.yesterday);
       } else if (dayDiff > 1) {
         str = getDay(date);
@@ -53,9 +52,7 @@ function Timestamp(props) {
     return str;
   }
 
-  if (!props.condition)
-    return null;
-  return (
+  return !props.condition ? null : (
     <div>
       <aside style={style}>{getDateTime()}</aside>
     </div>
@@ -67,6 +64,6 @@ Timestamp.propTypes = {
   timestamp: React.PropTypes.oneOfType(
     [React.PropTypes.number, React.PropTypes.string]).isRequired,
   condition: React.PropTypes.bool,
-}
+};
 
 export default injectIntl(Timestamp);

@@ -9,56 +9,50 @@ import Message from "../../components/Message";
 import Timestamp from "../../components/Timestamp";
 import {resolvePhotoUrl} from "../App/actions/requests";
 import Tooltip from "react-tooltip";
-import {selectAccentColor, selectBackgroundColor} from "../ThemeManager/selectors";
 import {createStructuredSelector} from "reselect";
+import styled from "styled-components";
 
 /*
 A stateful wrapper for the message and timestamp components.
 */
-export class MessageContainer extends React.PureComponent {
+export class MessageContainer extends React.Component {
 
   /* Minimum time passed between the current and previous message to render a timestamp. */
   maxTimeSpan = 5; // minutes
 
-  style = {
-    display: "flex",
-    flexDirection: "column"
-  };
-
   render() {
     const style = {
-      overflow: "hidden",
-      margin: "0.5em",
-      marginBottom: "0",
-      lineHeight: "32px",
-      minHeight: "32px",
+      display: "flex",
+      flexDirection: "column",
       opacity: this.props.isSelected ? .5 : 1,
       filter: this.props.isSelected ? "saturate(20%)" : "none",
-      alignSelf: this.props.isOwn ? "flex-end" : "flex-start",
     };
 
-    /* Don't render empty messages. */
-    if (!this.props.messageBody && !this.props.attachmentsCount) {
-      return null;
-    }
+    const logMessage = this.props.message.get("logMessageBody");
+    const LogMessage = styled.aside`
+      margin-top: 1em;
+      text-align: center;
+    `;
 
     /* TODO: Implement a readers indicator. */
     return (
       <div
-        style={this.style}>
-        <Timestamp
-          timestamp={this.props.timestamp}
-          condition={this.props.timePassed > this.maxTimeSpan * 60000}/>
-        <div
-          style={style}
-          onContextMenu={this.props.toggleMessageSelect}>
-          <Message
-            message={this.props.message}
-            tooltip={this.props.senderName}
-            isOwn={this.props.isOwn}
-            onClick={this.props.resolvePhotoUrl}
-          />
-        </div>
+        style={style}
+        onContextMenu={this.props.toggleMessageSelect}>
+        {
+          logMessage
+          ? <LogMessage>{logMessage}</LogMessage>
+          : <Timestamp
+              timestamp={this.props.timestamp}
+              condition={this.props.timePassed > this.maxTimeSpan * 60000}
+            />
+        }
+        <Message
+          message={this.props.message}
+          tooltip={this.props.senderName}
+          isOwn={this.props.isOwn}
+          onClick={this.props.resolvePhotoUrl}
+        />
       </div>
     );
   }
@@ -84,6 +78,7 @@ MessageContainer.propTypes = {
     [React.PropTypes.number, React.PropTypes.string]).isRequired,
 };
 
+/* Mix between standard mapStateToProps and createStructuredSelector. */
 const mapStateToProps = (state, props) => createStructuredSelector({
   message: selectMessage(props.index, props.threadID),
   isOwn: selectIsOwn(props.index, props.threadID),
@@ -94,9 +89,6 @@ const mapStateToProps = (state, props) => createStructuredSelector({
   messageBody: selectMessageBody(props.index, props.threadID),
   attachmentsCount: selectAttachmentsCount(props.index, props.threadID),
   isSelected: selectIsSelected(props.index, props.threadID),
-  /* dirty workaround to force a re-render when changing the theme */
-  bgColor: selectBackgroundColor(),
-  accentColor: selectAccentColor(),
 })(state);
 
 const mapDispatchToProps = (dispatch, props) => ({

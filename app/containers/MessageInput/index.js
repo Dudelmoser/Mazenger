@@ -58,10 +58,12 @@ export class MessageInput extends React.PureComponent {
           style={this.styles.input}
         />
         <IconButton onTouchTap={this.props.sendMessage}>
-          <SendIcon/>
+          <SendIcon color={this.props.muiTheme.palette.textColor}/>
         </IconButton>
         <IconButton onTouchTap={this.props.isEncrypted ? this.props.disableEncryption : this.props.sendPublicKey}>
-          {this.props.isEncrypted ? <LockIcon/> : <KeyIcon/>}
+          {this.props.isEncrypted
+            ? <LockIcon color={this.props.muiTheme.palette.textColor}/>
+            : <KeyIcon color={this.props.muiTheme.palette.textColor}/>}
         </IconButton>
 
         <IconButton>
@@ -76,15 +78,13 @@ export class MessageInput extends React.PureComponent {
             />
           </label>
         </IconButton>
+        
         <IconMenu
           iconButtonElement={<IconButton><MenuIcon/></IconButton>}
           anchorOrigin={{horizontal: "right", vertical: "bottom"}}
           targetOrigin={{horizontal: "right", vertical: "bottom"}}
+          iconStyle={{color: this.props.muiTheme.palette.textColor}}
         >
-          <MenuItem
-            primaryText={formatMessage(messages.sendImage)}
-          >
-          </MenuItem>
           <MenuItem
             primaryText={formatMessage(messages.delete)}
             onTouchTap={this.props.deleteMessages}

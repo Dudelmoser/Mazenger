@@ -28,7 +28,7 @@ function Body(props) {
   Other links are removed without compensation cause facebook already adds them as attachments.
   Images are wrapped into an image object cause facebook doesn't treat image links like uploaded images.
   */
-  let content = [];
+  let content = "";
   let attachments = [];
   if (msg) {
     const parts = msg.split(/\s+/g);
@@ -57,16 +57,16 @@ function Body(props) {
       } else if (URL_REGEX.test(parts[i])) {
         continue;
       } else {
-        content.push(parts[i]);
+        content += parts[i];
       }
-      content.push(" ");
+      content += " ";
     }
   }
 
-  return (
+  return !content.length ? null : (
     <div>
       <div style={style}>
-        {content.length ? emoji(content) : null}
+        {emoji(content)}
       </div>
       <div>
         {attachments}

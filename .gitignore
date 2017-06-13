@@ -4,4 +4,5 @@ node_modules
 
 # Cruft
 .idea
+.examples
 npm-debug.log

@@ -17,9 +17,10 @@ export class ThreadList extends React.PureComponent {
   render() {
     return (
       <List>
-        {this.props.threadIDs.map((threadID) =>
+        {this.props.threadIDs.map((threadID, key) =>
           threadID == this.props.userID ? null :
             <Thread
+              id={key}
               key={threadID}
               threadID={threadID}
             />
