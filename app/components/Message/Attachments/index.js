@@ -12,6 +12,9 @@ import Sticker from "../Sticker";
  */
 function Attachments(props) {
 
+  if (!props.attachments)
+    return null;
+
 /*
  * The following measurements are based on two fixed sizes used by Facebook:
  * a) the avatar size, which is always 32x32

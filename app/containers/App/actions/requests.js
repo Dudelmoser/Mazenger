@@ -7,7 +7,6 @@ export const LOGIN = "login";
 export const LISTEN = "listen";
 export const LOGOUT = "logout";
 export const GET_THREAD_LIST = "getThreadList";
-export const GET_THREAD_INFO = "getThreadInfo";
 export const GET_THREAD_HISTORY = "getThreadHistory";
 export const GET_THREAD_PICTURES = "getThreadPictures";
 export const GET_USER_ID = "getUserID";
@@ -44,13 +43,6 @@ export function getThreadList() {
   return {
     type: GET_THREAD_LIST,
     args: [0, 20, "inbox"] //"archived"
-  }
-}
-
-export function getThreadInfo(threadID) {
-  return {
-    type: GET_THREAD_INFO,
-    args: [threadID]
   }
 }
 

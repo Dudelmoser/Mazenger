@@ -71,7 +71,7 @@ export class ThreadListItem extends React.Component {
             style={{color: this.props.threadID == this.props.currentThread
               ? this.props.muiTheme.palette.primary1Color
               : this.props.muiTheme.palette.textColor}}
-            onTouchTap={this.props.onTouch.bind(this, this.props.threadID)}
+            onClick={this.props.onTouch.bind(this, this.props.threadID)}
           />
           <Divider
             inset={false}

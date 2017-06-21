@@ -1,6 +1,6 @@
 import {takeLatest} from "redux-saga";
 import {put, select} from "redux-saga/effects";
-import {getThreadList, getThreadInfo, getUserInfo, getThreadHistory, getThreadPictures} from "../App/actions/requests"
+import {getThreadList, getUserInfo, getThreadHistory, getThreadPictures} from "../App/actions/requests"
 import {LOGIN_PASSED, THREAD_LIST_RECEIVED, UPDATE_RECEIVED} from "../App/actions/responses";
 import {selectThread, selectUser} from "./selectors";
 import {selectCurrentThreadID} from "../LoginModal/selectors";
@@ -13,7 +13,6 @@ function* getThreadDetails(action) {
   }
 
   for (let thread of Object.values(action.data)) {
-    yield put(getThreadInfo(thread.threadID));
     for (let participant of thread.participants) {
       const user = yield select(selectUser(participant));
       if (user.size === 0) {

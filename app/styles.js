@@ -87,28 +87,4 @@ injectGlobal`
     -webkit-animation-name: autofill;
     -webkit-animation-fill-mode: both;
   }
-
-  //.sprite {
-  //  width: 120px;
-  //  height: 120px;
-  //  background-image: url("https://...");
-  //}
-  //
-  //@keyframes playX {
-  //  0% {
-  //    background-position-x: 0;
-  //  }
-  //  100% {
-  //    background-position-x: -360px;
-  //  }
-  //}
-  //
-  //@keyframes playY {
-  //  0% {
-  //    background-position-y: 0;
-  //  }
-  //  100% {
-  //    background-position-y: -360px;
-  //  }
-  //}
 `;

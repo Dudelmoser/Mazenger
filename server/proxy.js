@@ -17,7 +17,6 @@ const evtMap = {
   getCurrentUserID: "currentUserIdReceived",
   getFriendsList: "friendsListReceived",
   getThreadHistory: "threadHistoryReceived",
-  getThreadInfo: "threadInfoReceived",
   getThreadList: "threadListReceived",
   getThreadPictures: "threadPicturesReceived",
   deleteThread: "threadDeleted",

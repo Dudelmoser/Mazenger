@@ -13,7 +13,7 @@ function Body(props) {
   let msg = props.body;
 
   /* Recognize computer generated meta messages used for encryption and style them appropriately. */
-  const isMeta = msg.startsWith(PK_ICON) || msg.startsWith(SK_ICON) || msg.startsWith(CT_ICON) || msg.startsWith(DSBL_ICON);
+  const isMeta = msg ? msg.startsWith(PK_ICON) || msg.startsWith(SK_ICON) || msg.startsWith(CT_ICON) || msg.startsWith(DSBL_ICON) : false;
 
   const style = {
     display: "inline-block",
